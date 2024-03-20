@@ -1,2 +1,2 @@
-# sila-app
-SILA APP, A Graduation Project
+# sela-app
+SELA APP, A Graduation Project
