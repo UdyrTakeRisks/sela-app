@@ -3,6 +3,8 @@ content-Type: application/json
 
 Method: POST      URL: https://localhost:7086/signup/user
 
+https://selawebapp.azurewebsites.net/signup/user
+
 {
   "username": "ahmed123",
   "name": "Ahmed Ali",
@@ -14,16 +16,21 @@ Method: POST      URL: https://localhost:7086/signup/user
 
 Method: POST      URL: https://localhost:7086/login/user
 
+https://selawebapp.azurewebsites.net/login/user
 
 {
   "username": "ahmed123",
   "password": "123"
 }
 
+Check
+
+https://selawebapp.azurewebsites.net/health
+
+
 steps to deploy in Azure, right click on your solution, click publish, choose Azure,
 
 click the radio button of Create New Web App, the choose your config and wait till
 
 rider publish your solution zip file and done.
-
 
