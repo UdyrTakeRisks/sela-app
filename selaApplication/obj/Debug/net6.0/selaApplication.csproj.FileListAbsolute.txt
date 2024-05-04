@@ -53,3 +53,5 @@
 /run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/selaApplication.pdb
 /run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/selaApplication.genruntimeconfig.cache
 /run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/ref/selaApplication.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/Pipelines.Sockets.Unofficial.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/StackExchange.Redis.dll

@@ -1,14 +1,11 @@
 using Npgsql;
-using selaApplication.Models;
 using selaApplication.Persistence;
-using System;
-using System.Data.SqlClient;
 
-namespace selaApplication.Services
+namespace selaApplication.Services.User
 {
     public class UserService : IUserService
     {
-        public async Task<string> AddUser(User user)
+        public async Task<string> AddUser(Models.User user)
         {
             try
             {
@@ -40,8 +37,7 @@ namespace selaApplication.Services
                 return "An error occurred while adding the user";
             }
         }
-
-        public async Task<User?> GetByUsername(string username) //alter it to return a user obj
+        public async Task<Models.User?> GetByUsername(string username) //alter it to return a user obj
         {
             try
             {
@@ -58,7 +54,7 @@ namespace selaApplication.Services
                 {
                     var userName = reader.GetString(reader.GetOrdinal("username"));
                     var password = reader.GetString(reader.GetOrdinal("password"));
-                    return new User
+                    return new Models.User
                     {
                         username = userName,
                         password = password 
@@ -74,7 +70,34 @@ namespace selaApplication.Services
                 return null;
             }
         }
-        
+        public async Task<int> GetIdByUsername(string username) 
+        {
+            try
+            {
+                using var connector = new PostgresConnection();
+                connector.Connect();
+
+                const string sql = "SELECT user_id FROM users WHERE username = @username";
+
+                await using var command = new NpgsqlCommand(sql, connector._connection);
+                command.Parameters.AddWithValue("username", username);
+
+                await using var reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    var userId = reader.GetInt32(reader.GetOrdinal("user_id"));
+                    return userId;
+                }
+
+                return -1; 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while getting the user: {ex.Message}");
+                
+                return -1;
+            }
+        }
         
     }
 }
