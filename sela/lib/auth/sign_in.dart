@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
+import '../env.dart';
 import '../utils/colors.dart';
 
 class SignIn extends StatefulWidget {
@@ -18,7 +19,7 @@ TextEditingController passwordController = TextEditingController();
 Future<void> login(String username, String password) async {
   try {
     Response response = await post(
-      Uri.parse('https://selawebapp.azurewebsites.net/login/user'),
+      Uri.parse('$DOTNET_URL_API_BACKEND/User/login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
