@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../components/custom_suffix_icon.dart';
 import '../../../components/default_button.dart';
@@ -15,11 +18,13 @@ class SignForm extends StatefulWidget {
 
 class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
-  late String firstName;
-  late String email;
+  late String username;
   late String password;
   bool remember = false;
   final List<String> errors = [];
+
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
@@ -34,6 +39,33 @@ class _SignFormState extends State<SignForm> {
       setState(() {
         errors.remove(error);
       });
+    }
+  }
+
+  Future<void> login(String username, String password) async {
+    var url = Uri.parse('https://selawebapp.azurewebsites.net/api/User/login');
+    var body = json.encode({
+      'username': username,
+      'password': password,
+    });
+    print(body);
+    try {
+      http.Response response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: body,
+      );
+      if (response.statusCode != 200) {
+        throw Exception('Failed to login');
+      } else {
+        print('Login successful');
+        Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+      }
+      print(response.body);
+    } catch (e) {
+      print(e.toString());
     }
   }
 
@@ -79,8 +111,7 @@ class _SignFormState extends State<SignForm> {
             press: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                // if all are valid then go to success screen
-                Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+                login(usernameController.text, passwordController.text);
               }
             },
           ),
@@ -91,7 +122,7 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildUserNameFormField() {
     return TextFormField(
-      onSaved: (newValue) => firstName = newValue!,
+      onSaved: (newValue) => usernameController.text = newValue!,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kNamelNullError);
@@ -108,8 +139,6 @@ class _SignFormState extends State<SignForm> {
       decoration: const InputDecoration(
         labelText: "User Name",
         hintText: "Enter your user name",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/User.svg"),
       ),
@@ -119,24 +148,27 @@ class _SignFormState extends State<SignForm> {
   TextFormField buildPasswordFormField() {
     return TextFormField(
       obscureText: true,
-      onSaved: (newValue) => password = newValue!,
+      onSaved: (newValue) => passwordController.text = newValue!,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
         }
-        if (value.length >= 8) {
-          removeError(error: kShortPassError);
-        }
-        return null;
+        // TODO: Uncomment this code to enable password length validation
+        // if (value.length >= 8) {
+        //   removeError(error: kShortPassError);
+        // }
+        return;
       },
       validator: (value) {
         if (value!.isEmpty) {
           addError(error: kPassNullError);
           return "";
-        } else if (value.length < 8) {
-          addError(error: kShortPassError);
-          return "";
         }
+        // TODO: Uncomment this code to enable password length validation
+        // else if (value.length < 8) {
+        //   addError(error: kShortPassError);
+        //   return "";
+        // }
         return null;
       },
       decoration: const InputDecoration(
@@ -148,36 +180,38 @@ class _SignFormState extends State<SignForm> {
     );
   }
 
-  TextFormField buildEmailFormField() {
-    return TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue!,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: "Email",
-        hintText: "Enter your email",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Mail.svg"),
-      ),
-    );
-  }
+  // NOTE: This code is not used in the current implementation
+
+  // TextFormField buildEmailFormField() {
+  //   return TextFormField(
+  //     keyboardType: TextInputType.emailAddress,
+  //     onSaved: (newValue) => email = newValue!,
+  //     onChanged: (value) {
+  //       if (value.isNotEmpty) {
+  //         removeError(error: kEmailNullError);
+  //       } else if (emailValidatorRegExp.hasMatch(value)) {
+  //         removeError(error: kInvalidEmailError);
+  //       }
+  //       return null;
+  //     },
+  //     validator: (value) {
+  //       if (value!.isEmpty) {
+  //         addError(error: kEmailNullError);
+  //         return "";
+  //       } else if (!emailValidatorRegExp.hasMatch(value)) {
+  //         addError(error: kInvalidEmailError);
+  //         return "";
+  //       }
+  //       return null;
+  //     },
+  //     decoration: const InputDecoration(
+  //       labelText: "Email",
+  //       hintText: "Enter your email",
+  //       // If  you are using latest version of flutter then lable text and hint text shown like this
+  //       // if you r using flutter less then 1.20.* then maybe this is not working properly
+  //       floatingLabelBehavior: FloatingLabelBehavior.always,
+  //       suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Mail.svg"),
+  //     ),
+  //   );
+  // }
 }
