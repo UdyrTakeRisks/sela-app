@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'components/categories.dart';
-import 'components/discount_banner.dart';
+import 'components/body.dart';
 
 class HomeScreen extends StatelessWidget {
   static String routeName = "/home";
@@ -10,19 +9,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 16),
-          child: Column(
-            children: [
-              DiscountBanner(),
-              Categories(),
-              SizedBox(height: 20),
-              SizedBox(height: 20),
-            ],
-          ),
-        ),
-      ),
+      body: Body(),
     );
   }
 }

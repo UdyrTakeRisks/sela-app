@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../../../size_config.dart';
+
 class SectionTitle extends StatelessWidget {
   const SectionTitle({
-    Key? key,
+    super.key,
     required this.title,
     required this.press,
-  }) : super(key: key);
+  });
 
   final String title;
   final GestureTapCallback press;
@@ -17,16 +19,18 @@ class SectionTitle extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+          style: TextStyle(
+            fontSize: getProportionateScreenWidth(18),
             color: Colors.black,
+            fontFamily: "poppins",
           ),
         ),
-        TextButton(
-          onPressed: press,
-          style: TextButton.styleFrom(foregroundColor: Colors.grey),
-          child: const Text("See more"),
+        GestureDetector(
+          onTap: press,
+          child: const Text(
+            "See More",
+            style: TextStyle(color: Color(0xFFBBBBBB)),
+          ),
         ),
       ],
     );

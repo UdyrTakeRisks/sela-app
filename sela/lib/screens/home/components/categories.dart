@@ -7,11 +7,11 @@ class Categories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> categories = [
-      {"icon": "assets/icons/Flash Icon.svg", "text": "Flash Deal"},
-      {"icon": "assets/icons/Bill Icon.svg", "text": "Bill"},
-      {"icon": "assets/icons/Game Icon.svg", "text": "Game"},
-      {"icon": "assets/icons/Gift Icon.svg", "text": "Daily Gift"},
-      {"icon": "assets/icons/Discover.svg", "text": "More"},
+      {"icon": "assets/icons/hand.svg", "text": "Give Hand"},
+      {"icon": "assets/icons/donate.svg", "text": "Donate"},
+      // {"icon": "assets/icons/Game Icon.svg", "text": "Game"},
+      {"icon": "assets/icons/gift.svg", "text": "Daily Gift"},
+      {"icon": "assets/icons/explore.svg", "text": "More"},
     ];
     return Padding(
       padding: const EdgeInsets.all(20),
@@ -33,11 +33,11 @@ class Categories extends StatelessWidget {
 
 class CategoryCard extends StatelessWidget {
   const CategoryCard({
-    Key? key,
+    super.key,
     required this.icon,
     required this.text,
     required this.press,
-  }) : super(key: key);
+  });
 
   final String icon, text;
   final GestureTapCallback press;
@@ -53,7 +53,7 @@ class CategoryCard extends StatelessWidget {
             height: 56,
             width: 56,
             decoration: BoxDecoration(
-              color: const Color(0xFFFFECDF),
+              color: const Color(0xFFEBF1FF),
               borderRadius: BorderRadius.circular(10),
             ),
             child: SvgPicture.asset(icon),

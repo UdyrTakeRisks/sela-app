@@ -10,14 +10,14 @@ import 'screens/complete_profile/complete_profile_screen.dart';
 import 'screens/otp/otp_screen.dart';
 
 // use name routs instead of routes
-// all routes should be in routs map
+// all routes should be in routs map and should be final
 final Map<String, WidgetBuilder> routes = {
-  SplashScreen.routeName: (context) => SplashScreen(),
-  SignInScreen.routeName: (context) => SignInScreen(),
-  ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
-  LoginSuccessScreen.routeName: (context) => LoginSuccessScreen(),
-  SignUpScreen.routeName: (context) => SignUpScreen(),
-  CompleteProfileScreen.routeName: (context) => CompleteProfileScreen(),
-  OtpScreen.routeName: (context) => OtpScreen(),
-  HomeScreen.routeName: (context) => HomeScreen(),
+  SplashScreen.routeName: (context) => const SplashScreen(),
+  SignInScreen.routeName: (context) => const SignInScreen(),
+  ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
+  LoginSuccessScreen.routeName: (context) => const LoginSuccessScreen(),
+  SignUpScreen.routeName: (context) => const SignUpScreen(),
+  CompleteProfileScreen.routeName: (context) => const CompleteProfileScreen(),
+  OtpScreen.routeName: (context) => const OtpScreen(),
+  HomeScreen.routeName: (context) => const HomeScreen(),
 };
