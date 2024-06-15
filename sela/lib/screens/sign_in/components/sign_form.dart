@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:sela/components/loading_screen.dart';
 
 import '../../../components/custom_suffix_icon.dart';
 import '../../../components/default_button.dart';
@@ -12,6 +13,8 @@ import '../../forgot_password/forgot_password_screen.dart';
 import '../../login_success/login_success.dart';
 
 class SignForm extends StatefulWidget {
+  const SignForm({super.key});
+
   @override
   _SignFormState createState() => _SignFormState();
 }
@@ -57,6 +60,7 @@ class _SignFormState extends State<SignForm> {
         },
         body: body,
       );
+      Navigator.pop(context); // Dismiss the loading screen
       if (response.statusCode != 200) {
         throw Exception('Failed to login');
       } else {
@@ -65,8 +69,33 @@ class _SignFormState extends State<SignForm> {
       }
       print(response.body);
     } catch (e) {
+      Navigator.pop(context); // Dismiss the loading screen
+      _showErrorDialog();
       print(e.toString());
     }
+  }
+
+  void _showErrorDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Login Failed'),
+          content:
+              Text('Please check your username or password and try again.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                Navigator.pushReplacementNamed(context,
+                    '/sign_in'); // Replace with the route name of your signup screen
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -111,6 +140,11 @@ class _SignFormState extends State<SignForm> {
             press: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const LoadingScreen()),
+                );
                 login(usernameController.text, passwordController.text);
               }
             },
