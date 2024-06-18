@@ -8,10 +8,14 @@ class CompleteProfileScreen extends StatelessWidget {
   const CompleteProfileScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    final Map arguments = ModalRoute.of(context)!.settings.arguments as Map;
+    final String email = arguments['email'];
+    final String password = arguments['password'];
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Sign Up'),
         ),
-        body: Body());
+        body: Body(email: email, password: password));
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../components/no_account_text.dart';
 import '../../../components/social_card.dart';
 import '../../../size_config.dart';
-import 'sign_form.dart';
+import 'sign_in_form.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -13,7 +13,7 @@ class Body extends StatelessWidget {
         width: double.infinity,
         child: Padding(
           padding:
-          EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SingleChildScrollView(
             child: Column(
               children: [

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../size_config.dart';
 import 'app_bar.dart';
-import 'categories.dart';
 import 'home_header.dart';
 import 'organizations.dart';
 import 'popular_product.dart';
@@ -19,9 +18,9 @@ class Body extends StatelessWidget {
             const AppBarWelcome(),
             SizedBox(height: getProportionateScreenHeight(30)),
             const HomeHeader(),
-            SizedBox(height: getProportionateScreenWidth(10)),
+            SizedBox(height: getProportionateScreenWidth(20)),
             // const DiscountBanner(),
-            const Categories(),
+            // const Categories(),
             const Organizations(),
             SizedBox(height: getProportionateScreenWidth(30)),
             PopularProducts(),

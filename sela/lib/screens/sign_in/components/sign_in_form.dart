@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:sela/components/loading_screen.dart';
+import 'package:sela/utils/env.dart';
 
 import '../../../components/custom_suffix_icon.dart';
 import '../../../components/default_button.dart';
@@ -46,7 +47,7 @@ class _SignFormState extends State<SignForm> {
   }
 
   Future<void> login(String username, String password) async {
-    var url = Uri.parse('https://selawebapp.azurewebsites.net/api/User/login');
+    var url = Uri.parse('$DOTNET_URL_API_BACKEND/User/login');
     var body = json.encode({
       'username': username,
       'password': password,
@@ -65,7 +66,7 @@ class _SignFormState extends State<SignForm> {
         throw Exception('Failed to login');
       } else {
         print('Login successful');
-        Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+        Navigator.pushReplacementNamed(context, LoginSuccessScreen.routeName);
       }
       print(response.body);
     } catch (e) {
