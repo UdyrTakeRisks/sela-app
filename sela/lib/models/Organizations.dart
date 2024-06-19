@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class Product {
   final int id;
-  final String title, description, category;
+  final String name, title, description, category, requirement;
   final List<String> images;
   final List<Color> colors;
   final double rating, price;
-  final bool isFavourite, isPopular;
+  bool isFavourite, isPopular;
   final List<String> tags;
 
   Product({
@@ -16,9 +16,11 @@ class Product {
     this.rating = 0.0,
     this.isFavourite = false,
     this.isPopular = false,
+    required this.name,
     required this.title,
     required this.price,
     required this.description,
+    required this.requirement,
     this.category = "",
     this.tags = const [],
   });
@@ -41,7 +43,8 @@ List<Product> demoProducts = [
       Color(0xFFDECB9C),
       Colors.white,
     ],
-    title: "Yanfaa",
+    name: "Yanfaa",
+    title: "learning Organization",
     price: 64.99,
     description: description,
     rating: 4.8,
@@ -49,6 +52,7 @@ List<Product> demoProducts = [
     isPopular: true,
     category: "Learning",
     tags: ["Organization"],
+    requirement: "Requirement content goes here.",
   ),
   Product(
     id: 2,
@@ -64,13 +68,15 @@ List<Product> demoProducts = [
       Color(0xFFDECB9C),
       Colors.white,
     ],
-    title: "Resala",
+    name: "Resala",
+    title: "Resala Orgnaiztion",
     price: 50.5,
     description: description,
     rating: 4.1,
     isPopular: true,
     category: "Learning",
     tags: ["Organization"],
+    requirement: "Requirement content goes here.",
   ),
 ];
 

@@ -32,7 +32,7 @@ class Organizations extends StatelessWidget {
                 (index) => OrganizationCard(
                   index: index,
                   logo: demoProducts[index].images[0],
-                  name: demoProducts[index].title,
+                  name: demoProducts[index].name,
                   category: demoProducts[index].category,
                   tags: demoProducts[index].tags,
                   press: () => Navigator.pushNamed(

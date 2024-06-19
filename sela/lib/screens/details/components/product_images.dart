@@ -17,22 +17,53 @@ class ProductImages extends StatefulWidget {
 }
 
 class _ProductImagesState extends State<ProductImages> {
+  late PageController _pageController;
   int selectedImage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: selectedImage);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         SizedBox(
           width: getProportionateScreenWidth(238),
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: Hero(
-              tag: widget.product.id.toString(),
-              child: Image.asset(widget.product.images[selectedImage]),
-            ),
-          ),
+          height: getProportionateScreenWidth(238),
+          child: PageView.builder(
+              controller: _pageController,
+              itemCount: widget.product.images.length,
+              onPageChanged: (index) {
+                setState(() {
+                  selectedImage = index;
+                });
+              },
+              itemBuilder: (context, index) {
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: Hero(
+                      tag: widget.product.id.toString(),
+                      child: Image.asset(
+                        widget.product.images[selectedImage],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                );
+              }),
         ),
-        // SizedBox(height: getProportionateScreenWidth(20)),
+        SizedBox(height: getProportionateScreenWidth(20)),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -47,9 +78,11 @@ class _ProductImagesState extends State<ProductImages> {
   GestureDetector buildSmallProductPreview(int index) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          selectedImage = index;
-        });
+        _pageController.animateToPage(
+          index,
+          duration: defaultDuration,
+          curve: Curves.easeInOut,
+        );
       },
       child: AnimatedContainer(
         duration: defaultDuration,
