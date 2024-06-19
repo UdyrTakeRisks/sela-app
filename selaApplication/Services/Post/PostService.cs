@@ -5,7 +5,7 @@ namespace selaApplication.Services.Post;
 
 public class PostService : IPostService
 {
-    public async Task<string> AddAdminPost(Models.Post post)
+    public async Task<string> AddAdminPost(Models.Post post) // behind
     {
         try
         {
@@ -13,16 +13,17 @@ public class PostService : IPostService
             using var connector = new PostgresConnection();
             connector.Connect();
 
-            const string sql = "INSERT INTO posts (post_type, title, description, about, social_links)" +
-                               " VALUES (@post_type, @title, @description, @about, @social_links)";
+            const string sql = "INSERT INTO posts (name, post_type, title, description, about, social_links)" +
+                               " VALUES (@name, @post_type, @title, @description, @about, @social_links)";
 
             await using var command = new NpgsqlCommand(sql, connector._connection);
+            command.Parameters.AddWithValue("name", post.name);
             command.Parameters.AddWithValue("post_type", post.Type.ToString());
             command.Parameters.AddWithValue("title", post.title);
             command.Parameters.AddWithValue("description", post.description);
             command.Parameters.AddWithValue("about", post.about);
             command.Parameters.AddWithValue("social_links", post.socialLinks);
-            
+
             await command.ExecuteNonQueryAsync();
 
             return "post has been added successfully";
@@ -39,6 +40,7 @@ public class PostService : IPostService
             return "An error occurred while adding the post";
         }
     }
+
     public async Task<string> AddUserPost(Models.Post post, int userId)
     {
         try
@@ -47,19 +49,25 @@ public class PostService : IPostService
             using var connector = new PostgresConnection();
             connector.Connect();
 
-            const string sql = "INSERT INTO posts (post_type, title, description, about, social_links, user_id)" +
-                               " VALUES (@post_type, @title, @description, @about, @social_links, @user_id)";
+            const string sql =
+                "INSERT INTO posts (imageurls, name, post_type, tags, title, description, providers, about, social_links, user_id)" +
+                " VALUES (@imageURLs, @name, @post_type, @tags, @title, @description, @providers, @about, @social_links, @user_id)";
 
             await using var command = new NpgsqlCommand(sql, connector._connection);
+
+            command.Parameters.AddWithValue("imageURLs", post.ImageUrLs);
+            command.Parameters.AddWithValue("name", post.name);
             command.Parameters.AddWithValue("post_type", post.Type.ToString());
+            command.Parameters.AddWithValue("tags", post.tags);
             command.Parameters.AddWithValue("title", post.title);
             command.Parameters.AddWithValue("description", post.description);
+            command.Parameters.AddWithValue("providers", post.providers);
             command.Parameters.AddWithValue("about", post.about);
             command.Parameters.AddWithValue("social_links", post.socialLinks);
             command.Parameters.AddWithValue("user_id", userId);
             await command.ExecuteNonQueryAsync();
 
-            return "post has been added successfully";
+            return "post has been added Successfully";
         }
         catch (Exception ex)
         {
@@ -73,6 +81,7 @@ public class PostService : IPostService
             return "An error occurred while adding the post";
         }
     }
+
     public async Task<IEnumerable<Models.Post>> GetPosts(Models.Post post)
     {
         try
@@ -94,14 +103,18 @@ public class PostService : IPostService
                 {
                     // Id = reader.GetInt32(reader.GetOrdinal("Id")),
                     // Type = (PostType)reader.GetInt32(reader.GetOrdinal("post_type")),
+                    ImageUrLs = reader.GetFieldValue<string[]>(reader.GetOrdinal("imageurls")), // not sure
+                    name = reader.GetString(reader.GetOrdinal("name")),
+                    tags = reader.GetFieldValue<string[]>(reader.GetOrdinal("tags")) , // not sure
                     title = reader.GetString(reader.GetOrdinal("title")),
                     description = reader.GetString(reader.GetOrdinal("description")),
+                    providers = reader.GetFieldValue<string[]>(reader.GetOrdinal("providers")) , // not sure
                     about = reader.GetString(reader.GetOrdinal("about")),
                     socialLinks = reader.GetString(reader.GetOrdinal("social_links"))
                 };
                 posts.Add(fetchedPost);
             }
-            
+
             return posts;
         }
         catch (Exception ex)
@@ -112,7 +125,7 @@ public class PostService : IPostService
         }
     }
 
-    public async Task<IEnumerable<Models.Post>> ShowPostsById(int userId) 
+    public async Task<IEnumerable<Models.Post>> ShowPostsById(int userId)
     {
         try
         {
@@ -140,7 +153,7 @@ public class PostService : IPostService
                 };
                 posts.Add(fetchedPost);
             }
-            
+
             return posts;
         }
         catch (Exception ex)
@@ -150,5 +163,4 @@ public class PostService : IPostService
             return null;
         }
     }
-    
 }

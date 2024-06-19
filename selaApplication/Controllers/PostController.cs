@@ -49,9 +49,13 @@ public class PostController : ControllerBase
 
         var post = new Post
         {
+            ImageUrLs = dto.ImageUrLs,
+            name = dto.name,
             Type = dto.Type,
+            tags = dto.tags,
             title = dto.title,
             description = dto.description,
+            providers = dto.providers,
             about = dto.about,
             socialLinks = dto.socialLinks
         };
@@ -61,10 +65,10 @@ public class PostController : ControllerBase
         //     // return Forbid("Username or Password can not be empty");
         //     return BadRequest("Username or Password can not be empty");
 
-        var userId = _usersService.GetIdByUsername(sessionUser.username);
-        await _postsService.AddUserPost(post, await userId);
+        var userId = await _usersService.GetIdByUsername(sessionUser.username);
+        var res = await _postsService.AddUserPost(post, userId);
         // return Ok(user);
-        return Ok("Post has been added Successfully");
+        return Ok(res);
     }
 
     [HttpPost("admin")]
@@ -86,6 +90,8 @@ public class PostController : ControllerBase
 
         var post = new Post
         {
+            ImageUrLs = dto.ImageUrLs,
+            name = dto.name,
             Type = dto.Type,
             title = dto.title,
             description = dto.description,
@@ -120,13 +126,13 @@ public class PostController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> EditPostAsync(PostDto dto) //
+    public async Task<IActionResult> EditPostAsync(PostDto dto) // update according to post name coming from front
     {
         return Ok();
     }
 
     [HttpDelete]
-    public async Task<IActionResult> RemovePostAsync(PostDto dto) //
+    public async Task<IActionResult> RemovePostAsync(PostDto dto) // delete according to post name coming from front
     {
         return Ok();
     }
@@ -144,8 +150,8 @@ public class PostController : ControllerBase
 
         Console.WriteLine("User Username: " + sessionUser.username + " User Pass: " + sessionUser.password);
         
-        var userId = _usersService.GetIdByUsername(sessionUser.username);
-        return await _postsService.ShowPostsById(await userId);
+        var userId = await _usersService.GetIdByUsername(sessionUser.username);
+        return await _postsService.ShowPostsById(userId);
     }
     
 }

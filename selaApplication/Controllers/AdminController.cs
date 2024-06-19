@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using selaApplication.Dtos;
 using selaApplication.Models;
@@ -7,12 +8,13 @@ namespace selaApplication.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class AdminController : ControllerBase
 {
-    // admin will login with known credentials, should be encrypted 
+    // admin will log in with known credentials, should be encrypted 
     // but will have to verify an otp that should (should get a third party sms provider)
     // be sent on one of our phone numbers to validate
-    // that the admin is authorized to login
+    // that the admin is authorized to log in, or we can use JWTs
     
     [HttpGet("health")]
     public Task<IActionResult> CheckAppHealth()

@@ -5,8 +5,14 @@ namespace selaApplication.Dtos;
 
 public class PostDto
 {
+    public string[]? ImageUrLs { get; set; }
+
     [Required(ErrorMessage = "The Post type field is required.")]
+    public string name { get; set; }
+
     public PostType Type { get; set; }
+
+    public string[]? tags { get; set; }
 
     [Required(ErrorMessage = "The Title field is required.")]
     public string title { get; set; }
@@ -14,6 +20,7 @@ public class PostDto
     [Required(ErrorMessage = "The Description field is required.")]
     public string description { get; set; }
 
+    public string[]? providers { get; set; }
     public string about { get; set; }
     public string socialLinks { get; set; }
 }
