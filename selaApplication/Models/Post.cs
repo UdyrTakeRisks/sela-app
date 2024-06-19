@@ -7,6 +7,8 @@ namespace selaApplication.Models;
 
 public class Post
 {
+    
+    public int post_id { get; set; }
     public string[]? ImageUrLs { get; set; }
     public string name { get; set; }
 

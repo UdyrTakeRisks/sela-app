@@ -101,14 +101,14 @@ public class PostService : IPostService
             {
                 var fetchedPost = new Models.Post
                 {
-                    // Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                    post_id = reader.GetInt32(reader.GetOrdinal("post_id")),
                     // Type = (PostType)reader.GetInt32(reader.GetOrdinal("post_type")),
-                    ImageUrLs = reader.GetFieldValue<string[]>(reader.GetOrdinal("imageurls")), // not sure
+                    ImageUrLs = reader.GetFieldValue<string[]>(reader.GetOrdinal("imageurls")), 
                     name = reader.GetString(reader.GetOrdinal("name")),
-                    tags = reader.GetFieldValue<string[]>(reader.GetOrdinal("tags")) , // not sure
+                    tags = reader.GetFieldValue<string[]>(reader.GetOrdinal("tags")) , 
                     title = reader.GetString(reader.GetOrdinal("title")),
                     description = reader.GetString(reader.GetOrdinal("description")),
-                    providers = reader.GetFieldValue<string[]>(reader.GetOrdinal("providers")) , // not sure
+                    providers = reader.GetFieldValue<string[]>(reader.GetOrdinal("providers")) , 
                     about = reader.GetString(reader.GetOrdinal("about")),
                     socialLinks = reader.GetString(reader.GetOrdinal("social_links"))
                 };
