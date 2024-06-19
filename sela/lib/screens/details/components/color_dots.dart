@@ -11,7 +11,7 @@ class ColorDots extends StatelessWidget {
     required this.product,
   }) : super(key: key);
 
-  final Product product;
+  final Organization product;
 
   @override
   Widget build(BuildContext context) {

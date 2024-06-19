@@ -25,7 +25,7 @@ class DetailsScreen extends StatelessWidget {
 }
 
 class ProductDetailsArguments {
-  final Product product;
+  final Organization product;
   final int index;
 
   ProductDetailsArguments({required this.product, required this.index});

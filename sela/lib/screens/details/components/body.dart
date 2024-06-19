@@ -9,7 +9,7 @@ import 'product_images.dart';
 import 'top_rounded_container.dart';
 
 class Body extends StatelessWidget {
-  final Product product;
+  final Organization product;
   final int index;
 
   const Body({super.key, required this.product, required this.index});
@@ -49,14 +49,14 @@ class Body extends StatelessWidget {
                   length: 3,
                   child: Column(
                     children: [
-                      TabBar(
+                      const TabBar(
                         labelColor: Colors.black,
                         unselectedLabelColor: Colors.grey,
                         indicatorColor: Color(0xFF356899),
-                        tabs: const [
+                        tabs: [
                           Tab(text: "Description"),
-                          Tab(text: "Requirement"),
                           Tab(text: "About"),
+                          Tab(text: "Reviews"),
                         ],
                       ),
                       SizedBox(
@@ -69,11 +69,11 @@ class Body extends StatelessWidget {
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text(product.requirement),
+                              child: Text("About title goes here."),
                             ),
                             const Padding(
                               padding: EdgeInsets.all(8.0),
-                              child: Text("About content goes here."),
+                              child: Text("Reviews go here."),
                             ),
                           ],
                         ),

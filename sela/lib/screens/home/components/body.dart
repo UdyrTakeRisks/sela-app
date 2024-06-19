@@ -4,8 +4,8 @@ import 'package:sela/screens/home/components/discount_banner.dart';
 import '../../../size_config.dart';
 import 'app_bar.dart';
 import 'home_header.dart';
+import 'individuals.dart';
 import 'organizations.dart';
-import 'popular_product.dart';
 
 class Body extends StatelessWidget {
   const Body({super.key});
@@ -25,7 +25,7 @@ class Body extends StatelessWidget {
             // const Categories(),
             const Organizations(),
             SizedBox(height: getProportionateScreenWidth(30)),
-            PopularProducts(),
+            Individuals(),
             SizedBox(height: getProportionateScreenWidth(30)),
           ],
         ),

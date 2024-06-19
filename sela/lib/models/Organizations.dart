@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Product {
+class Organization {
   final int id;
   final String name, title, description, category, requirement;
   final List<String> images;
@@ -9,7 +9,7 @@ class Product {
   bool isFavourite, isPopular;
   final List<String> tags;
 
-  Product({
+  Organization({
     required this.id,
     required this.images,
     required this.colors,
@@ -28,8 +28,8 @@ class Product {
 
 // Our demo Products
 
-List<Product> demoProducts = [
-  Product(
+List<Organization> demoProducts = [
+  Organization(
     id: 1,
     images: [
       "assets/images/yanfaa_1.png",
@@ -54,7 +54,7 @@ List<Product> demoProducts = [
     tags: ["Organization"],
     requirement: "Requirement content goes here.",
   ),
-  Product(
+  Organization(
     id: 2,
     images: [
       "assets/images/Resala_1.png",
