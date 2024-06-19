@@ -9,7 +9,7 @@ class Individuals extends StatelessWidget {
       name: 'Ahmed Ali',
       service: 'Learning',
       imageUrl:
-          'https://ihaofykdrzgouxpitrvi.supabase.co/storage/v1/object/public/postimages/yanfaa_2.png?t=2024-06-19T14%3A51%3A46.496Z',
+          'https://ihaofykdrzgouxpitrvi.supabase.co/storage/v1/object/public/postimages/yanfaa/images/yanfaa_4.png?t=2024-06-19T15%3A23%3A07.781Z',
     ),
     Individual(
       name: 'Mohamed Alaa',

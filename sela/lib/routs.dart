@@ -3,6 +3,8 @@ import 'package:sela/screens/details/details_screen.dart';
 import 'package:sela/screens/forgot_password/forgot_password_screen.dart';
 import 'package:sela/screens/home/home_screen.dart';
 import 'package:sela/screens/login_success/login_success.dart';
+import 'package:sela/screens/profile/profile_screen.dart';
+import 'package:sela/screens/saved/saved_screen.dart';
 import 'package:sela/screens/sign_in/sign_in_screen.dart';
 import 'package:sela/screens/sign_up/sign_up_screen.dart';
 import 'package:sela/screens/splash/splash_screen.dart';
@@ -22,4 +24,6 @@ final Map<String, WidgetBuilder> routes = {
   OtpScreen.routeName: (context) => const OtpScreen(),
   HomeScreen.routeName: (context) => const HomeScreen(),
   DetailsScreen.routeName: (context) => const DetailsScreen(),
+  ProfileScreen.routeName: (context) => ProfileScreen(),
+  SavedScreen.routeName: (context) => SavedScreen(),
 };
