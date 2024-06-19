@@ -15,11 +15,11 @@ class DetailsScreen extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as DetailsArguments;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F6F9),
+      backgroundColor: Color(0xFFF5F6F9),
       appBar: CustomAppBar(
         rating: args.organization.rating,
       ),
-      body: Body(product: args.organization, index: args.index),
+      body: Body(organization: args.organization, index: args.index),
     );
   }
 }

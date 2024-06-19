@@ -9,13 +9,13 @@ import 'details_images.dart';
 import 'top_rounded_container.dart';
 
 class Body extends StatelessWidget {
-  final Organization product;
+  final Organization organization;
   final int index;
 
-  const Body({super.key, required this.product, required this.index});
+  const Body({super.key, required this.organization, required this.index});
 
   void _launchURL() async {
-    final Uri url = Uri.parse('https://yanfaa.com/eg/home');
+    final Uri url = Uri.parse(organization.socialLinks);
     try {
       if (await launchUrl(url)) {
         throw Exception('Could not launch $url');
@@ -30,23 +30,25 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String providersList = organization.providers.join('\n');
+
     return SingleChildScrollView(
       child: Column(
         children: [
           const SizedBox(
             height: 20,
           ),
-          ProductImages(product: product),
+          OrganizationImages(organization: organization),
           TopRoundedContainer(
             color: Colors.white,
             child: Column(
               children: [
-                ProductDescription(
-                  product: product,
+                OrganizationDescription(
+                  organization: organization,
                   pressOnSeeMore: () {},
                 ),
                 DefaultTabController(
-                  length: 3,
+                  length: 4,
                   child: Column(
                     children: [
                       const TabBar(
@@ -55,6 +57,7 @@ class Body extends StatelessWidget {
                         indicatorColor: Color(0xFF356899),
                         tabs: [
                           Tab(text: "Description"),
+                          Tab(text: "Providers"),
                           Tab(text: "About"),
                           Tab(text: "Reviews"),
                         ],
@@ -65,15 +68,19 @@ class Body extends StatelessWidget {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(18.0),
-                              child: Text(product.description),
+                              child: Text(organization.description),
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("About title goes here."),
+                              padding: const EdgeInsets.all(18.0),
+                              child: Text(providersList),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: Text(organization.about),
                             ),
                             const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text("Reviews go here."),
+                              padding: EdgeInsets.all(18.0),
+                              child: Text("Reviews coming soon!"),
                             ),
                           ],
                         ),

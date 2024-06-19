@@ -4,19 +4,19 @@ import '../../../models/Organizations.dart';
 import '../../../size_config.dart';
 import '../../../utils/constants.dart';
 
-class ProductImages extends StatefulWidget {
-  const ProductImages({
+class OrganizationImages extends StatefulWidget {
+  const OrganizationImages({
     Key? key,
-    required this.product,
+    required this.organization,
   }) : super(key: key);
 
-  final Organization product;
+  final Organization organization;
 
   @override
   _ProductImagesState createState() => _ProductImagesState();
 }
 
-class _ProductImagesState extends State<ProductImages> {
+class _ProductImagesState extends State<OrganizationImages> {
   late PageController _pageController;
   int selectedImage = 0;
 
@@ -40,34 +40,38 @@ class _ProductImagesState extends State<ProductImages> {
           width: getProportionateScreenWidth(238),
           height: getProportionateScreenWidth(238),
           child: PageView.builder(
-              controller: _pageController,
-              itemCount: widget.product.imageUrls.length,
-              onPageChanged: (index) {
-                setState(() {
-                  selectedImage = index;
-                });
-              },
-              itemBuilder: (context, index) {
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: Hero(
-                      tag: widget.product.id.toString(),
-                      child: Image.asset(
-                        widget.product.imageUrls[selectedImage],
-                        fit: BoxFit.cover,
-                      ),
+            controller: _pageController,
+            itemCount: widget.organization.imageUrls.length,
+            onPageChanged: (index) {
+              setState(() {
+                selectedImage = index;
+              });
+            },
+            itemBuilder: (context, index) {
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Hero(
+                    tag: widget.organization.id.toString(),
+                    child: Image.network(
+                      widget.organization.imageUrls[selectedImage],
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Center(child: Icon(Icons.error));
+                      },
                     ),
                   ),
-                );
-              }),
+                ),
+              );
+            },
+          ),
         ),
         SizedBox(height: getProportionateScreenWidth(20)),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ...List.generate(widget.product.imageUrls.length,
+            ...List.generate(widget.organization.imageUrls.length,
                 (index) => buildSmallProductPreview(index)),
           ],
         )
@@ -96,7 +100,12 @@ class _ProductImagesState extends State<ProductImages> {
           border: Border.all(
               color: kPrimaryColor.withOpacity(selectedImage == index ? 1 : 0)),
         ),
-        child: Image.asset(widget.product.imageUrls[index]),
+        child: Image.network(
+          widget.organization.imageUrls[index],
+          errorBuilder: (context, error, stackTrace) {
+            return Center(child: Icon(Icons.error));
+          },
+        ),
       ),
     );
   }

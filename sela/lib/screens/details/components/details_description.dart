@@ -4,14 +4,14 @@ import '../../../models/Organizations.dart';
 import '../../../size_config.dart';
 import '../../../utils/constants.dart';
 
-class ProductDescription extends StatelessWidget {
-  const ProductDescription({
+class OrganizationDescription extends StatelessWidget {
+  const OrganizationDescription({
     Key? key,
-    required this.product,
+    required this.organization,
     required this.pressOnSeeMore,
   }) : super(key: key);
 
-  final Organization product;
+  final Organization organization;
   final GestureTapCallback pressOnSeeMore;
 
   @override
@@ -26,7 +26,7 @@ class ProductDescription extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                   horizontal: getProportionateScreenWidth(20)),
               child: Text(
-                product.name,
+                organization.name,
                 style: Theme.of(context).textTheme.headline6,
               ),
             ),
@@ -36,7 +36,7 @@ class ProductDescription extends StatelessWidget {
                 right: getProportionateScreenWidth(64),
               ),
               child: Text(
-                product.title,
+                organization.title,
                 style: TextStyle(
                   color: kPrimaryColor,
                   fontWeight: FontWeight.w600,
@@ -60,14 +60,14 @@ class ProductDescription extends StatelessWidget {
               IconButton(
                 icon: Icon(
                   Icons.bookmark,
-                  color: product.isFavourite
+                  color: organization.isFavourite
                       ? kPrimaryColor
                       : const Color(0xFFDBDEE4),
                 ),
                 onPressed: () {
                   // Add your save logic here
                   // change the isFavourite value
-                  product.isFavourite = !product.isFavourite;
+                  organization.isFavourite = !organization.isFavourite;
                 },
               ),
             ],
