@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sela/screens/home/components/discount_banner.dart';
 
 import '../../../size_config.dart';
 import 'app_bar.dart';
@@ -18,8 +19,9 @@ class Body extends StatelessWidget {
             const AppBarWelcome(),
             SizedBox(height: getProportionateScreenHeight(30)),
             const HomeHeader(),
-            SizedBox(height: getProportionateScreenWidth(20)),
-            // const DiscountBanner(),
+            SizedBox(height: getProportionateScreenWidth(10)),
+            // const SpecialOffers(),
+            const DiscountBanner(),
             // const Categories(),
             const Organizations(),
             SizedBox(height: getProportionateScreenWidth(30)),

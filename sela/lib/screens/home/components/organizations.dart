@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sela/models/Product.dart';
 
 import '../../../size_config.dart';
+import '../../details/details_screen.dart';
 import 'section_title.dart';
 
 class Organizations extends StatelessWidget {
@@ -33,7 +35,9 @@ class Organizations extends StatelessWidget {
                 tags: const ["Designing", "Marketing", "English"],
                 rating: 4,
                 serviceType: "Online Service",
-                press: () {},
+                press: () => Navigator.pushNamed(context, '/details',
+                    arguments:
+                        ProductDetailsArguments(product: demoProducts[1])),
               ),
               OrganizationCard(
                 logo: "assets/images/vso.png", // Adjust the path as necessary
@@ -42,7 +46,7 @@ class Organizations extends StatelessWidget {
                 tags: const ["Science", "Math", "History"],
                 rating: 5,
                 serviceType: "In-Person",
-                press: () {},
+                press: () => Navigator.pushNamed(context, '/details'),
               ),
               SizedBox(width: getProportionateScreenWidth(20)),
             ],
@@ -77,7 +81,8 @@ class OrganizationCard extends StatelessWidget {
       child: GestureDetector(
         onTap: press,
         child: Container(
-          width: SizeConfig.screenWidth * 0.8,
+          width: getProportionateScreenWidth(242),
+          height: getProportionateScreenWidth(110),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -132,7 +137,7 @@ class OrganizationCard extends StatelessWidget {
                   const Spacer(),
                   const Icon(
                     Icons.bookmark,
-                    color: Colors.white,
+                    color: Colors.white60,
                     size: 24,
                   ),
                 ],
@@ -144,7 +149,7 @@ class OrganizationCard extends StatelessWidget {
                     .map(
                       (tag) => Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 8),
+                            horizontal: 8, vertical: 6),
                         decoration: BoxDecoration(
                           color: Colors.black
                               .withOpacity(0.1), // Light transparent color
@@ -163,45 +168,45 @@ class OrganizationCard extends StatelessWidget {
                     )
                     .toList(),
               ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Row(
-                    children: List.generate(
-                      rating,
-                      (index) => const Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                        size: 16,
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                  Text(
-                    serviceType,
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              TextButton(
-                onPressed: press,
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.white24,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: const Text(
-                  "Learn More",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+              // const SizedBox(height: 10),
+              // Row(
+              //   children: [
+              //     Row(
+              //       children: List.generate(
+              //         rating,
+              //         (index) => const Icon(
+              //           Icons.star,
+              //           color: Colors.amber,
+              //           size: 16,
+              //         ),
+              //       ),
+              //     ),
+              //     const Spacer(),
+              //     // Text(
+              //     //   serviceType,
+              //     //   style: const TextStyle(
+              //     //     color: Colors.white70,
+              //     //     fontSize: 12,
+              //     //   ),
+              //     // ),
+              //   ],
+              // ),
+              // const SizedBox(height: 10),
+              // TextButton(
+              //   onPressed: press,
+              //   style: TextButton.styleFrom(
+              //     backgroundColor: Colors.white24,
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(8),
+              //     ),
+              //   ),
+              //   child: const Text(
+              //     "Learn More",
+              //     style: TextStyle(
+              //       color: Colors.white,
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

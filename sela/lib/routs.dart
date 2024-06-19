@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sela/screens/details/details_screen.dart';
 import 'package:sela/screens/forgot_password/forgot_password_screen.dart';
 import 'package:sela/screens/home/home_screen.dart';
 import 'package:sela/screens/login_success/login_success.dart';
@@ -20,4 +21,5 @@ final Map<String, WidgetBuilder> routes = {
   CompleteProfileScreen.routeName: (context) => const CompleteProfileScreen(),
   OtpScreen.routeName: (context) => const OtpScreen(),
   HomeScreen.routeName: (context) => const HomeScreen(),
+  DetailsScreen.routeName: (context) => const DetailsScreen(),
 };
