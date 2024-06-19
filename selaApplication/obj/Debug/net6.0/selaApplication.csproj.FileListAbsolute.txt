@@ -1,0 +1,181 @@
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/appsettings.Development.json
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/appsettings.json
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/selaApplication
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/selaApplication.deps.json
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/selaApplication.runtimeconfig.json
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/selaApplication.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/selaApplication.pdb
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/EntityFramework.SqlServer.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/EntityFramework.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/EntityFramework6.Npgsql.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/Microsoft.Extensions.Logging.Abstractions.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/Microsoft.OpenApi.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/Microsoft.Win32.SystemEvents.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/Npgsql.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/Swashbuckle.AspNetCore.Swagger.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/System.CodeDom.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/System.Configuration.ConfigurationManager.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/System.Data.SqlClient.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/System.Diagnostics.DiagnosticSource.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/System.Drawing.Common.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/System.Security.Cryptography.ProtectedData.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/System.Security.Permissions.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/System.Text.Encodings.Web.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/System.Text.Json.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/System.Windows.Extensions.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/runtimes/win/lib/netcoreapp3.0/Microsoft.Win32.SystemEvents.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/runtimes/win-arm64/native/sni.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/runtimes/win-x64/native/sni.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/runtimes/win-x86/native/sni.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/runtimes/unix/lib/netcoreapp2.1/System.Data.SqlClient.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/runtimes/win/lib/netcoreapp2.1/System.Data.SqlClient.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/runtimes/unix/lib/netcoreapp3.0/System.Drawing.Common.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/runtimes/win/lib/netcoreapp3.0/System.Drawing.Common.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/runtimes/browser/lib/net6.0/System.Text.Encodings.Web.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/runtimes/win/lib/netcoreapp3.0/System.Windows.Extensions.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/selaApplication.csproj.AssemblyReference.cache
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/selaApplication.GeneratedMSBuildEditorConfig.editorconfig
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/selaApplication.AssemblyInfoInputs.cache
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/selaApplication.AssemblyInfo.cs
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/selaApplication.csproj.CoreCompileInputs.cache
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/selaApplication.MvcApplicationPartsAssemblyInfo.cs
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/selaApplication.MvcApplicationPartsAssemblyInfo.cache
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/staticwebassets.build.json
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/staticwebassets.development.json
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/scopedcss/bundle/selaApplication.styles.css
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/selaApplication.csproj.CopyComplete
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/selaApplication.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/refint/selaApplication.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/selaApplication.pdb
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/selaApplication.genruntimeconfig.cache
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/Debug/net6.0/ref/selaApplication.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/Pipelines.Sockets.Unofficial.dll
+/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/bin/Debug/net6.0/StackExchange.Redis.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\appsettings.Development.json
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\appsettings.json
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\selaApplication.exe
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\selaApplication.deps.json
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\selaApplication.runtimeconfig.json
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\selaApplication.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\selaApplication.pdb
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\EntityFramework.SqlServer.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\EntityFramework.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\EntityFramework6.Npgsql.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\Microsoft.OpenApi.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\Npgsql.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\Pipelines.Sockets.Unofficial.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\StackExchange.Redis.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\System.CodeDom.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\System.Configuration.ConfigurationManager.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\System.Data.SqlClient.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\System.Drawing.Common.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\System.Security.Permissions.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\System.Text.Encodings.Web.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\System.Text.Json.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\System.Windows.Extensions.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\selaApplication.csproj.AssemblyReference.cache
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\selaApplication.GeneratedMSBuildEditorConfig.editorconfig
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\selaApplication.AssemblyInfoInputs.cache
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\selaApplication.AssemblyInfo.cs
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\selaApplication.csproj.CoreCompileInputs.cache
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\selaApplication.MvcApplicationPartsAssemblyInfo.cs
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\selaApplication.MvcApplicationPartsAssemblyInfo.cache
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\staticwebassets.build.json
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\staticwebassets.development.json
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\staticwebassets\msbuild.selaApplication.Microsoft.AspNetCore.StaticWebAssets.props
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\staticwebassets\msbuild.build.selaApplication.props
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.selaApplication.props
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.selaApplication.props
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\staticwebassets.pack.json
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\scopedcss\bundle\selaApplication.styles.css
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\selaApplication.csproj.CopyComplete
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\selaApplication.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\refint\selaApplication.dll
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\selaApplication.pdb
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\selaApplication.genruntimeconfig.cache
+D:\fourth_year\GP\sela-app\sela-app-sela-api-dotnet\selaApplication\obj\Debug\net6.0\ref\selaApplication.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\appsettings.Development.json
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\appsettings.json
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\selaApplication.exe
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\selaApplication.deps.json
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\selaApplication.runtimeconfig.json
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\selaApplication.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\selaApplication.pdb
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\EntityFramework.SqlServer.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\EntityFramework.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\EntityFramework6.Npgsql.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\Microsoft.OpenApi.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\Npgsql.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\Pipelines.Sockets.Unofficial.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\StackExchange.Redis.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\System.CodeDom.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\System.Configuration.ConfigurationManager.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\System.Data.SqlClient.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\System.Drawing.Common.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\System.Security.Permissions.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\System.Text.Encodings.Web.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\System.Text.Json.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\System.Windows.Extensions.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\selaApplication.csproj.AssemblyReference.cache
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\selaApplication.GeneratedMSBuildEditorConfig.editorconfig
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\selaApplication.AssemblyInfoInputs.cache
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\selaApplication.AssemblyInfo.cs
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\selaApplication.csproj.CoreCompileInputs.cache
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\selaApplication.MvcApplicationPartsAssemblyInfo.cs
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\selaApplication.MvcApplicationPartsAssemblyInfo.cache
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\staticwebassets.build.json
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\staticwebassets.development.json
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\staticwebassets\msbuild.selaApplication.Microsoft.AspNetCore.StaticWebAssets.props
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\staticwebassets\msbuild.build.selaApplication.props
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.selaApplication.props
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.selaApplication.props
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\staticwebassets.pack.json
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\scopedcss\bundle\selaApplication.styles.css
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\selaApplication.csproj.CopyComplete
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\selaApplication.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\refint\selaApplication.dll
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\selaApplication.pdb
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\selaApplication.genruntimeconfig.cache
+D:\fourth_year\GP\sela-app\sela-app\selaApplication\obj\Debug\net6.0\ref\selaApplication.dll
