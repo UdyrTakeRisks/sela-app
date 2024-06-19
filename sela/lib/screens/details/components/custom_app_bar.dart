@@ -9,8 +9,8 @@ class CustomAppBar extends PreferredSize {
   CustomAppBar(
       {super.key,
       required this.rating,
-      required super.preferredSize,
-      required super.child});
+      super.preferredSize = const Size.fromHeight(50),
+      super.child = const Text("")});
 
   @override
   // AppBar().preferredSize.height provide us the height that appy on our app bar

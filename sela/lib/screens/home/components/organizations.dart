@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sela/models/Product.dart';
+import 'package:sela/models/Organizations.dart';
 
 import '../../../size_config.dart';
 import '../../details/details_screen.dart';
@@ -27,26 +27,23 @@ class Organizations extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              OrganizationCard(
-                logo:
-                    "assets/images/yanfaa.png", // Adjust the path as necessary
-                name: "Yanfaa",
-                category: "Learning",
-                tags: const ["Designing", "Marketing", "English"],
-                rating: 4,
-                serviceType: "Online Service",
-                press: () => Navigator.pushNamed(context, '/details',
-                    arguments:
-                        ProductDetailsArguments(product: demoProducts[1])),
-              ),
-              OrganizationCard(
-                logo: "assets/images/vso.png", // Adjust the path as necessary
-                name: "Vos Organization",
-                category: "Education",
-                tags: const ["Science", "Math", "History"],
-                rating: 5,
-                serviceType: "In-Person",
-                press: () => Navigator.pushNamed(context, '/details'),
+              ...List.generate(
+                demoProducts.length,
+                (index) => OrganizationCard(
+                  index: index,
+                  logo: demoProducts[index].images[0],
+                  name: demoProducts[index].title,
+                  category: demoProducts[index].category,
+                  tags: demoProducts[index].tags,
+                  press: () => Navigator.pushNamed(
+                    context,
+                    DetailsScreen.routeName,
+                    arguments: ProductDetailsArguments(
+                      product: demoProducts[index],
+                      index: index,
+                    ),
+                  ),
+                ),
               ),
               SizedBox(width: getProportionateScreenWidth(20)),
             ],
@@ -64,14 +61,13 @@ class OrganizationCard extends StatelessWidget {
     required this.name,
     required this.category,
     required this.tags,
-    required this.rating,
-    required this.serviceType,
     required this.press,
+    required this.index,
   });
 
-  final String logo, name, category, serviceType;
+  final int index;
+  final String logo, name, category;
   final List<String> tags;
-  final int rating;
   final GestureTapCallback press;
 
   @override
