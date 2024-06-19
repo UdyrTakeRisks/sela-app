@@ -21,6 +21,11 @@ class _SignUpFormState extends State<SignUpForm> {
   bool remember = false;
   final List<String> errors = [];
 
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
   void addError({String? error}) {
     if (error != null && !errors.contains(error)) {
       setState(() {
@@ -44,6 +49,7 @@ class _SignUpFormState extends State<SignUpForm> {
       child: Column(
         children: [
           TextFormField(
+            controller: emailController,
             keyboardType: TextInputType.emailAddress,
             onSaved: (newValue) => email = newValue,
             onChanged: (value) {
@@ -75,6 +81,7 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
           const SizedBox(height: 20),
           TextFormField(
+            controller: passwordController,
             obscureText: true,
             onSaved: (newValue) => password = newValue,
             onChanged: (value) {
@@ -106,6 +113,7 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
           const SizedBox(height: 20),
           TextFormField(
+            controller: confirmPasswordController,
             obscureText: true,
             onSaved: (newValue) => conform_password = newValue,
             onChanged: (value) {
@@ -142,7 +150,13 @@ class _SignUpFormState extends State<SignUpForm> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 // if all are valid then go to success screen
-                Navigator.pushNamed(context, CompleteProfileScreen.routeName);
+                print(emailController.text);
+                print(passwordController.text);
+                Navigator.pushNamed(context, CompleteProfileScreen.routeName,
+                    arguments: {
+                      'email': emailController.text,
+                      'password': passwordController.text,
+                    });
               }
             },
             text: "Continue",

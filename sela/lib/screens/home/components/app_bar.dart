@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../profile/profile_screen.dart';
+
 class AppBarWelcome extends StatelessWidget {
   const AppBarWelcome({super.key});
 
@@ -34,30 +36,35 @@ class AppBarWelcome extends StatelessWidget {
               ),
             ],
           ),
-          Stack(
-            children: [
-              const CircleAvatar(
-                radius: 30,
-                backgroundImage: AssetImage(
-                    "assets/images/profile.png"), // Adjust the path as necessary
-              ),
-              Positioned(
-                top: 1,
-                right: 1,
-                child: Container(
-                  width: 15,
-                  height: 15,
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 1.5,
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, ProfileScreen.routeName);
+            },
+            child: Stack(
+              children: [
+                const CircleAvatar(
+                  radius: 30,
+                  backgroundImage: AssetImage(
+                      "assets/images/profile.png"), // Adjust the path as necessary
+                ),
+                Positioned(
+                  top: 1,
+                  right: 1,
+                  child: Container(
+                    width: 15,
+                    height: 15,
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 1.5,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

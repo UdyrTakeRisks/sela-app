@@ -7,27 +7,37 @@ import '../../../utils/constants.dart';
 import 'splash_content.dart';
 
 class Body extends StatefulWidget {
+  const Body({super.key});
+
   @override
   State<Body> createState() => _bodyState();
 }
 
 class _bodyState extends State<Body> {
   int currentPage = 0;
+  final PageController _pageController = PageController(initialPage: 0);
+
   List<Map<String, String>> splashData = [
     {
-      "text": "Welcome to Sela, Let's Choose a sevice!",
-      "image": "assets/images/splash_1.png"
+      "text": "Welcome to Sela, Let's Choose a service!",
+      "image": "assets/images/splash_1.svg"
     },
     {
-      "text":
-          "We help people connect with store \naround United State of America",
-      "image": "assets/images/splash_2.png"
+      "text": "We help people connect with organizations \naround World",
+      "image": "assets/images/splash_2.svg"
     },
     {
-      "text": "We show the easy way to shop. \nJust stay at home with us",
-      "image": "assets/images/splash_3.png"
+      "text": "We show the easy way to give a service. \nJust join with us",
+      "image": "assets/images/splash_3.svg"
     },
   ];
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -39,6 +49,7 @@ class _bodyState extends State<Body> {
               Expanded(
                 flex: 3,
                 child: PageView.builder(
+                  controller: _pageController,
                   onPageChanged: (value) {
                     setState(() {
                       currentPage = value;
@@ -76,12 +87,28 @@ class _bodyState extends State<Body> {
                             : "Next",
                         press: () {
                           if (currentPage == splashData.length - 1) {
-                            Navigator.pushNamed(
-                                context, SignInScreen.routeName);
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                transitionDuration:
+                                    const Duration(milliseconds: 300),
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                        const SignInScreen(),
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                              ),
+                            );
                           } else {
-                            setState(() {
-                              currentPage++;
-                            });
+                            _pageController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.ease,
+                            );
                           }
                         },
                       ),

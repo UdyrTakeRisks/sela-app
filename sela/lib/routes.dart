@@ -1,0 +1,29 @@
+import 'package:flutter/material.dart';
+import 'package:sela/screens/details/details_screen.dart';
+import 'package:sela/screens/forgot_password/forgot_password_screen.dart';
+import 'package:sela/screens/home/home_screen.dart';
+import 'package:sela/screens/login_success/login_success.dart';
+import 'package:sela/screens/profile/profile_screen.dart';
+import 'package:sela/screens/saved/saved_screen.dart';
+import 'package:sela/screens/sign_in/sign_in_screen.dart';
+import 'package:sela/screens/sign_up/sign_up_screen.dart';
+import 'package:sela/screens/splash/splash_screen.dart';
+
+import 'screens/complete_profile/complete_profile_screen.dart';
+import 'screens/otp/otp_screen.dart';
+
+// use name routs instead of routes
+// all routes should be in routs map and should be final
+final Map<String, WidgetBuilder> routes = {
+  SplashScreen.routeName: (context) => const SplashScreen(),
+  SignInScreen.routeName: (context) => const SignInScreen(),
+  ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
+  LoginSuccessScreen.routeName: (context) => const LoginSuccessScreen(),
+  SignUpScreen.routeName: (context) => const SignUpScreen(),
+  CompleteProfileScreen.routeName: (context) => const CompleteProfileScreen(),
+  OtpScreen.routeName: (context) => const OtpScreen(),
+  HomeScreen.routeName: (context) => const HomeScreen(),
+  DetailsScreen.routeName: (context) => const DetailsScreen(),
+  ProfileScreen.routeName: (context) => ProfileScreen(),
+  SavedScreen.routeName: (context) => SavedScreen(),
+};

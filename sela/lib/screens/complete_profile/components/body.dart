@@ -4,7 +4,11 @@ import '../../../utils/constants.dart';
 import 'complete_profile_form.dart';
 
 class Body extends StatelessWidget {
-  const Body({super.key});
+  final String email;
+  final String password;
+
+  const Body({required this.email, required this.password, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +27,7 @@ class Body extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
-                const CompleteProfileForm(),
+                CompleteProfileForm(email: email, password: password),
                 const SizedBox(height: 30),
                 Text(
                   "By continuing your confirm that you agree \nwith our Term and Condition",

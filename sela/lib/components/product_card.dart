@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../models/Product.dart';
+import '../models/Organizations.dart';
 import '../size_config.dart';
 import '../utils/constants.dart';
 
@@ -14,7 +14,7 @@ class ProductCard extends StatelessWidget {
   });
 
   final double width, aspectRetio;
-  final Product product;
+  final Organization product;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class ProductCard extends StatelessWidget {
                   color: kSecondaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: Image.asset(product.images[0]),
+                child: Image.asset(product.imageUrls[0]),
               ),
             ),
             const SizedBox(height: 10),
@@ -46,7 +46,7 @@ class ProductCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "\$${product.price}",
+                  "\$${product.rating}",
                   style: TextStyle(
                     fontSize: getProportionateScreenWidth(18),
                     fontWeight: FontWeight.w600,
