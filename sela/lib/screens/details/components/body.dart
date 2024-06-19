@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sela/screens/details/components/product_description.dart';
+import 'package:sela/screens/details/components/details_description.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../components/default_button.dart';
 import '../../../models/Organizations.dart';
 import '../../../size_config.dart';
-import 'product_images.dart';
+import 'details_images.dart';
 import 'top_rounded_container.dart';
 
 class Body extends StatelessWidget {

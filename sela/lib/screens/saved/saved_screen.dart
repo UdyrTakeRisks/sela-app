@@ -5,7 +5,7 @@ import '../../models/saved_service.dart';
 import '../../utils/enums.dart';
 
 class SavedScreen extends StatefulWidget {
-  static String routeName = "/details";
+  static String routeName = "/saved";
   @override
   _SavedScreenState createState() => _SavedScreenState();
 }

@@ -33,7 +33,7 @@ class ProductCard extends StatelessWidget {
                   color: kSecondaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: Image.asset(product.images[0]),
+                child: Image.asset(product.imageUrls[0]),
               ),
             ),
             const SizedBox(height: 10),
@@ -46,7 +46,7 @@ class ProductCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "\$${product.price}",
+                  "\$${product.rating}",
                   style: TextStyle(
                     fontSize: getProportionateScreenWidth(18),
                     fontWeight: FontWeight.w600,
