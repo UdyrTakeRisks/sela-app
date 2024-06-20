@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/selaApplication.csproj": {}
+    "D:\\fourth_year\\GP\\sela-app\\SelaLive\\sela-app\\selaApplication\\selaApplication.csproj": {}
   },
   "projects": {
-    "/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/selaApplication.csproj": {
+    "D:\\fourth_year\\GP\\sela-app\\SelaLive\\sela-app\\selaApplication\\selaApplication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/selaApplication.csproj",
+        "projectUniqueName": "D:\\fourth_year\\GP\\sela-app\\SelaLive\\sela-app\\selaApplication\\selaApplication.csproj",
         "projectName": "selaApplication",
-        "projectPath": "/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/selaApplication.csproj",
-        "packagesPath": "/home/ahmed/.nuget/packages/",
-        "outputPath": "/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/selaApplication/obj/",
+        "projectPath": "D:\\fourth_year\\GP\\sela-app\\SelaLive\\sela-app\\selaApplication\\selaApplication.csproj",
+        "packagesPath": "C:\\Users\\youss\\.nuget\\packages\\",
+        "outputPath": "D:\\fourth_year\\GP\\sela-app\\SelaLive\\sela-app\\selaApplication\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/ahmed/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\youss\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -82,7 +84,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/home/ahmed/.dotnet/sdk/6.0.419/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
