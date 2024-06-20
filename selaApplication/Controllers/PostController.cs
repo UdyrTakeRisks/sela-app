@@ -1,9 +1,9 @@
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using selaApplication.Dtos;
 using selaApplication.Models;
 using selaApplication.Services.Post;
 using selaApplication.Services.User;
+using System.Text.Json;
 
 namespace selaApplication.Controllers;
 
@@ -124,17 +124,98 @@ public class PostController : ControllerBase
         // handle caching results with timeouts to enhance the performance
         return await _postsService.GetPosts(post);
     }
-
-    [HttpPut]
-    public async Task<IActionResult> EditPostAsync(PostDto dto) // update according to post name coming from front
+    [HttpPut("{id}")]
+    public async Task<IActionResult> EditPostAsync(int id, PostDto dto)
     {
-        return Ok();
+        if (dto == null)
+        {
+            return BadRequest("Invalid post data.");
+        }
+
+        var serializedUserObj = HttpContext.Session.GetString("UserSession");
+        if (serializedUserObj == null)
+        {
+            return Unauthorized("You should login first to edit a post");
+        }
+
+        var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+        if (sessionUser == null)
+        {
+            return Unauthorized("User Session is Expired. Please log in first.");
+        }
+
+        var userId = await _usersService.GetIdByUsername(sessionUser.username);
+        var post = await _postsService.GetPostById(id);
+
+        if (post == null || post.UserId != userId)
+        {
+            return NotFound("Post not found or you don't have permission to edit this post.");
+        }
+
+        // Update the post with the new data from dto
+        post.Type = dto.Type;
+        post.title = dto.title;
+        post.description = dto.description;
+        post.about = dto.about;
+        post.socialLinks = dto.socialLinks;
+
+
+        post.ImageUrLs = dto.ImageUrLs;
+        post.name = dto.name;
+        post.tags = dto.tags;
+        post.providers = dto.providers;
+
+        // Log the post data for debugging
+        Console.WriteLine($"Updating Post: {JsonSerializer.Serialize(post)}");
+
+        var result = await _postsService.UpdatePost(post, userId);
+
+        if (result == "Post has been updated successfully")
+        {
+            return NoContent();
+        }
+        else
+        {
+            Console.WriteLine($"UpdatePost result: {result}");
+            return StatusCode(500, result);
+        }
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> RemovePostAsync(PostDto dto) // delete according to post name coming from front
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemovePostAsync(int id)
     {
-        return Ok();
+        var serializedUserObj = HttpContext.Session.GetString("UserSession");
+        if (serializedUserObj == null)
+        {
+            return Unauthorized("You should login first to delete a post");
+        }
+
+        var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+        if (sessionUser == null)
+        {
+            return Unauthorized("User Session is Expired. Please log in first.");
+        }
+
+        var userId = await _usersService.GetIdByUsername(sessionUser.username);
+        var post = await _postsService.GetPostById(id);
+
+        if (post == null || post.UserId != userId)
+        {
+            return NotFound("Post not found or you don't have permission to delete this post.");
+        }
+
+        try
+        {
+
+            await _postsService.DeletePost(post);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "Error deleting the post. Please try again.");
+        }
+
+        return Ok("Post has been deleted successfully.");
     }
 
     [HttpGet("myPosts")]
@@ -149,9 +230,9 @@ public class PostController : ControllerBase
             return null;
 
         Console.WriteLine("User Username: " + sessionUser.username + " User Pass: " + sessionUser.password);
-        
+
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
         return await _postsService.ShowPostsById(userId);
     }
-    
+
 }
