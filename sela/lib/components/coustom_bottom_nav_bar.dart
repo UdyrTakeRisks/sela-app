@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sela/screens/post/post_page.dart';
 import 'package:sela/screens/saved/saved_screen.dart';
 
 import '../screens/home/home_screen.dart';
@@ -66,7 +67,7 @@ class CustomBottomNavBar extends StatelessWidget {
                       : inActiveIconColor,
                 ),
                 onPressed: () =>
-                    Navigator.pushNamed(context, ProfileScreen.routeName),
+                    Navigator.pushNamed(context, PostPage.routeName),
               ),
               IconButton(
                 icon: Icon(

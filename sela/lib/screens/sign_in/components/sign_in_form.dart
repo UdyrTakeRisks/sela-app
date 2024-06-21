@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:sela/components/loading_screen.dart';
 import 'package:sela/utils/env.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../components/custom_suffix_icon.dart';
 import '../../../components/default_button.dart';
@@ -66,6 +67,13 @@ class _SignFormState extends State<SignForm> {
         throw Exception('Failed to login');
       } else {
         print('Login successful');
+        // Extract the cookie from the response headers
+        String? cookie = response.headers['set-cookie'];
+        if (cookie != null) {
+          // Save the cookie using shared_preferences
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('cookie', cookie);
+        }
         Navigator.pushReplacementNamed(context, LoginSuccessScreen.routeName);
       }
       print(response.body);

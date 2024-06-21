@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:sela/screens/splash/splash_screen.dart';
+import 'package:sela/utils/env.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'routes.dart';
 import 'theme.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  await Supabase.initialize(
+    url: SUPABASE_URL,
+    anonKey: SUPABASE_ANON_KEY,
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -18,6 +24,7 @@ class MyApp extends StatelessWidget {
       theme: theme(),
       // home: const SplashScreen(),
       initialRoute: SplashScreen.routeName,
+      // initialRoute: HomeScreen.routeName,
       routes: routes,
     );
   }

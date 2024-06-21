@@ -27,7 +27,7 @@ class OrganizationDescription extends StatelessWidget {
                   horizontal: getProportionateScreenWidth(20)),
               child: Text(
                 organization.name,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
             Padding(
@@ -37,7 +37,7 @@ class OrganizationDescription extends StatelessWidget {
               ),
               child: Text(
                 organization.title,
-                style: TextStyle(
+                style: const TextStyle(
                   color: kPrimaryColor,
                   fontWeight: FontWeight.w600,
                 ),
