@@ -51,7 +51,7 @@ class _PostStepperState extends State<PostStepper> {
       socialLinks: postDetails['socialLinks'],
     );
 
-    // Handle the new post (e.g., send to API or add to local state)
+    // Handle the new create_post (e.g., send to API or add to local state)
     print('New Post: $newPost');
     // Convert the Post object to JSON string
     final jsonPost = jsonEncode(newPost.toJson());
@@ -79,7 +79,7 @@ class _PostStepperState extends State<PostStepper> {
       print('Post submitted successfully!');
     } else {
       // Handle error response
-      print('Failed to submit post: ${response.body}');
+      print('Failed to submit create_post: ${response.body}');
     }
   }
 

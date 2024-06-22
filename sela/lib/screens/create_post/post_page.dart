@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'post_stepper.dart';
 
 class PostPage extends StatelessWidget {
-  static String routeName = '/post';
+  static String routeName = '/create_post';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
