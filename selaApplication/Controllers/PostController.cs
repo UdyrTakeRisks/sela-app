@@ -124,10 +124,11 @@ public class PostController : ControllerBase
         // handle caching results with timeouts to enhance the performance
         return await _postsService.GetPosts(post);
     }
-    [HttpPut("{id}")]
+
+    [HttpPut("update/{id}")]
     public async Task<IActionResult> EditPostAsync(int id, PostDto dto)
     {
-        if (dto == null)
+        if (dto == null) // the required annotations already handle this
         {
             return BadRequest("Invalid post data.");
         }
@@ -137,52 +138,45 @@ public class PostController : ControllerBase
         {
             return Unauthorized("You should login first to edit a post");
         }
-
+        
         var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
         if (sessionUser == null)
         {
             return Unauthorized("User Session is Expired. Please log in first.");
         }
-
+        
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
-        var post = await _postsService.GetPostById(id);
+        //var post = await _postsService.GetPostById(id); // is this matters ? redundant database hit, use id directly in update
 
-        if (post == null || post.UserId != userId)
+        // if (post == null || post.UserId != userId)
+        // {
+        //     return NotFound("Post not found or you don't have permission to edit this post.");
+        // }
+        // just create a new post obj and pass it to the update
+        var post = new Post
         {
-            return NotFound("Post not found or you don't have permission to edit this post.");
-        }
+            // Update the post with the new data from dto
+            Type = dto.Type,
+            title = dto.title,
+            description = dto.description,
+            about = dto.about,
+            socialLinks = dto.socialLinks,
 
-        // Update the post with the new data from dto
-        post.Type = dto.Type;
-        post.title = dto.title;
-        post.description = dto.description;
-        post.about = dto.about;
-        post.socialLinks = dto.socialLinks;
-
-
-        post.ImageUrLs = dto.ImageUrLs;
-        post.name = dto.name;
-        post.tags = dto.tags;
-        post.providers = dto.providers;
-
+            ImageUrLs = dto.ImageUrLs,
+            name = dto.name,
+            tags = dto.tags,
+            providers = dto.providers
+        };
         // Log the post data for debugging
         Console.WriteLine($"Updating Post: {JsonSerializer.Serialize(post)}");
 
-        var result = await _postsService.UpdatePost(post, userId);
+        var result = await _postsService.UpdatePost(post, id, userId);
 
-        if (result == "Post has been updated successfully")
-        {
-            return NoContent();
-        }
-        else
-        {
-            Console.WriteLine($"UpdatePost result: {result}");
-            return StatusCode(500, result);
-        }
+        return Ok(result);
     }
 
 
-    [HttpDelete("{id}")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> RemovePostAsync(int id)
     {
         var serializedUserObj = HttpContext.Session.GetString("UserSession");
@@ -198,41 +192,48 @@ public class PostController : ControllerBase
         }
 
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
-        var post = await _postsService.GetPostById(id);
+        // var post = await _postsService.GetPostById(id); // redundant database hit
 
-        if (post == null || post.UserId != userId)
-        {
-            return NotFound("Post not found or you don't have permission to delete this post.");
-        }
+        // if (post == null || post.UserId != userId)
+        // {
+        //     return NotFound("Post not found or you don't have permission to delete this post.");
+        // }
 
+        var res = "";
         try
         {
-
-            await _postsService.DeletePost(post);
+            res = await _postsService.DeletePost(id, userId);
         }
         catch (Exception)
         {
             return StatusCode(500, "Error deleting the post. Please try again.");
         }
 
-        return Ok("Post has been deleted successfully.");
+        return Ok(res);
     }
 
     [HttpGet("myPosts")]
-    public async Task<IEnumerable<Post>> ShowMyPostsAsync() // test this method
+    public async Task<ActionResult<IEnumerable<Post>>> ShowMyPostsAsync()
     {
-        // retrieve user sessions
+        // Retrieve user session
         var serializedUserObj = HttpContext.Session.GetString("UserSession");
         if (serializedUserObj == null)
-            return null; // if null returned, frontend has to pop up a msg to the user to login first in order to show his posts
+            return Unauthorized("Please login first to see your posts.");
+
         var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
         if (sessionUser == null)
-            return null;
+            return Unauthorized("Invalid user session. Please login again.");
 
         Console.WriteLine("User Username: " + sessionUser.username + " User Pass: " + sessionUser.password);
 
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
-        return await _postsService.ShowPostsById(userId);
+        var posts = await _postsService.ShowPostsById(userId);
+
+        if (!posts.Any())
+            return NotFound("No posts found for this user.");
+
+        return Ok(posts);
     }
 
+    
 }

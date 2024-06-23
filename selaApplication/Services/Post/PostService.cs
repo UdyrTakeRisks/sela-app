@@ -84,7 +84,6 @@ public class PostService : IPostService
     }
 
 
-
     public async Task<IEnumerable<Models.Post>> GetPosts(Models.Post post)
     {
         try
@@ -147,10 +146,14 @@ public class PostService : IPostService
             {
                 var fetchedPost = new Models.Post
                 {
-                    // Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                    post_id = reader.GetInt32(reader.GetOrdinal("post_id")),
                     // Type = (PostType)reader.GetInt32(reader.GetOrdinal("post_type")),
+                    ImageUrLs = reader.GetFieldValue<string[]>(reader.GetOrdinal("imageurls")),
+                    name = reader.GetString(reader.GetOrdinal("name")),
+                    tags = reader.GetFieldValue<string[]>(reader.GetOrdinal("tags")),
                     title = reader.GetString(reader.GetOrdinal("title")),
                     description = reader.GetString(reader.GetOrdinal("description")),
+                    providers = reader.GetFieldValue<string[]>(reader.GetOrdinal("providers")),
                     about = reader.GetString(reader.GetOrdinal("about")),
                     socialLinks = reader.GetString(reader.GetOrdinal("social_links"))
                 };
@@ -167,7 +170,7 @@ public class PostService : IPostService
         }
     }
 
-    public async Task<string> UpdatePost(Models.Post post, int userId)
+    public async Task<string> UpdatePost(Models.Post post, int postId, int userId)
     {
         try
         {
@@ -182,9 +185,10 @@ public class PostService : IPostService
             await using var command = new NpgsqlCommand(sql, connector._connection);
 
             // Log parameters for debugging
-            Console.WriteLine($"Parameters: imageURLs={post.ImageUrLs}, name={post.name}, post_type={post.Type.ToString()}, " +
-                              $"tags={post.tags}, title={post.title}, description={post.description}, providers={post.providers}, " +
-                              $"about={post.about}, social_links={post.socialLinks}, postId={post.post_id}, userId={userId}");
+            Console.WriteLine(
+                $"Parameters: imageURLs={post.ImageUrLs}, name={post.name}, post_type={post.Type.ToString()}, " +
+                $"tags={post.tags}, title={post.title}, description={post.description}, providers={post.providers}, " +
+                $"about={post.about}, social_links={post.socialLinks}, postId={post.post_id}, userId={userId}");
 
             command.Parameters.AddWithValue("imageURLs", post.ImageUrLs ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("name", post.name ?? (object)DBNull.Value);
@@ -195,7 +199,7 @@ public class PostService : IPostService
             command.Parameters.AddWithValue("providers", post.providers ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("about", post.about ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("social_links", post.socialLinks ?? (object)DBNull.Value);
-            command.Parameters.AddWithValue("postId", post.post_id);
+            command.Parameters.AddWithValue("postId", postId);
             command.Parameters.AddWithValue("userId", userId);
 
             int rowsAffected = await command.ExecuteNonQueryAsync();
@@ -204,10 +208,8 @@ public class PostService : IPostService
             {
                 return "Post has been updated successfully";
             }
-            else
-            {
-                return "No post found with the provided id and user id";
-            }
+
+            return "No post found with the provided id and user id";
         }
         catch (Exception ex)
         {
@@ -220,31 +222,26 @@ public class PostService : IPostService
         }
     }
 
-
-
-
-
-    public async Task<string> DeletePost(Models.Post post)
+    public async Task<string> DeletePost(int postId, int userId)
     {
         try
         {
             // Ensure that the post is valid
-            if (post == null) throw new ArgumentNullException(nameof(post));
-            if (post.post_id <= 0) throw new ArgumentOutOfRangeException(nameof(post.post_id));
+            // if (post == null) throw new ArgumentNullException(nameof(post));
+            // if (post.post_id <= 0) throw new ArgumentOutOfRangeException(nameof(post.post_id));
 
             // Connection string should ideally be stored in a configuration file for security and maintainability
             using var connector = new PostgresConnection();
             connector.Connect();
 
-            const string sql = @"
-            DELETE FROM posts
-            WHERE post_id = @post_id AND user_id = @user_id";
+            const string sql = "DELETE FROM posts WHERE post_id = @post_id AND user_id = @user_id";
 
             await using var command = new NpgsqlCommand(sql, connector._connection);
 
             // Adding parameters with their appropriate values
-            command.Parameters.AddWithValue("post_id", post.post_id);
-            command.Parameters.AddWithValue("user_id", post.UserId); // Assuming post.UserId is the identifier of the user who owns the post
+            command.Parameters.AddWithValue("post_id", postId);
+            command.Parameters.AddWithValue("user_id",
+                userId); // Assuming post.UserId is the identifier of the user who owns the post
 
             // Execute the command asynchronously
             int rowsAffected = await command.ExecuteNonQueryAsync();
@@ -253,10 +250,8 @@ public class PostService : IPostService
             {
                 return "Post has been deleted successfully";
             }
-            else
-            {
-                return "No post found to delete";
-            }
+
+            return "No post found to delete";
         }
         catch (Exception ex)
         {
@@ -294,6 +289,7 @@ public class PostService : IPostService
                     UserId = reader.GetInt32(reader.GetOrdinal("user_id"))
                 };
             }
+
             return null;
         }
         catch (Exception ex)
