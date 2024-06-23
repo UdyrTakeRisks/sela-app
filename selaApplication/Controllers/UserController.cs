@@ -87,16 +87,35 @@ namespace selaApplication.Controllers
                 // if(sessionUser == null) // test condition
                 HttpContext.Session.SetString("UserSession", JsonSerializer.Serialize(user));
 
-                // to retrieve the session
-                // var serializedObj = HttpContext.Session.GetString("UserSession");
-                // var sessionUser = JsonSerializer.Deserialize<User>(serializedObj);
+                var cookieExpirationTimestamp = DateTime.UtcNow.AddDays(1);
+                // var cookieExpirationTimestampV2 = TimeSpan.FromDays(1);
 
-                return Ok("User logged in Successfully");
+                var response = new
+                {
+                    message = "User logged in Successfully",
+                    cookieExpirationTimestamp
+                    // cookieExpirationTimestampV2
+                };
+                return Ok(response); // add user login timestamp to check cookie validation on frontend
             }
-
-            // var jsonData = new { key1 = "test1", key2 = "test2" };
-            // return new JsonResult(jsonData);
+            
             return Unauthorized("You are unauthorized to log in");
         }
+        
+        // log out
+        [HttpPost("logout")]
+        public IActionResult LogoutUser()
+        {
+            var serializedUserObj = HttpContext.Session.GetString("UserSession");
+            if (serializedUserObj == null)
+            {
+                return Unauthorized("You already logged out");
+            }
+            
+            HttpContext.Session.Remove("UserSession");
+            return Ok("User logged out successfully");
+        }
+        
     }
+    
 }
