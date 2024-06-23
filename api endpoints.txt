@@ -1,0 +1,99 @@
+
+content-Type: application/json
+
+Method: POST      URL: https://localhost:7086/signup/user
+
+https://selawebapp.azurewebsites.net/signup/user
+
+{
+  "username": "ahmed123",
+  "name": "Ahmed Ali",
+  "email": "ahmedali2012156@yahoo.com",
+  "phoneNumber": 1152154818,
+  "password": "123"
+}
+
+
+Method: POST      URL: https://localhost:7086/login/user
+
+https://selawebapp.azurewebsites.net/login/user
+
+{
+  "username": "ahmed123",
+  "password": "123"
+}
+
+{
+  "username": "youssef",
+  "password": "123"
+}
+
+Check
+
+https://selawebapp.azurewebsites.net/health
+
+
+steps to deploy in Azure, right click on your solution, click publish, choose Azure,
+
+click the radio button of Create New Web App, the choose your config and wait till
+
+rider publish your solution zip file and done.
+
+
+https://localhost:7086/api/Post/admin
+
+{
+  "type": 0,
+  "title": "Resala",
+  "description": "Resala is an org",
+  "about": "Volunteering",
+  "socialLinks": "http://resala.org"
+}
+
+{
+  "ImageUrLs": [
+  "https://ihaofykdrzgouxpitrvi.supabase.co/storage/v1/object/public/postimages/yanfaa/images/yanfaa_1.png?t=2024-06-19T13%3A50%3A54.337Z",
+  "https://ihaofykdrzgouxpitrvi.supabase.co/storage/v1/object/public/postimages/yanfaa/images/yanfaa_2.png?t=2024-06-19T14%3A33%3A14.608Z",
+  "https://ihaofykdrzgouxpitrvi.supabase.co/storage/v1/object/public/postimages/yanfaa/images/yanfaa_3.png?t=2024-06-19T14%3A33%3A49.407Z",
+  "https://ihaofykdrzgouxpitrvi.supabase.co/storage/v1/object/public/postimages/yanfaa/images/yanfaa_4.png?t=2024-06-19T14%3A34%3A00.391Z"
+],
+  "name": "RESALA ORG",
+  "type": 0,
+  "title": "Resala helping people",
+  "description": "Resala is an org",
+  "about": "Volunteering",
+  "socialLinks": "http://resala.org"
+}
+
+{
+  "ImageUrLs": [
+  "https://ihaofykdrzgouxpitrvi.supabase.co/storage/v1/object/public/postimages/yanfaa/images/yanfaa_1.png?t=2024-06-19T13%3A50%3A54.337Z",
+  "https://ihaofykdrzgouxpitrvi.supabase.co/storage/v1/object/public/postimages/yanfaa/images/yanfaa_2.png?t=2024-06-19T14%3A33%3A14.608Z",
+  "https://ihaofykdrzgouxpitrvi.supabase.co/storage/v1/object/public/postimages/yanfaa/images/yanfaa_3.png?t=2024-06-19T14%3A33%3A49.407Z",
+  "https://ihaofykdrzgouxpitrvi.supabase.co/storage/v1/object/public/postimages/yanfaa/images/yanfaa_4.png?t=2024-06-19T14%3A34%3A00.391Z"
+],
+  "name": "RESALA ORG V2",
+  "type": 0,
+  "tags": [
+    "test 1",
+    "test 2",
+    "test 3"
+  ],
+  "title": "Resala helping people",
+  "description": "Resala is an org",
+  "providers": [
+    "fawry",
+    "opay",
+    "sahl"
+  ],
+  "about": "Volunteering",
+  "socialLinks": "http://resala.org"
+}
+
+https://localhost:7086/api/Admin/login
+
+{
+  "username":"admin",
+  "password":"admin"
+}
+
