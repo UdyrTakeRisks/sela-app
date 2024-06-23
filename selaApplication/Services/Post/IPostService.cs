@@ -10,5 +10,6 @@ public interface IPostService
     Task<IEnumerable<Models.Post>> ShowPostsById(int userId);
     Task<Post> GetPostById(int id);
     Task<string> DeletePost(int postId, int userId);
+    Task<IEnumerable<Models.Post>> SearchPosts(string searchQuery);
     Task<string> UpdatePost(Models.Post post, int postId, int userId);
 }

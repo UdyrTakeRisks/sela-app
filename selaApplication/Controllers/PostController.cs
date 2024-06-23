@@ -199,15 +199,15 @@ public class PostController : ControllerBase
         //     return NotFound("Post not found or you don't have permission to delete this post.");
         // }
 
-        var res = "";
-        try
-        {
-            res = await _postsService.DeletePost(id, userId);
-        }
-        catch (Exception)
-        {
-            return StatusCode(500, "Error deleting the post. Please try again.");
-        }
+        // var res = "";
+        // try
+        // {
+        var res = await _postsService.DeletePost(id, userId);
+        // }
+        // catch (Exception)
+        // {
+        //     return StatusCode(500, "Error deleting the post. Please try again.");
+        // }
 
         return Ok(res);
     }
@@ -235,5 +235,22 @@ public class PostController : ControllerBase
         return Ok(posts);
     }
 
-    
+    [HttpGet("search")]
+    public async Task<IActionResult> SearchPostsAsync([FromQuery] string query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return BadRequest("Search query cannot be empty");
+        }
+
+        var posts = await _postsService.SearchPosts(query);
+        if (posts == null || !posts.Any())
+        {
+            return NotFound("No posts found matching the search query");
+        }
+
+        return Ok(posts);
+    }
+
+
 }
