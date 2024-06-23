@@ -298,4 +298,57 @@ public class PostService : IPostService
             return null;
         }
     }
+
+    public async Task<IEnumerable<Models.Post>> SearchPosts(string searchQuery)
+    {
+        try
+        {
+            using var connector = new PostgresConnection();
+            connector.Connect();
+
+
+            // unnesting used with arrays 
+            // SELECT * FROM Users WHERE UserId = 105 OR 1=1;
+            const string sql = @"
+                SELECT * FROM posts 
+                WHERE LOWER(name) LIKE LOWER(@searchQuery) 
+                OR EXISTS (
+                    SELECT 1 FROM unnest(tags) AS tag WHERE LOWER(tag) LIKE LOWER(@searchQuery)
+                )";
+
+            var posts = new List<Models.Post>();
+
+            await using var command = new NpgsqlCommand(sql, connector._connection);
+            //'%' for partial match  VI
+            command.Parameters.AddWithValue("searchQuery", "%" + searchQuery + "%");
+
+            await using var reader = await command.ExecuteReaderAsync();// results are read asyncronously 
+            while (await reader.ReadAsync())
+            {
+                var fetchedPost = new Models.Post
+                {
+                    post_id = reader.GetInt32(reader.GetOrdinal("post_id")),
+                    // Assuming the Type is a string in your database, if it's an enum, handle accordingly
+                    // Type = (Models.Post.PostType)Enum.Parse(typeof(Models.Post.PostType), reader.GetString(reader.GetOrdinal("post_type"))),
+                    ImageUrLs = reader.GetFieldValue<string[]>(reader.GetOrdinal("imageurls")),
+                    name = reader.GetString(reader.GetOrdinal("name")),
+                    tags = reader.GetFieldValue<string[]>(reader.GetOrdinal("tags")),
+                    title = reader.GetString(reader.GetOrdinal("title")),
+                    description = reader.GetString(reader.GetOrdinal("description")),
+                    providers = reader.GetFieldValue<string[]>(reader.GetOrdinal("providers")),
+                    about = reader.GetString(reader.GetOrdinal("about")),
+                    socialLinks = reader.GetString(reader.GetOrdinal("social_links"))
+                };
+                posts.Add(fetchedPost);// adding each fetched post to the list of matched posts 
+            }
+
+            return posts;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred while searching for posts: {ex.Message}");
+            return null;
+        }
+    }
+
 }
