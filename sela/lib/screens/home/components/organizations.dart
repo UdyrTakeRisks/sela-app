@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:sela/models/Organizations.dart';
 
 import '../../../size_config.dart';
-import '../../../utils/env.dart';
 import '../../details/details_screen.dart';
+import 'organization_service.dart';
 import 'section_title.dart';
 
 class Organizations extends StatefulWidget {
@@ -15,31 +12,22 @@ class Organizations extends StatefulWidget {
   });
 
   @override
-  State<Organizations> createState() => _OrganizationsState();
+  OrganizationsState createState() => OrganizationsState();
 }
 
-class _OrganizationsState extends State<Organizations> {
+class OrganizationsState extends State<Organizations> {
   late Future<List<Organization>> futureOrganizations;
 
   @override
   void initState() {
     super.initState();
-    futureOrganizations = fetchOrganizations();
+    futureOrganizations = OrganizationService().fetchOrganizations();
   }
 
-  Future<List<Organization>> fetchOrganizations() async {
-    final response =
-        await http.get(Uri.parse('$DOTNET_URL_API_BACKEND/Post/view/all/orgs'));
-
-    if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      return jsonResponse
-          .map((org) => Organization.fromJson(org))
-          .take(5) // Take only the first 5 organizations
-          .toList();
-    } else {
-      throw Exception('Failed to load organizations');
-    }
+  Future<void> fetchOrganizations() async {
+    setState(() {
+      futureOrganizations = OrganizationService().fetchOrganizations();
+    });
   }
 
   @override
@@ -179,14 +167,6 @@ class OrganizationCard extends StatelessWidget {
                     ],
                   ),
                   const Spacer(),
-                  // const IconButton(
-                  //   onPressed: null,
-                  //   icon: Icon(
-                  //     Icons.bookmark,
-                  //     color: Colors.white60,
-                  //     size: 24,
-                  //   ),
-                  // ),
                 ],
               ),
               const SizedBox(height: 10),
