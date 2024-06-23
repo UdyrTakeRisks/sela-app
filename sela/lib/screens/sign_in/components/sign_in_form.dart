@@ -54,6 +54,7 @@ class _SignFormState extends State<SignForm> {
       'password': password,
     });
     print(body);
+    bool hasPopped = false;
     try {
       http.Response response = await http.post(
         url,
@@ -62,7 +63,10 @@ class _SignFormState extends State<SignForm> {
         },
         body: body,
       );
-      Navigator.pop(context); // Dismiss the loading screen
+      if (!hasPopped) {
+        Navigator.pop(context); // Dismiss the loading screen
+        hasPopped = true;
+      }
       if (response.statusCode != 200) {
         throw Exception('Failed to login');
       } else {
@@ -78,7 +82,10 @@ class _SignFormState extends State<SignForm> {
       }
       print(response.body);
     } catch (e) {
-      Navigator.pop(context); // Dismiss the loading screen
+      if (!hasPopped) {
+        Navigator.pop(context); // Dismiss the loading screen
+        hasPopped = true;
+      }
       _showErrorDialog();
       print(e.toString());
     }
