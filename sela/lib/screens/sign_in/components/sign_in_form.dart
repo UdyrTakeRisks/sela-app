@@ -63,8 +63,6 @@ class _SignFormState extends State<SignForm> {
       );
 
       if (response.statusCode != 200) {
-        Navigator.pushReplacementNamed(context, '/sign_in');
-        _showErrorDialog();
         throw Exception('Failed to login');
       } else {
         print('Login successful');
@@ -94,7 +92,7 @@ class _SignFormState extends State<SignForm> {
       );
       print(response.body);
     } catch (e) {
-      Navigator.pushReplacementNamed(context, '/sign_in');
+      Navigator.pop(context);
       _showErrorDialog();
       // show a snackbar
       ScaffoldMessenger.of(context).showSnackBar(
@@ -119,8 +117,8 @@ class _SignFormState extends State<SignForm> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pushReplacementNamed(context,
-                    '/sign_in'); // Replace with the route name of your signup screen
+                Navigator.pop(
+                    context); // Replace with the route name of your signup screen
               },
               child: Text('OK'),
             ),
