@@ -22,6 +22,12 @@ class _BodyState extends State<Body> {
   Future<void> _handleRefresh() async {
     await _organizationsKey.currentState?.fetchOrganizations();
     await Future.delayed(const Duration(seconds: 1));
+    // show snackbar
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Refreshed'),
+      ),
+    );
   }
 
   @override
