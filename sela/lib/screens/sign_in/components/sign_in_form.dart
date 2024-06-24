@@ -12,7 +12,6 @@ import '../../../components/form_error.dart';
 import '../../../size_config.dart';
 import '../../../utils/constants.dart';
 import '../../forgot_password/forgot_password_screen.dart';
-import '../../login_success/login_success.dart';
 
 class SignForm extends StatefulWidget {
   const SignForm({super.key});
@@ -64,18 +63,28 @@ class _SignFormState extends State<SignForm> {
       );
       Navigator.pop(context); // Dismiss the loading screen
       if (response.statusCode != 200) {
+        _showErrorDialog();
         throw Exception('Failed to login');
       } else {
         print('Login successful');
         // Extract the cookie from the response headers
         String? cookie = response.headers['set-cookie'];
-        if (cookie != null) {
-          // Save the cookie using shared_preferences
+        // Extract the cookie expiration timestamp from the response body
+        var responseBody = json.decode(response.body);
+        String? cookieExpirationTimestamp =
+            responseBody['cookieExpirationTimestamp'];
+        if (cookie != null && cookieExpirationTimestamp != null) {
+          // Save the cookie and expiration timestamp using shared_preferences
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('cookie', cookie);
+          await prefs.setString(
+              'cookieExpirationTimestamp', cookieExpirationTimestamp);
+          print('Cookie saved: $cookie');
+          print(
+              'Cookie expiration timestamp saved: $cookieExpirationTimestamp');
         }
-        Navigator.pushReplacementNamed(context, LoginSuccessScreen.routeName);
       }
+      Navigator.pushReplacementNamed(context, '/login_success');
       print(response.body);
     } catch (e) {
       Navigator.pop(context); // Dismiss the loading screen
@@ -95,7 +104,7 @@ class _SignFormState extends State<SignForm> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                // Navigator.of(context).pop(); // Close the dialog
                 Navigator.pushReplacementNamed(context,
                     '/sign_in'); // Replace with the route name of your signup screen
               },
@@ -145,7 +154,7 @@ class _SignFormState extends State<SignForm> {
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
-            text: "Continue",
+            text: "Sign In",
             press: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
