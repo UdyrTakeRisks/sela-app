@@ -7,6 +7,7 @@ import 'package:sela/screens/home/home_screen.dart';
 
 import '../../../components/custom_suffix_icon.dart';
 import '../../../components/form_error.dart';
+import '../../../components/loading_screen.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/env.dart';
 
@@ -72,13 +73,45 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         // Navigate to OTP screen on successful profile completion
         print(response.body);
         Navigator.pushNamed(context, HomeScreen.routeName);
+        // show a snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('SignUp Successful'),
+          ),
+        );
+        print(body);
+      } else if (response.statusCode == 400) {
+        // Show error dialog on failure
+        print(response.body);
+        Navigator.pop(context);
+        // show a snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('User username already exists, please try again.'),
+          ),
+        );
       } else {
         // Show error dialog on failure
         print(response.body);
-        _showErrorDialog('Failed to complete profile. Please try again.');
+        Navigator.pop(context);
+        _showErrorDialog('Profile Completion Failed');
+        // show a snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Profile Completion Failed'),
+          ),
+        );
       }
     } catch (e) {
-      _showErrorDialog(e.toString());
+      Navigator.pop(context);
+      _showErrorDialog('Profile Completion Failed');
+      // show a snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Profile Completion Failed'),
+        ),
+      );
+      print(e.toString());
     }
   }
 
@@ -180,6 +213,11 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             press: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const LoadingScreen()),
+                );
                 completeProfile(
                   usernameController.text,
                   fullNameController.text,
@@ -187,7 +225,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
                 );
               }
             },
-            text: "Continue",
+            text: "Sign Up",
           ),
         ],
       ),
