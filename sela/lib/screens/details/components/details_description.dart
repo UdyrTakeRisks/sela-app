@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../models/Organizations.dart';
 import '../../../size_config.dart';
 import '../../../utils/constants.dart';
 
-class OrganizationDescription extends StatelessWidget {
+class OrganizationDescription extends StatefulWidget {
   const OrganizationDescription({
     Key? key,
     required this.organization,
@@ -13,6 +14,20 @@ class OrganizationDescription extends StatelessWidget {
 
   final Organization organization;
   final GestureTapCallback pressOnSeeMore;
+
+  @override
+  State<OrganizationDescription> createState() =>
+      _OrganizationDescriptionState();
+}
+
+class _OrganizationDescriptionState extends State<OrganizationDescription> {
+  bool isSaved = false;
+
+  void _saved() {
+    setState(() {
+      isSaved = !isSaved;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +41,7 @@ class OrganizationDescription extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                   horizontal: getProportionateScreenWidth(20)),
               child: Text(
-                organization.name,
+                widget.organization.name,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
@@ -36,7 +51,7 @@ class OrganizationDescription extends StatelessWidget {
                 right: getProportionateScreenWidth(64),
               ),
               child: Text(
-                organization.title,
+                widget.organization.title,
                 style: const TextStyle(
                   color: kPrimaryColor,
                   fontWeight: FontWeight.w600,
@@ -53,22 +68,18 @@ class OrganizationDescription extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.ios_share_rounded),
                 color: Colors.grey,
-                onPressed: () {
+                onPressed: () async {
                   // Add your share logic here
+                  // e.g., share(organization);
+                  // make him share the organization details and the text i send to him
+                  await Share.share(
+                      'Check out this organization: ${widget.organization.name}');
                 },
               ),
               IconButton(
-                icon: Icon(
-                  Icons.bookmark,
-                  color: organization.isFavourite
-                      ? kPrimaryColor
-                      : const Color(0xFFDBDEE4),
-                ),
-                onPressed: () {
-                  // Add your save logic here
-                  // change the isFavourite value
-                  organization.isFavourite = !organization.isFavourite;
-                },
+                icon: Icon(isSaved ? Icons.bookmark : Icons.bookmark_border),
+                color: Colors.grey,
+                onPressed: _saved,
               ),
             ],
           ),
