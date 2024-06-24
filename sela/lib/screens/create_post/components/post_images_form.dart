@@ -29,6 +29,8 @@ class _PostImagesFormState extends State<PostImagesForm> {
         _images.addAll(images.map((e) => File(e.path)));
       });
       await _uploadImages();
+      widget.onNext(
+          _imageUrls); // Ensure the onNext function is called with the image URLs
     }
   }
 
@@ -63,8 +65,6 @@ class _PostImagesFormState extends State<PostImagesForm> {
         // Handle error if needed
         print('Error uploading image: $e');
       }
-      widget.onNext(
-          _imageUrls); // Ensure the onNext function is called with the image URLs
     }
     setState(() {
       _imageUrls.clear();
@@ -77,6 +77,9 @@ class _PostImagesFormState extends State<PostImagesForm> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: getProportionateScreenHeight(20),
+        ),
         ElevatedButton(
           onPressed: _pickImages,
           style: ElevatedButton.styleFrom(

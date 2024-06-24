@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../models/Individual.dart';
+import '../../../../models/Individual.dart';
 
 class IndividualCard extends StatelessWidget {
   final Individual individual;
