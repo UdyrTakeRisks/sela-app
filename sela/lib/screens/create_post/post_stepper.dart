@@ -77,6 +77,15 @@ class _PostStepperState extends State<PostStepper> {
     if (response.statusCode == 200) {
       // Handle successful response
       print('Post submitted successfully!');
+      // Navigate to the home screen
+      Navigator.pushNamed(context, '/home');
+      // Show a snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Post submitted successfully!'),
+          backgroundColor: kPrimaryColor,
+        ),
+      );
     } else {
       // Handle error response
       print('Failed to submit create_post: ${response.body}');
