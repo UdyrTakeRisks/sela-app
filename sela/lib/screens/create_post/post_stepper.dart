@@ -89,89 +89,104 @@ class _PostStepperState extends State<PostStepper> {
     } else {
       // Handle error response
       print('Failed to submit create_post: ${response.body}');
+      // Show a snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to submit create post. Please try again.'),
+          backgroundColor: Colors.grey,
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stepper(
-      connectorThickness: 2.0,
-      connectorColor: MaterialStateColor.resolveWith((states) => kPrimaryColor),
-      currentStep: _currentStep,
-      onStepContinue: () {
-        if (_currentStep == 0) {
-          // Move to the next step
-          setState(() {
-            _currentStep++;
-          });
-        } else if (_currentStep == 1) {
-          // Submit the form
-          if (_detailsFormKey.currentState != null) {
-            _onSubmit(_detailsFormKey.currentState!.collectFormData());
-          } else {
-            print('Form key current state is null');
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Stepper(
+        connectorThickness: 2.0,
+        connectorColor:
+            MaterialStateColor.resolveWith((states) => kPrimaryColor),
+        currentStep: _currentStep,
+        onStepContinue: () {
+          if (_currentStep == 0) {
+            // Move to the next step
+            setState(() {
+              _currentStep++;
+            });
+          } else if (_currentStep == 1) {
+            // Submit the form
+            if (_detailsFormKey.currentState != null) {
+              _onSubmit(_detailsFormKey.currentState!.collectFormData());
+            } else {
+              print('Form key current state is null');
+            }
           }
-        }
-      },
-      onStepCancel: () {
-        if (_currentStep > 0) {
+        },
+        onStepCancel: () {
+          if (_currentStep > 0) {
+            setState(() {
+              _currentStep--;
+            });
+          } else if (_currentStep == 0) {
+            Navigator.pop(context);
+          }
+        },
+        onStepTapped: (step) {
           setState(() {
-            _currentStep--;
+            _currentStep = step;
           });
-        } else if (_currentStep == 0) {
-          Navigator.pop(context);
-        }
-      },
-      onStepTapped: (step) {
-        setState(() {
-          _currentStep = step;
-        });
-      },
-      steps: [
-        Step(
-          title: Text('Select Images'),
-          content: PostImagesForm(onNext: _onNext),
-          isActive: _currentStep == 0,
-        ),
-        Step(
-          title: Text('Details'),
-          content: PostDetailsForm(key: _detailsFormKey, onSubmit: _onSubmit),
-          isActive: _currentStep == 1,
-        ),
-      ],
-      controlsBuilder: (BuildContext context, ControlsDetails details) {
-        final isLastStep = _currentStep == 1;
+        },
+        steps: [
+          Step(
+            title: const Text('Select Images'),
+            subtitle: const Text('Upload images for your post'),
+            content: PostImagesForm(onNext: _onNext),
+            isActive: _currentStep == 0,
+            state: _currentStep == 0 ? StepState.editing : StepState.complete,
+          ),
+          Step(
+            title: const Text('Details'),
+            subtitle: const Text('Provide details for your post'),
+            content: PostDetailsForm(key: _detailsFormKey, onSubmit: _onSubmit),
+            isActive: _currentStep == 1,
+            state: _currentStep == 1 ? StepState.editing : StepState.indexed,
+          ),
+        ],
+        controlsBuilder: (BuildContext context, ControlsDetails details) {
+          final isLastStep = _currentStep == 1;
 
-        return Row(
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: details.onStepContinue,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: buttonColor,
-                foregroundColor: Colors.white,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+          return Row(
+            children: <Widget>[
+              ElevatedButton(
+                onPressed: details.onStepContinue,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: buttonColor,
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
+                child: Text(isLastStep ? 'Submit' : 'Continue'),
               ),
-              child: Text(isLastStep ? 'Submit' : 'Continue'),
-            ),
-            const SizedBox(width: 10),
-            TextButton(
-              onPressed: details.onStepCancel,
-              style: TextButton.styleFrom(
-                // backgroundColor: buttonColor,
-                foregroundColor: textColor2,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+              const SizedBox(width: 10),
+              TextButton(
+                onPressed: details.onStepCancel,
+                style: TextButton.styleFrom(
+                  // backgroundColor: buttonColor,
+                  foregroundColor: textColor2,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
+                child: Text(isLastStep ? 'Back' : 'Cancel'),
               ),
-              child: Text(isLastStep ? 'Back' : 'Cancel'),
-            ),
-          ],
-        );
-      },
+            ],
+          );
+        },
+      ),
     );
   }
 }

@@ -10,7 +10,7 @@ import '../../../utils/colors.dart';
 class PostDetailsForm extends StatefulWidget {
   final Function(Map<String, dynamic>) onSubmit;
 
-  const PostDetailsForm({Key? key, required this.onSubmit}) : super(key: key);
+  const PostDetailsForm({super.key, required this.onSubmit});
 
   @override
   PostDetailsFormState createState() => PostDetailsFormState();
@@ -64,7 +64,7 @@ class PostDetailsFormState extends State<PostDetailsForm> {
             TextFormField(
               controller: _nameController,
               decoration: const InputDecoration(
-                labelText: "Name",
+                hintText: "Name",
                 // hintText: "Enter name of Individual/Organization",
                 floatingLabelBehavior: FloatingLabelBehavior.always,
                 suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/User.svg"),
@@ -79,7 +79,7 @@ class PostDetailsFormState extends State<PostDetailsForm> {
             const SizedBox(height: 20),
             DropdownButtonFormField<String>(
               value: _selectedType,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Type',
                 border: OutlineInputBorder(),
               ),
@@ -98,7 +98,7 @@ class PostDetailsFormState extends State<PostDetailsForm> {
             const SizedBox(height: 20),
             TextFormField(
               controller: _titleController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Title',
                 border: OutlineInputBorder(),
               ),
@@ -112,7 +112,7 @@ class PostDetailsFormState extends State<PostDetailsForm> {
             const SizedBox(height: 20),
             TextFormField(
               controller: _descriptionController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Description',
                 border: OutlineInputBorder(),
               ),
@@ -180,7 +180,7 @@ class PostDetailsFormState extends State<PostDetailsForm> {
               items: _providers
                   .map((provider) => MultiSelectItem(provider, provider))
                   .toList(),
-              title: Text('Providers'),
+              title: const Text('Providers'),
               buttonText: const Text('Select Providers'),
               buttonIcon: const Icon(Icons.arrow_drop_down),
               listType: MultiSelectListType.CHIP,
@@ -231,7 +231,7 @@ class PostDetailsFormState extends State<PostDetailsForm> {
             const SizedBox(height: 20),
             TextFormField(
               controller: _aboutController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'About',
                 border: OutlineInputBorder(),
               ),
@@ -245,7 +245,7 @@ class PostDetailsFormState extends State<PostDetailsForm> {
             const SizedBox(height: 20),
             TextFormField(
               controller: _socialLinksController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Social Links',
                 border: OutlineInputBorder(),
               ),

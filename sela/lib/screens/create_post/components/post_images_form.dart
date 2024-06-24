@@ -77,6 +77,9 @@ class _PostImagesFormState extends State<PostImagesForm> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: getProportionateScreenHeight(20),
+        ),
         ElevatedButton(
           onPressed: _pickImages,
           style: ElevatedButton.styleFrom(
