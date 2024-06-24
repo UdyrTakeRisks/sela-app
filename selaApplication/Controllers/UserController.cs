@@ -116,6 +116,10 @@ namespace selaApplication.Controllers
             return Ok("User logged out successfully");
         }
         
+        // update user account endpoint
+        
+        // delete user account endpoint
+        
     }
     
 }

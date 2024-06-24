@@ -138,13 +138,13 @@ public class PostController : ControllerBase
         {
             return Unauthorized("You should login first to edit a post");
         }
-        
+
         var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
         if (sessionUser == null)
         {
             return Unauthorized("User Session is Expired. Please log in first.");
         }
-        
+
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
         //var post = await _postsService.GetPostById(id); // is this matters ? redundant database hit, use id directly in update
 
@@ -192,28 +192,14 @@ public class PostController : ControllerBase
         }
 
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
-        // var post = await _postsService.GetPostById(id); // redundant database hit
 
-        // if (post == null || post.UserId != userId)
-        // {
-        //     return NotFound("Post not found or you don't have permission to delete this post.");
-        // }
-
-        // var res = "";
-        // try
-        // {
         var res = await _postsService.DeletePost(id, userId);
-        // }
-        // catch (Exception)
-        // {
-        //     return StatusCode(500, "Error deleting the post. Please try again.");
-        // }
 
         return Ok(res);
     }
 
     [HttpGet("myPosts")]
-    public async Task<ActionResult<IEnumerable<Post>>> ShowMyPostsAsync()
+    public async Task<ActionResult> ShowMyPostsAsync()
     {
         // Retrieve user session
         var serializedUserObj = HttpContext.Session.GetString("UserSession");
@@ -229,10 +215,17 @@ public class PostController : ControllerBase
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
         var posts = await _postsService.ShowPostsById(userId);
 
-        if (!posts.Any())
+        var enumerablePosts = posts.ToList();
+        if (!enumerablePosts.Any())
             return NotFound("No posts found for this user.");
 
-        return Ok(posts);
+        var response = new
+        {
+            sessionUser.username,
+            posts = enumerablePosts
+        };
+
+        return Ok(response); // test this way
     }
 
     [HttpGet("search")]
@@ -251,6 +244,4 @@ public class PostController : ControllerBase
 
         return Ok(posts);
     }
-
-
 }
