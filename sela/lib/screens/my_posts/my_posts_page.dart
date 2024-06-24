@@ -26,7 +26,7 @@ class _MyPostsPageState extends State<MyPostsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Posts'),
+        title: const Text('My Services Posts'),
       ),
       body: Column(
         children: [

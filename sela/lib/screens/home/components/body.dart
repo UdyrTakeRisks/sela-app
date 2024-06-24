@@ -6,8 +6,8 @@ import '../../../size_config.dart';
 import '../../../utils/colors.dart';
 import 'app_bar.dart';
 import 'home_header.dart';
-import 'individuals.dart';
-import 'organizations.dart';
+import 'individuals/individuals.dart';
+import 'organizations/organizations.dart';
 
 class Body extends StatefulWidget {
   const Body({super.key});
@@ -43,7 +43,7 @@ class _BodyState extends State<Body> {
               SizedBox(height: getProportionateScreenWidth(10)),
               const DiscountBanner(),
               Organizations(key: _organizationsKey),
-              SizedBox(height: getProportionateScreenWidth(30)),
+              SizedBox(height: getProportionateScreenWidth(10)),
               Individuals(),
               SizedBox(height: getProportionateScreenWidth(30)),
             ],

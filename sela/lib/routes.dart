@@ -12,6 +12,7 @@ import 'package:sela/screens/sign_up/sign_up_screen.dart';
 import 'package:sela/screens/splash/splash_screen.dart';
 
 import 'screens/complete_profile/complete_profile_screen.dart';
+import 'screens/home/components/organizations/all_organizations.dart';
 import 'screens/otp/otp_screen.dart';
 
 // use name routs instead of routes
@@ -25,9 +26,10 @@ final Map<String, WidgetBuilder> routes = {
   CompleteProfileScreen.routeName: (context) => const CompleteProfileScreen(),
   OtpScreen.routeName: (context) => const OtpScreen(),
   HomeScreen.routeName: (context) => const HomeScreen(),
-  DetailsScreen.routeName: (context) => DetailsScreen(),
+  DetailsScreen.routeName: (context) => const DetailsScreen(),
   ProfileScreen.routeName: (context) => ProfileScreen(),
   SavedScreen.routeName: (context) => SavedScreen(),
   PostPage.routeName: (context) => PostPage(),
   MyPostsPage.routeName: (context) => MyPostsPage(),
+  AllOrganizationsScreen.routeName: (context) => const AllOrganizationsScreen(),
 };

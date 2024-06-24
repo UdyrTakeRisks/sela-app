@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../models/my_post_model.dart';
+import '../../../size_config.dart';
 
 class PostCard extends StatelessWidget {
   final MyPost post;
@@ -18,7 +19,7 @@ class PostCard extends StatelessWidget {
           children: [
             if (post.imageUrls != null && post.imageUrls!.isNotEmpty)
               Image.network(post.imageUrls![0]),
-            SizedBox(height: 8),
+            SizedBox(height: getProportionateScreenHeight(30)),
             Text(
               post.title ?? '', // Use default value if title is null
               style: const TextStyle(

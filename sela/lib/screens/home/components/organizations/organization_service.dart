@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:sela/models/Organizations.dart';
 
-import '../../../utils/env.dart';
+import '../../../../utils/env.dart';
 
 class OrganizationService {
   Future<List<Organization>> fetchOrganizations() async {

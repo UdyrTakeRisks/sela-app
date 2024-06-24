@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sela/screens/home/components/section_title.dart';
 
-import '../../../models/Individual.dart';
+import '../../../../models/Individual.dart';
 import 'IndividualCard.dart';
 
 class Individuals extends StatelessWidget {
@@ -25,23 +26,9 @@ class Individuals extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Individual Services',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  // Navigate to see all
-                },
-                child: const Text('See all'),
-              ),
-            ],
+          child: SectionTitle(
+            title: 'Individuals',
+            press: () {},
           ),
         ),
         const SizedBox(height: 20),

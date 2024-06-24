@@ -1,102 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:sela/models/Organizations.dart';
 
-import '../../../size_config.dart';
-import '../../details/details_screen.dart';
-import 'organization_service.dart';
-import 'section_title.dart';
-
-class Organizations extends StatefulWidget {
-  const Organizations({
-    super.key,
-  });
-
-  @override
-  OrganizationsState createState() => OrganizationsState();
-}
-
-class OrganizationsState extends State<Organizations> {
-  late Future<List<Organization>> futureOrganizations;
-
-  @override
-  void initState() {
-    super.initState();
-    futureOrganizations = OrganizationService().fetchOrganizations();
-  }
-
-  Future<void> fetchOrganizations() async {
-    setState(() {
-      futureOrganizations = OrganizationService().fetchOrganizations();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-          child: SectionTitle(
-            title: "Organizations",
-            press: () {},
-          ),
-        ),
-        SizedBox(height: getProportionateScreenWidth(20)),
-        FutureBuilder<List<Organization>>(
-          future: futureOrganizations,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              print(snapshot.error);
-              return Text("ERROR: ${snapshot.error}");
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Text("No Organizations Found");
-            } else {
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    ...snapshot.data!.map((org) => OrganizationCard(
-                          index: org.id,
-                          logo: org.imageUrls[0],
-                          name: org.name,
-                          title: org.title,
-                          tags: org.tags
-                              .take(3) // Take only the first 3 tags
-                              .toList(),
-                          press: () => Navigator.pushNamed(
-                            context,
-                            DetailsScreen.routeName,
-                            arguments: DetailsArguments(
-                              organization: org,
-                              index: snapshot.data!.indexOf(org),
-                            ),
-                          ),
-                        )),
-                    SizedBox(width: getProportionateScreenWidth(20)),
-                  ],
-                ),
-              );
-            }
-          },
-        ),
-      ],
-    );
-  }
-}
+import '../../../../size_config.dart';
 
 class OrganizationCard extends StatelessWidget {
   const OrganizationCard({
-    Key? key,
+    super.key,
     required this.logo,
     required this.name,
     required this.title,
     required this.tags,
     required this.press,
     required this.index,
-  }) : super(key: key);
+  });
 
   final int index;
   final String logo, name, title;
@@ -106,13 +21,13 @@ class OrganizationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20),
+      padding: const EdgeInsets.only(left: 20, bottom: 10),
       child: GestureDetector(
         onTap: press,
         child: Container(
           width: getProportionateScreenWidth(242),
           height: getProportionateScreenWidth(120),
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
             image: DecorationImage(
               image: const AssetImage("assets/images/Mask.png"),
@@ -124,11 +39,12 @@ class OrganizationCard extends StatelessWidget {
             ),
             color: const Color(0xFF356899),
             borderRadius: BorderRadius.circular(20),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Colors.black26,
-                blurRadius: 20,
-                offset: Offset(0, 10),
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: const Offset(0, 3),
               ),
             ],
           ),
