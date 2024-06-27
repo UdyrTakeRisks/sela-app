@@ -83,7 +83,35 @@ public class PostService : IPostService
         }
     }
 
+    public async Task<string> GetPostNameById(int postId)
+    {
+        try
+        {
+            using var connector = new PostgresConnection();
+            connector.Connect();
 
+            const string sql = "SELECT name FROM posts WHERE post_id = @post_id";
+
+            await using var command = new NpgsqlCommand(sql, connector._connection);
+            command.Parameters.AddWithValue("post_id", postId);
+
+            await using var reader = command.ExecuteReader();
+            
+            if (!reader.Read()) return "No post is found with this id";
+            
+            var postName = reader.GetString(reader.GetOrdinal("name"));
+            return postName;
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occured while getting the post name: {ex.Message}");
+                
+            return "An error occured while getting the post name";
+        }
+        
+    }
+    
     public async Task<IEnumerable<Models.Post>> GetPosts(Models.Post post)
     {
         try
@@ -222,14 +250,11 @@ public class PostService : IPostService
         }
     }
 
+    
     public async Task<string> DeletePost(int postId, int userId)
     {
         try
         {
-            // Ensure that the post is valid
-            // if (post == null) throw new ArgumentNullException(nameof(post));
-            // if (post.post_id <= 0) throw new ArgumentOutOfRangeException(nameof(post.post_id));
-
             // Connection string should ideally be stored in a configuration file for security and maintainability
             using var connector = new PostgresConnection();
             connector.Connect();
@@ -244,7 +269,7 @@ public class PostService : IPostService
                 userId); // Assuming post.UserId is the identifier of the user who owns the post
 
             // Execute the command asynchronously
-            int rowsAffected = await command.ExecuteNonQueryAsync();
+            var rowsAffected = await command.ExecuteNonQueryAsync();
 
             if (rowsAffected > 0)
             {
@@ -307,7 +332,7 @@ public class PostService : IPostService
             connector.Connect();
 
 
-            // unnesting used with arrays 
+            // un nesting used with arrays 
             // SELECT * FROM Users WHERE UserId = 105 OR 1=1;
             const string sql = @"
                 SELECT * FROM posts 
@@ -350,5 +375,123 @@ public class PostService : IPostService
             return null;
         }
     }
+    
+    public async Task<string> SavePost(int userId, int postId, string username, string postName)
+    {
+        try
+        {
+            using var connector = new PostgresConnection();
+            connector.Connect();
 
+            const string sql =
+                "INSERT INTO save_posts (user_id, post_id, username, post_name)" +
+                " VALUES (@userId, @postId, @username, @post_name)";
+
+            await using var command = new NpgsqlCommand(sql, connector._connection);
+
+            command.Parameters.AddWithValue("userId", userId);
+            command.Parameters.AddWithValue("postId", postId);
+            command.Parameters.AddWithValue("username", username);
+            command.Parameters.AddWithValue("post_name", postName);
+            await command.ExecuteNonQueryAsync();
+
+            return "Post has been Saved Successfully";
+        }
+        catch (Exception ex)
+        {
+            // Log the exception or handle it as needed
+            // For example, you can log it to a file, send an email notification, or return an error message to the caller
+
+            // Example of logging the exception to the console
+            Console.WriteLine($"An error occurred while saving the post: {ex.Message}");
+
+            // Return an error message to the caller
+            return "An error occurred while saving the post";
+        }
+    }
+
+    public async Task<string> UnSavePost(int userId, int postId)
+    {
+        try
+        {
+            // Connection string should ideally be stored in a configuration file for security and maintainability
+            using var connector = new PostgresConnection();
+            connector.Connect();
+
+            const string sql = "DELETE FROM save_posts WHERE post_id = @post_id AND user_id = @user_id";
+
+            await using var command = new NpgsqlCommand(sql, connector._connection);
+
+            // Adding parameters with their appropriate values
+            command.Parameters.AddWithValue("post_id", postId);
+            command.Parameters.AddWithValue("user_id", userId); 
+
+            // Execute the command asynchronously
+            var rowsAffected = await command.ExecuteNonQueryAsync();
+
+            if (rowsAffected > 0)
+            {
+                return "Saved Post has been removed successfully";
+            }
+
+            return "No Saved post with this id is found to remove";
+        }
+        catch (Exception ex)
+        {
+            // Log the exception details (this should be done to a proper logging framework in a real application)
+            Console.WriteLine($"An error occurred while removing the saved post: {ex.Message}");
+
+            // Return a generic error message to the caller
+            return "An error occurred while removing the saved post";
+        }
+    }
+
+    public async Task<IEnumerable<Models.Post>> GetSavedPostsById(int userId)
+    {
+        try
+        {
+            using var connector = new PostgresConnection();
+            connector.Connect();
+
+            const string sql = @"
+                                SELECT p.post_id, p.imageurls, p.name, p.tags, p.title, p.description,
+                                       p.providers, p.about, p.social_links
+                                FROM save_posts sp 
+                                JOIN posts p
+                                ON sp.post_id = p.post_id
+                                WHERE sp.user_id = @user_id";
+
+            var posts = new List<Models.Post>();
+
+            await using var command = new NpgsqlCommand(sql, connector._connection);
+            command.Parameters.AddWithValue("user_id", userId);
+
+            await using var reader = await command.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                var fetchedPost = new Models.Post
+                {
+                    post_id = reader.GetInt32(reader.GetOrdinal("post_id")),
+                    // Type = (PostType)reader.GetInt32(reader.GetOrdinal("post_type")),
+                    ImageUrLs = reader.GetFieldValue<string[]>(reader.GetOrdinal("imageurls")),
+                    name = reader.GetString(reader.GetOrdinal("name")),
+                    tags = reader.GetFieldValue<string[]>(reader.GetOrdinal("tags")),
+                    title = reader.GetString(reader.GetOrdinal("title")),
+                    description = reader.GetString(reader.GetOrdinal("description")),
+                    providers = reader.GetFieldValue<string[]>(reader.GetOrdinal("providers")),
+                    about = reader.GetString(reader.GetOrdinal("about")),
+                    socialLinks = reader.GetString(reader.GetOrdinal("social_links"))
+                };
+                posts.Add(fetchedPost);
+            }
+
+            return posts;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred while getting the saved posts: {ex.Message}");
+
+            return null;
+        }
+    }
 }

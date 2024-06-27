@@ -99,5 +99,40 @@ namespace selaApplication.Services.User
             }
         }
         
+        public async Task<string> DeleteUser(int userId)
+        {
+            try
+            {
+                // Connection string should ideally be stored in a configuration file for security and maintainability
+                using var connector = new PostgresConnection();
+                connector.Connect();
+
+                const string sql = "DELETE FROM users WHERE user_id = @user_id";
+
+                await using var command = new NpgsqlCommand(sql, connector._connection);
+
+                // Adding parameters with their appropriate values
+                command.Parameters.AddWithValue("user_id", userId); 
+
+                // Execute the command asynchronously
+                int rowsAffected = await command.ExecuteNonQueryAsync();
+
+                if (rowsAffected > 0)
+                {
+                    return "User has been removed successfully";
+                }
+
+                return "No user found to remove";
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details (this should be done to a proper logging framework in a real application)
+                Console.WriteLine($"An error occurred while removing the user: {ex.Message}");
+
+                // Return a generic error message to the caller
+                return "An error occurred while removing the user";
+            }
+        }
+        
     }
 }

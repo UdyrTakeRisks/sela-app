@@ -113,13 +113,36 @@ namespace selaApplication.Controllers
             }
             
             HttpContext.Session.Remove("UserSession");
+            
             return Ok("User logged out successfully");
         }
         
-        // update user account endpoint
+        // update user account endpoint - not done
         
-        // delete user account endpoint
         
+        
+        // delete user account endpoint - front should send the cookie
+        [HttpDelete("delete")]
+        public async Task<IActionResult> RemoveUserAsync()
+        {
+            var serializedUserObj = HttpContext.Session.GetString("UserSession");
+            if (serializedUserObj == null)
+            {
+                return Unauthorized("You should login first to delete a post");
+            }
+
+            var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+            if (sessionUser == null)
+            {
+                return Unauthorized("User Session is Expired. Please log in first.");
+            }
+
+            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+
+            var result = await _usersService.DeleteUser(userId);
+            
+            return Ok(result);
+        }
     }
     
 }

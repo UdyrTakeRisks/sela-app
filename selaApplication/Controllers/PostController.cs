@@ -60,11 +60,6 @@ public class PostController : ControllerBase
             socialLinks = dto.socialLinks
         };
 
-        //validate user credentials before adding him to database
-        // if (string.IsNullOrEmpty(user.username) || string.IsNullOrEmpty(user.password))
-        //     // return Forbid("Username or Password can not be empty");
-        //     return BadRequest("Username or Password can not be empty");
-
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
         var res = await _postsService.AddUserPost(post, userId);
         // return Ok(user);
@@ -98,11 +93,6 @@ public class PostController : ControllerBase
             about = dto.about,
             socialLinks = dto.socialLinks
         };
-
-        //validate user credentials before adding him to database
-        // if (string.IsNullOrEmpty(user.username) || string.IsNullOrEmpty(user.password))
-        //     // return Forbid("Username or Password can not be empty");
-        //     return BadRequest("Username or Password can not be empty");
 
         await _postsService.AddAdminPost(post);
         // return Ok(user);
@@ -148,10 +138,6 @@ public class PostController : ControllerBase
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
         //var post = await _postsService.GetPostById(id); // is this matters ? redundant database hit, use id directly in update
 
-        // if (post == null || post.UserId != userId)
-        // {
-        //     return NotFound("Post not found or you don't have permission to edit this post.");
-        // }
         // just create a new post obj and pass it to the update
         var post = new Post
         {
@@ -225,7 +211,7 @@ public class PostController : ControllerBase
             posts = enumerablePosts
         };
 
-        return Ok(response); // test this way
+        return Ok(response); 
     }
 
     [HttpGet("search")]
@@ -244,4 +230,75 @@ public class PostController : ControllerBase
 
         return Ok(posts);
     }
+
+    [HttpPost("save/{postId:int}")]
+    public async Task<IActionResult> SaveUserPostAsync(int postId)
+    {
+        var serializedUserObj = HttpContext.Session.GetString("UserSession");
+        if (serializedUserObj == null)
+        {
+            return Unauthorized("You should login first to save a post");
+        }
+
+        var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+        if (sessionUser == null)
+        {
+            return Unauthorized("User Session is Expired. Please log in first.");
+        }
+
+        var userId = await _usersService.GetIdByUsername(sessionUser.username);
+        var postName = await _postsService.GetPostNameById(postId);
+        
+        var response = await _postsService.SavePost(userId, postId, sessionUser.username, postName);
+       
+        return Ok(response);
+    }
+
+    [HttpDelete("un-save/{postId:int}")]
+    public async Task<IActionResult> UnSaveUserPostAsync(int postId)
+    {
+        var serializedUserObj = HttpContext.Session.GetString("UserSession");
+        if (serializedUserObj == null)
+        {
+            return Unauthorized("You should login first to un save a post");
+        }
+
+        var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+        if (sessionUser == null)
+        {
+            return Unauthorized("User Session is Expired. Please log in first.");
+        }
+
+        var userId = await _usersService.GetIdByUsername(sessionUser.username);
+
+        var response = await _postsService.UnSavePost(userId, postId);
+
+        return Ok(response);
+    }
+
+    [HttpGet("view/saved")]
+    public async Task<IActionResult> RetrieveUserSavedPostsAsync()
+    {
+        var serializedUserObj = HttpContext.Session.GetString("UserSession");
+        if (serializedUserObj == null)
+        {
+            return Unauthorized("You should login first to view saved posts");
+        }
+
+        var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+        if (sessionUser == null)
+        {
+            return Unauthorized("User Session is Expired. Please log in first.");
+        }
+
+        var userId = await _usersService.GetIdByUsername(sessionUser.username);
+        
+        var savedPosts = await _postsService.GetSavedPostsById(userId);
+        var enumerablePosts = savedPosts.ToList();
+        if (!enumerablePosts.Any())
+            return NotFound("No saved posts found for this user.");
+        
+        return Ok(enumerablePosts);
+    }
+    
 }
