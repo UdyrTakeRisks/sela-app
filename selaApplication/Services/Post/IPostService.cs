@@ -4,12 +4,17 @@ using selaApplication.Models;
 
 public interface IPostService
 {
-    Task<string> AddAdminPost(Models.Post post);
-    Task<string> AddUserPost(Models.Post post, int userId);
-    Task<IEnumerable<Models.Post>> GetPosts(Models.Post post);
-    Task<IEnumerable<Models.Post>> ShowPostsById(int userId);
+    Task<string> AddAdminPost(Post post);
+    Task<string> AddUserPost(Post post, int userId);
+    Task<IEnumerable<Post>> GetPosts(Post post);
+    Task<IEnumerable<Post>> ShowPostsById(int userId);
     Task<Post> GetPostById(int id);
     Task<string> DeletePost(int postId, int userId);
     Task<IEnumerable<Models.Post>> SearchPosts(string searchQuery);
     Task<string> UpdatePost(Models.Post post, int postId, int userId);
+    Task<string> GetPostNameById(int postId);
+    Task<string> SavePost(int userId, int postId, string username, string postName);
+    Task<string> UnSavePost(int userId, int postId); 
+    Task<IEnumerable<Post>> GetSavedPostsById(int userId);
+    
 }

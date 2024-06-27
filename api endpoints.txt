@@ -6,7 +6,7 @@ Method: POST      URL: https://localhost:7086/signup/user
 https://selawebapp.azurewebsites.net/signup/user
 
 {
-  "username": "ahmed123",
+  "username": "ahmedpass123",
   "name": "Ahmed Ali",
   "email": "ahmedali2012156@yahoo.com",
   "phoneNumber": 1152154818,
