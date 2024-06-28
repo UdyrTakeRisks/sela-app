@@ -60,11 +60,6 @@ public class PostController : ControllerBase
             socialLinks = dto.socialLinks
         };
 
-        //validate user credentials before adding him to database
-        // if (string.IsNullOrEmpty(user.username) || string.IsNullOrEmpty(user.password))
-        //     // return Forbid("Username or Password can not be empty");
-        //     return BadRequest("Username or Password can not be empty");
-
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
         var res = await _postsService.AddUserPost(post, userId);
         // return Ok(user);
@@ -98,11 +93,6 @@ public class PostController : ControllerBase
             about = dto.about,
             socialLinks = dto.socialLinks
         };
-
-        //validate user credentials before adding him to database
-        // if (string.IsNullOrEmpty(user.username) || string.IsNullOrEmpty(user.password))
-        //     // return Forbid("Username or Password can not be empty");
-        //     return BadRequest("Username or Password can not be empty");
 
         await _postsService.AddAdminPost(post);
         // return Ok(user);
@@ -138,20 +128,16 @@ public class PostController : ControllerBase
         {
             return Unauthorized("You should login first to edit a post");
         }
-        
+
         var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
         if (sessionUser == null)
         {
             return Unauthorized("User Session is Expired. Please log in first.");
         }
-        
+
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
         //var post = await _postsService.GetPostById(id); // is this matters ? redundant database hit, use id directly in update
 
-        // if (post == null || post.UserId != userId)
-        // {
-        //     return NotFound("Post not found or you don't have permission to edit this post.");
-        // }
         // just create a new post obj and pass it to the update
         var post = new Post
         {
@@ -192,28 +178,14 @@ public class PostController : ControllerBase
         }
 
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
-        // var post = await _postsService.GetPostById(id); // redundant database hit
 
-        // if (post == null || post.UserId != userId)
-        // {
-        //     return NotFound("Post not found or you don't have permission to delete this post.");
-        // }
-
-        // var res = "";
-        // try
-        // {
         var res = await _postsService.DeletePost(id, userId);
-        // }
-        // catch (Exception)
-        // {
-        //     return StatusCode(500, "Error deleting the post. Please try again.");
-        // }
 
         return Ok(res);
     }
 
     [HttpGet("myPosts")]
-    public async Task<ActionResult<IEnumerable<Post>>> ShowMyPostsAsync()
+    public async Task<ActionResult> ShowMyPostsAsync()
     {
         // Retrieve user session
         var serializedUserObj = HttpContext.Session.GetString("UserSession");
@@ -229,10 +201,17 @@ public class PostController : ControllerBase
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
         var posts = await _postsService.ShowPostsById(userId);
 
-        if (!posts.Any())
+        var enumerablePosts = posts.ToList();
+        if (!enumerablePosts.Any())
             return NotFound("No posts found for this user.");
 
-        return Ok(posts);
+        var response = new
+        {
+            sessionUser.username,
+            posts = enumerablePosts
+        };
+
+        return Ok(response);
     }
 
     [HttpGet("search")]
@@ -252,5 +231,158 @@ public class PostController : ControllerBase
         return Ok(posts);
     }
 
+    [HttpPost("save/{postId:int}")]
+    public async Task<IActionResult> SaveUserPostAsync(int postId)
+    {
+        var serializedUserObj = HttpContext.Session.GetString("UserSession");
+        if (serializedUserObj == null)
+        {
+            return Unauthorized("You should login first to save a post");
+        }
 
+        var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+        if (sessionUser == null)
+        {
+            return Unauthorized("User Session is Expired. Please log in first.");
+        }
+
+        var userId = await _usersService.GetIdByUsername(sessionUser.username);
+        var postName = await _postsService.GetPostNameById(postId);
+
+        var response = await _postsService.SavePost(userId, postId, sessionUser.username, postName);
+
+        return Ok(response);
+    }
+
+    [HttpDelete("un-save/{postId:int}")]
+    public async Task<IActionResult> UnSaveUserPostAsync(int postId)
+    {
+        var serializedUserObj = HttpContext.Session.GetString("UserSession");
+        if (serializedUserObj == null)
+        {
+            return Unauthorized("You should login first to un save a post");
+        }
+
+        var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+        if (sessionUser == null)
+        {
+            return Unauthorized("User Session is Expired. Please log in first.");
+        }
+
+        var userId = await _usersService.GetIdByUsername(sessionUser.username);
+
+        var response = await _postsService.UnSavePost(userId, postId);
+
+        return Ok(response);
+    }
+
+    [HttpGet("view/saved")]
+    public async Task<IActionResult> RetrieveUserSavedPostsAsync()
+    {
+        var serializedUserObj = HttpContext.Session.GetString("UserSession");
+        if (serializedUserObj == null)
+        {
+            return Unauthorized("You should login first to view saved posts");
+        }
+
+        var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+        if (sessionUser == null)
+        {
+            return Unauthorized("User Session is Expired. Please log in first.");
+        }
+
+        var userId = await _usersService.GetIdByUsername(sessionUser.username);
+        var savedPosts = await _postsService.GetSavedPostsById(userId);
+        var enumerablePosts = savedPosts.ToList();
+        if (!enumerablePosts.Any())
+            return NotFound("No saved posts found for this user.");
+
+        return Ok(enumerablePosts);
+    }
+
+    [HttpPost("review/{postId:int}")]
+    public async Task<IActionResult> ReviewPostAsync(int postId, ReviewPostDto dto)
+    {
+        var serializedUserObj = HttpContext.Session.GetString("UserSession");
+        if (serializedUserObj == null)
+        {
+            return Unauthorized("You should login first to write a review to the post");
+        }
+
+        var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+        if (sessionUser == null)
+        {
+            return Unauthorized("User Session is Expired. Please log in first.");
+        }
+
+        // create review
+        var userId = await _usersService.GetIdByUsername(sessionUser.username);
+        var postName = await _postsService.GetPostNameById(postId);
+        if (dto.rating is < 0 or > 5)
+            return BadRequest("Please Rate Post from 1 to 5");
+        
+        var review = new ReviewPost
+        {
+            post_id = postId,
+            user_id = userId,
+            username = sessionUser.username,
+            postName = postName,
+            description = dto.description,
+            rating = dto.rating
+        };
+
+        var response = await _postsService.CreateReview(review);
+
+        return Ok(response);
+    }
+
+    [HttpDelete("un-review/{postId:int}")]
+    public async Task<IActionResult> UnReviewPostAsync(int postId)
+    {
+        var serializedUserObj = HttpContext.Session.GetString("UserSession");
+        if (serializedUserObj == null)
+        {
+            return Unauthorized("You should login first to un review the post");
+        }
+
+        var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+        if (sessionUser == null)
+        {
+            return Unauthorized("User Session is Expired. Please log in first.");
+        }
+
+        // delete review
+        var userId = await _usersService.GetIdByUsername(sessionUser.username);
+        var response = await _postsService.DeleteReview(postId, userId);
+
+        return Ok(response);
+    }
+
+    [HttpGet("view/reviews/{postId:int}")]
+    public async Task<IActionResult> ShowPostReviewsAsync(int postId)
+    {
+        // get post reviews
+        var postReviews = await _postsService.GetPostReviewsById(postId);
+        var enumerablePosts = postReviews.ToList();
+        if (!enumerablePosts.Any())
+            return NotFound("No post reviews found for this post.");
+
+        return Ok(enumerablePosts);
+    }
+    
+    [HttpGet("view/overall/rating")]
+    public async Task<IActionResult> ShowPostRatingAsync([FromQuery] int postId)
+    {
+        // get overall rating for a post
+        var response = await _postsService.GetPostRatingById(postId);
+
+        var result = new
+        {
+            overallRating = response
+        };
+        return Ok(result);
+    }
+    
+    
+    
 }

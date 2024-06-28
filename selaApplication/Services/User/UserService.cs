@@ -37,6 +37,7 @@ namespace selaApplication.Services.User
                 return "An error occurred while adding the user";
             }
         }
+
         public async Task<Models.User?> GetByUsername(string username) //alter it to return a user obj
         {
             try
@@ -57,20 +58,21 @@ namespace selaApplication.Services.User
                     return new Models.User
                     {
                         username = userName,
-                        password = password 
+                        password = password
                     };
                 }
 
-                return null; 
+                return null;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred while getting the user: {ex.Message}");
-                
+
                 return null;
             }
         }
-        public async Task<int> GetIdByUsername(string username) 
+
+        public async Task<int> GetIdByUsername(string username)
         {
             try
             {
@@ -89,13 +91,82 @@ namespace selaApplication.Services.User
                     return userId;
                 }
 
-                return -1; 
+                return -1;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred while getting the user: {ex.Message}");
-                
+
                 return -1;
+            }
+        }
+
+        public async Task<string> DeleteUser(int userId)
+        {
+            try
+            {
+                // Connection string should ideally be stored in a configuration file for security and maintainability
+                using var connector = new PostgresConnection();
+                connector.Connect();
+
+                const string sql = "DELETE FROM users WHERE user_id = @user_id";
+
+                await using var command = new NpgsqlCommand(sql, connector._connection);
+
+                // Adding parameters with their appropriate values
+                command.Parameters.AddWithValue("user_id", userId);
+
+                // Execute the command asynchronously
+                int rowsAffected = await command.ExecuteNonQueryAsync();
+
+                if (rowsAffected > 0)
+                {
+                    return "User has been removed successfully";
+                }
+
+                return "No user found to remove";
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details (this should be done to a proper logging framework in a real application)
+                Console.WriteLine($"An error occurred while removing the user: {ex.Message}");
+
+                // Return a generic error message to the caller
+                return "An error occurred while removing the user";
+            }
+        }
+
+        public async Task<string> UpdateUserPhoto(int userId, string userPhoto)
+        {
+            try
+            {
+                using var connector = new PostgresConnection();
+                connector.Connect();
+
+                const string sql =
+                    "UPDATE users SET user_photo = @user_photo " +
+                    "WHERE user_id = @user_id";
+
+                await using var command = new NpgsqlCommand(sql, connector._connection);
+
+                command.Parameters.AddWithValue("user_photo", userPhoto);
+                command.Parameters.AddWithValue("user_id", userId);
+
+                var rowsAffected = await command.ExecuteNonQueryAsync();
+
+                if (rowsAffected > 0)
+                    return "User Photo has been updated successfully";
+
+                return "No user found with this user id";
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details for debugging
+                Console.WriteLine($"An error occurred while updating user account: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                // Return an error message to the caller
+                return $"An error occurred while updating the user account: {ex.Message}";
             }
         }
         
