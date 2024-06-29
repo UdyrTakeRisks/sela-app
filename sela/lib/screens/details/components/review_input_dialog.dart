@@ -22,7 +22,7 @@ class _ReviewInputDialogState extends State<ReviewInputDialog> {
       Navigator.of(context).pop();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Please fill all fields and give a rating'),
         ),
       );
@@ -43,18 +43,18 @@ class _ReviewInputDialogState extends State<ReviewInputDialog> {
             children: [
               TextField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: const InputDecoration(labelText: 'Name'),
               ),
               const SizedBox(height: 8),
               TextField(
                 controller: _reviewController,
-                decoration: InputDecoration(labelText: 'Review'),
+                decoration: const InputDecoration(labelText: 'Review'),
                 maxLines: 3,
               ),
               const SizedBox(height: 8),
               Row(
                 children: [
-                  Text('Rating:'),
+                  const Text('Rating:'),
                   Expanded(
                     child: Slider(
                       value: _rating,
@@ -73,13 +73,13 @@ class _ReviewInputDialogState extends State<ReviewInputDialog> {
               ),
               ElevatedButton(
                 onPressed: _submitReview,
-                child: Text('Submit Review'),
+                child: const Text('Submit Review'),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
               ),
             ],
           ),

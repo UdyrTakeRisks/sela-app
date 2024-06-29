@@ -1,19 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../models/review.dart';
 import '../../../utils/colors.dart';
 import 'review_input.dart';
-
-class Review {
-  final String name;
-  final String review;
-  final double rating;
-
-  Review({
-    required this.name,
-    required this.review,
-    required this.rating,
-  });
-}
 
 class Reviews extends StatefulWidget {
   final List<Review> reviews;
@@ -35,7 +24,7 @@ class _ReviewsState extends State<Reviews> {
 
   void _addReview(String name, String review, double rating) {
     setState(() {
-      _reviews.add(Review(name: name, review: review, rating: rating));
+      _reviews.add(Review(username: name, description: review, rating: rating));
     });
   }
 
@@ -60,58 +49,63 @@ class _ReviewsState extends State<Reviews> {
     return Column(
       children: [
         Expanded(
-          child: ListView.builder(
-            itemCount: _reviews.length,
-            itemBuilder: (context, index) {
-              final review = _reviews[index];
-              return Card(
-                margin:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                color: backgroundColor1,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 20,
-                            backgroundColor: backgroundColor2,
-                            child: Text(
-                              review.name[0],
-                              style: TextStyle(color: primaryColor),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            review.name,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: textColor1,
-                            ),
-                          ),
-                        ],
+          child: _reviews.isEmpty
+              ? const Center(child: Text('No reviews found'))
+              : ListView.builder(
+                  itemCount: _reviews.length,
+                  itemBuilder: (context, index) {
+                    final review = _reviews[index];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        review.review,
-                        style: TextStyle(color: textColor2),
+                      color: backgroundColor1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor: backgroundColor2,
+                                  child: Text(
+                                    review.username[0],
+                                    style: TextStyle(color: primaryColor),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  review.username,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: textColor1,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              review.description,
+                              style: TextStyle(color: textColor2),
+                            ),
+                            const SizedBox(height: 8),
+                            _buildStarRating(review.rating),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 8),
-                      _buildStarRating(review.rating),
-                    ],
-                  ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
         ),
-        ReviewInput(onSubmit: _addReview),
+        Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: ReviewInput(onSubmit: _addReview),
+        ),
       ],
     );
   }

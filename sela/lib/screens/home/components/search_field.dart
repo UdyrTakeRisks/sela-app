@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../models/Organizations.dart';
 import '../../../size_config.dart';
+import '../../../utils/env.dart';
 import '../../details/details_screen.dart';
 import 'organizations/organization_card.dart'; // Adjust the import path as needed
 
@@ -49,8 +50,8 @@ class _SearchScreenState extends State<SearchScreen> {
       _loading = true;
     });
 
-    final response = await http.get(Uri.parse(
-        'https://selawebapp.azurewebsites.net/api/Post/search?query=$query'));
+    final response = await http
+        .get(Uri.parse('$DOTNET_URL_API_BACKEND/Post/search?query=$query'));
 
     setState(() {
       _loading = false;

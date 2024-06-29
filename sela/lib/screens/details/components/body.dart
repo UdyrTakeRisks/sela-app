@@ -1,22 +1,56 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:sela/screens/details/components/details_description.dart';
 import 'package:sela/screens/details/components/reviews.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../components/default_button.dart';
 import '../../../models/Organizations.dart';
+import '../../../models/review.dart';
 import '../../../size_config.dart';
+import '../../../utils/env.dart';
 import 'details_images.dart';
 import 'top_rounded_container.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   final Organization organization;
   final int index;
 
   const Body({super.key, required this.organization, required this.index});
 
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  late Future<List<Review>> futureReviews;
+
+  @override
+  void initState() {
+    super.initState();
+    futureReviews = fetchReviews(widget.organization.id);
+  }
+
+  Future<List<Review>> fetchReviews(int postId) async {
+    final response = await http.get(
+      Uri.parse('$DOTNET_URL_API_BACKEND/Post/view/reviews/$postId'),
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((item) => Review.fromJson(item)).toList();
+    } else if (response.statusCode == 404) {
+      // No post reviews found for this post.
+      return [];
+    } else {
+      throw Exception('Failed to load reviews');
+    }
+  }
+
   void _launchURL() async {
-    final Uri url = Uri.parse(organization.socialLinks);
+    final Uri url = Uri.parse(widget.organization.socialLinks);
     try {
       if (await launchUrl(url)) {
         throw Exception('Could not launch $url');
@@ -31,33 +65,12 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String providersList = organization.providers.join('\n');
-
-    List<Review> reviews = [
-      Review(
-        name: 'John Doe',
-        review: 'Great organization!',
-        rating: 4.5,
-      ),
-      Review(
-          name: 'Omar Smith',
-          review: 'Had a wonderful experience.',
-          rating: 3.0),
-      Review(
-          name: 'Mohamed Ali',
-          review: 'Had a wonderful experience.',
-          rating: 2.5),
-      Review(
-          name: 'Ahmed Hassan',
-          review: 'Had a wonderful experience.',
-          rating: 1.0),
-      // Add more reviews as needed
-    ];
+    String providersList = widget.organization.providers.join('\n');
 
     return SingleChildScrollView(
       child: Column(
         children: [
-          OrganizationImages(organization: organization),
+          OrganizationImages(organization: widget.organization),
           Padding(
             padding: const EdgeInsets.only(
               top: 20.0,
@@ -69,7 +82,7 @@ class Body extends StatelessWidget {
                 child: Column(
                   children: [
                     OrganizationDescription(
-                      organization: organization,
+                      organization: widget.organization,
                       pressOnSeeMore: () {},
                     ),
                     DefaultTabController(
@@ -93,7 +106,7 @@ class Body extends StatelessWidget {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(18.0),
-                                  child: Text(organization.description),
+                                  child: Text(widget.organization.description),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(18.0),
@@ -101,13 +114,28 @@ class Body extends StatelessWidget {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(18.0),
-                                  child: Text(organization.about),
+                                  child: Text(widget.organization.about),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(18.0),
-                                  child: Reviews(
-                                      reviews:
-                                          reviews), // Use the Reviews widget
+                                FutureBuilder<List<Review>>(
+                                  future: futureReviews,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                          child: CircularProgressIndicator());
+                                    } else if (snapshot.hasError) {
+                                      return Center(
+                                          child:
+                                              Text('Error: ${snapshot.error}'));
+                                    } else if (!snapshot.hasData ||
+                                        snapshot.data!.isEmpty) {
+                                      return const Center(
+                                        child: Reviews(reviews: []),
+                                      );
+                                    } else {
+                                      return Reviews(reviews: snapshot.data!);
+                                    }
+                                  },
                                 ),
                               ],
                             ),
@@ -121,9 +149,7 @@ class Body extends StatelessWidget {
             ),
           ),
           Container(
-            // margin: EdgeInsets.only(top: getProportionateScreenWidth(20)),
             color: Colors.white,
-            // padding: EdgeInsets.only(top: getProportionateScreenWidth(20)),
             child: Padding(
               padding: const EdgeInsets.only(
                 left: 50.0,
