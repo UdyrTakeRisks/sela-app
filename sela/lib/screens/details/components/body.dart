@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sela/screens/details/components/details_description.dart';
+import 'package:sela/screens/details/components/reviews.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../components/default_button.dart';
@@ -32,83 +33,107 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     String providersList = organization.providers.join('\n');
 
+    List<Review> reviews = [
+      Review(
+        name: 'John Doe',
+        review: 'Great organization!',
+        rating: 4.5,
+      ),
+      Review(
+          name: 'Omar Smith',
+          review: 'Had a wonderful experience.',
+          rating: 3.0),
+      Review(
+          name: 'Mohamed Ali',
+          review: 'Had a wonderful experience.',
+          rating: 2.5),
+      Review(
+          name: 'Ahmed Hassan',
+          review: 'Had a wonderful experience.',
+          rating: 1.0),
+      // Add more reviews as needed
+    ];
+
     return SingleChildScrollView(
       child: Column(
         children: [
-          const SizedBox(
-            height: 20,
-          ),
           OrganizationImages(organization: organization),
-          TopRoundedContainer(
-            color: Colors.white,
-            child: Column(
-              children: [
-                OrganizationDescription(
-                  organization: organization,
-                  pressOnSeeMore: () {},
-                ),
-                DefaultTabController(
-                  length: 4,
-                  child: Column(
-                    children: [
-                      const TabBar(
-                        labelColor: Colors.black,
-                        unselectedLabelColor: Colors.grey,
-                        indicatorColor: Color(0xFF356899),
-                        tabs: [
-                          Tab(text: "Description"),
-                          Tab(text: "Providers"),
-                          Tab(text: "About"),
-                          Tab(text: "Reviews"),
-                        ],
-                      ),
-                      SizedBox(
-                        height: getProportionateScreenWidth(200),
-                        child: TabBarView(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(18.0),
-                              child: Text(organization.description),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(18.0),
-                              child: Text(providersList),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(18.0),
-                              child: Text(organization.about),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.all(18.0),
-                              child: Text("Reviews coming soon!"),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 20.0,
+            ),
+            child: TopRoundedContainer(
+              color: Colors.white,
+              child: Container(
+                margin: EdgeInsets.only(top: getProportionateScreenWidth(20)),
+                child: Column(
                   children: [
-                    // ColorDots(product: product),
-                    TopRoundedContainer(
-                      color: Colors.white,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: SizeConfig.screenWidth * 0.15,
-                          right: SizeConfig.screenWidth * 0.15,
-                          bottom: getProportionateScreenWidth(40),
-                          top: getProportionateScreenWidth(15),
-                        ),
-                        child: DefaultButton(
-                          text: "Go",
-                          press: _launchURL,
-                        ),
+                    OrganizationDescription(
+                      organization: organization,
+                      pressOnSeeMore: () {},
+                    ),
+                    DefaultTabController(
+                      length: 4,
+                      child: Column(
+                        children: [
+                          const TabBar(
+                            labelColor: Colors.black,
+                            unselectedLabelColor: Colors.grey,
+                            indicatorColor: Color(0xFF356899),
+                            tabs: [
+                              Tab(text: "Description"),
+                              Tab(text: "Providers"),
+                              Tab(text: "About"),
+                              Tab(text: "Reviews"),
+                            ],
+                          ),
+                          SizedBox(
+                            height: getProportionateScreenWidth(310),
+                            child: TabBarView(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Text(organization.description),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Text(providersList),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Text(organization.about),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Reviews(
+                                      reviews:
+                                          reviews), // Use the Reviews widget
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              ],
+              ),
+            ),
+          ),
+          Container(
+            // margin: EdgeInsets.only(top: getProportionateScreenWidth(20)),
+            color: Colors.white,
+            // padding: EdgeInsets.only(top: getProportionateScreenWidth(20)),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 50.0,
+                right: 50.0,
+                bottom: 25.0,
+              ),
+              child: DefaultButton(
+                text: "Go Volunteer",
+                press: _launchURL,
+              ),
             ),
           ),
         ],

@@ -37,8 +37,8 @@ class _ProductImagesState extends State<OrganizationImages> {
     return Column(
       children: [
         SizedBox(
-          width: getProportionateScreenWidth(238),
-          height: getProportionateScreenWidth(238),
+          width: getProportionateScreenWidth(138),
+          height: getProportionateScreenWidth(138),
           child: PageView.builder(
             controller: _pageController,
             itemCount: widget.organization.imageUrls.length,
