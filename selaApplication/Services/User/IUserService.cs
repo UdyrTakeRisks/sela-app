@@ -7,5 +7,12 @@ public interface IUserService
     Task<int> GetIdByUsername(string username);
     Task<string> DeleteUser(int userId);
     Task<string> UpdateUserPhoto(int userId, string userPhoto);
-    
-} 
+
+    Task<string> UpdateNameById(int userId, string newName);
+    Task<string> UpdateEmailById(int userId, string newEmail);
+
+    Task<string> UpdatePhoneNumberById(int userId, long newPhoneNumber);
+
+    Task<string> UpdatePasswordById(int userId, string newPassword);
+
+}

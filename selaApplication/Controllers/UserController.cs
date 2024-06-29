@@ -1,10 +1,9 @@
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using selaApplication.Dtos;
-using selaApplication.Models;
-using selaApplication.Services;
 using selaApplication.Helpers;
+using selaApplication.Models;
 using selaApplication.Services.User;
+using System.Text.Json;
 
 namespace selaApplication.Controllers
 {
@@ -172,6 +171,106 @@ namespace selaApplication.Controllers
             //update user details in database
 
             return Ok();
+        }
+
+        [HttpPut("update/name")]
+        public async Task<IActionResult> UpdateNameAsync(UserNameDto dto)
+        {
+            var serializedUserObj = HttpContext.Session.GetString("UserSession");
+            if (serializedUserObj == null)
+            {
+                return Unauthorized("You should login first to update your account");
+            }
+
+            var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+            if (sessionUser == null)
+            {
+                return Unauthorized("User Session is Expired. Please log in first.");
+            }
+
+            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+
+            var newName = dto.name;
+
+            //update user name in database
+            var response = await _usersService.UpdateNameById(userId, newName);
+            return Ok(response);
+        }
+
+        [HttpPut("update/email")]
+        public async Task<IActionResult> UpdateEmailAsync(UserEmailDto dto)
+        {
+            var serializedUserObj = HttpContext.Session.GetString("UserSession");
+            if (serializedUserObj == null)
+            {
+                return Unauthorized("You should login first to update your account");
+            }
+
+            var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+            if (sessionUser == null)
+            {
+                return Unauthorized("User Session is Expired. Please log in first.");
+            }
+
+            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+
+            var newEmail = dto.email;
+
+            //update user email in database
+            var response = await _usersService.UpdateEmailById(userId, newEmail);
+
+            return Ok(response);
+
+        }
+
+        [HttpPut("update/phone")]
+        public async Task<IActionResult> UpdatePhoneNumberAsync(UserPhoneDto dto)
+        {
+            var serializedUserObj = HttpContext.Session.GetString("UserSession");
+            if (serializedUserObj == null)
+            {
+                return Unauthorized("You should login first to update your account");
+            }
+
+            var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+            if (sessionUser == null)
+            {
+                return Unauthorized("User Session is Expired. Please log in first.");
+            }
+
+            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+
+            var newPhoneNumber = dto.phoneNumber;
+
+            //update user phone number in database
+            var response = await _usersService.UpdatePhoneNumberById(userId, newPhoneNumber);
+
+            return Ok(response);
+        }
+
+        [HttpPut("update/password")]
+        public async Task<IActionResult> UpdatePasswordAsync(UserPasswordDto dto)
+        {
+            var serializedUserObj = HttpContext.Session.GetString("UserSession");
+            if (serializedUserObj == null)
+            {
+                return Unauthorized("You should login first to update your account");
+            }
+
+            var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+            if (sessionUser == null)
+            {
+                return Unauthorized("User Session is Expired. Please log in first.");
+            }
+
+            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+
+            var newPassword = dto.password;
+
+            //update user password in database
+            var response = await _usersService.UpdatePasswordById(userId, newPassword);
+
+            return Ok(response);
         }
 
         // delete user account endpoint - front should send the cookie
