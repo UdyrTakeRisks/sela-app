@@ -347,6 +347,74 @@ namespace selaApplication.Services.User
             }
         }
 
+        public async Task<string> GetNameUser(int userId)
+        {
+
+            try
+            {
+                using var connector = new PostgresConnection();
+                connector.Connect();
+
+                const string sql =
+                    "SELECT name FROM users " +
+                    "WHERE user_id = @user_id";
+
+                await using var command = new NpgsqlCommand(sql, connector._connection);
+                command.Parameters.AddWithValue("user_id", userId);
+
+                var name = await command.ExecuteScalarAsync();
+                return name?.ToString();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while retrieving user name: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                return ("An error occurred while retrieving the user name of the user: {ex.Message}");
+            }
+        }
+
+        public async Task<Models.User?> GetUserById(int userId)
+        {
+            try
+            {
+                using var connector = new PostgresConnection();
+                connector.Connect();
+
+                const string sql =
+                    "SELECT * FROM users " +
+                    "WHERE user_id = @user_id";
+
+                await using var command = new NpgsqlCommand(sql, connector._connection);
+                command.Parameters.AddWithValue("user_id", userId);
+
+                await using var reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    var userName = reader.GetString(reader.GetOrdinal("username"));
+                    var name = reader.GetString(reader.GetOrdinal("name"));
+                    var email = reader.GetString(reader.GetOrdinal("email"));
+                    var phoneNumber = reader.GetString(reader.GetOrdinal("phone_number"));
+                    var userPhoto = reader.GetString(reader.GetOrdinal("user_photo"));
+
+                    return new Models.User
+                    {
+                        username = userName,
+                        name = name,
+                        email = email,
+                        phoneNumber = phoneNumber,
+                        userPhoto = userPhoto
+                    };
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while retrieving user: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                return null;
+            }
+        }
 
 
 

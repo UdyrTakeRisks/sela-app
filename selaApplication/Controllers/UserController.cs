@@ -336,8 +336,40 @@ namespace selaApplication.Controllers
             return Ok(userPhoto);
         }
 
+        [HttpGet("view/name")]
+        public async Task<IActionResult> GetUserNameAsync()
+        {
+            var serializedUserObj = HttpContext.Session.GetString("UserSession");
+            if (serializedUserObj == null)
+            {
+                return Unauthorized("You should login first to view your account");
+            }
 
+            var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+            if (sessionUser == null)
+            {
+                return Unauthorized("User Session is Expired. Please log in first.");
+            }
 
+            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+
+            var userName = await _usersService.GetNameUser(userId);
+
+            return Ok(userName);
+        }
+
+        [HttpGet("view/UserDetails/{userId}")]
+
+        public async Task<IActionResult> GetUserDetailsAsync(int userId)
+        {
+            var user = await _usersService.GetUserById(userId);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            return Ok(user);
+        }
 
 
 
