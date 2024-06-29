@@ -390,6 +390,7 @@ namespace selaApplication.Services.User
                 await using var reader = command.ExecuteReader();
                 if (reader.Read())
                 {
+                    var user_id = reader.GetInt32(reader.GetOrdinal("user_id"));
                     var userName = reader.GetString(reader.GetOrdinal("username"));
                     var name = reader.GetString(reader.GetOrdinal("name"));
                     var email = reader.GetString(reader.GetOrdinal("email"));
@@ -398,6 +399,7 @@ namespace selaApplication.Services.User
 
                     return new Models.User
                     {
+                        user_id = user_id,
                         username = userName,
                         name = name,
                         email = email,
@@ -405,7 +407,7 @@ namespace selaApplication.Services.User
                         userPhoto = userPhoto
                     };
                 }
-
+                
                 return null;
             }
             catch (Exception ex)
