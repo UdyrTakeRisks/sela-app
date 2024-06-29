@@ -18,4 +18,8 @@ public interface IUserService
 
     Task<string> UpdatePasswordById(int userId, string newPassword);
 
+    Task<string> GetUserPhoto(int userId);
+    Task<string> GetNameUser(int userId);
+
+    Task<Models.User?> GetUserById(int userId);
 }
