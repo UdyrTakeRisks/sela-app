@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sela/utils/colors.dart';
 
 import '../../../models/my_post_model.dart';
 import '../../../size_config.dart';
@@ -11,15 +12,33 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: backgroundColor4,
       margin: const EdgeInsets.all(8.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (post.imageUrls != null && post.imageUrls!.isNotEmpty)
-              Image.network(post.imageUrls![0]),
-            SizedBox(height: getProportionateScreenHeight(30)),
+            post.imageUrls != null && post.imageUrls!.isNotEmpty
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.network(
+                      post.imageUrls![0],
+                      height: getProportionateScreenHeight(200),
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                : Container(
+                    height: getProportionateScreenHeight(200),
+                    color: Colors.grey.withOpacity(0.2),
+                    child: Center(
+                      child: Text(
+                        'No image',
+                      ),
+                    ),
+                  ),
+            SizedBox(height: getProportionateScreenHeight(20)),
             Text(
               post.title ?? '', // Use default value if title is null
               style: const TextStyle(
@@ -27,25 +46,30 @@ class PostCard extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: getProportionateScreenHeight(8)),
             Text(
               post.description ??
                   '', // Use default value if description is null
             ),
-            SizedBox(height: 8),
+            SizedBox(height: getProportionateScreenHeight(8)),
             Wrap(
               spacing: 8.0,
-              children: (post.tags ?? [])
-                  .map((tag) => Chip(label: Text(tag)))
-                  .toList(), // Use empty list if tags is null
-            ),
-            SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                    "Posted by: ${post.name ?? ''}"), // Use default value if name is null
-              ],
+              children: (post.tags ?? []).map((tag) {
+                return Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    tag,
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                );
+              }).toList(),
             ),
           ],
         ),

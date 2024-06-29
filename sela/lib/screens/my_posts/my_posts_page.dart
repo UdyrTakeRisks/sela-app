@@ -29,28 +29,49 @@ class _MyPostsPageState extends State<MyPostsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Services Posts'),
+        scrolledUnderElevation: 0,
       ),
-      body: Column(
-        children: [
-          UserInfo(), // Display user info
-          Expanded(
-            child: ValueListenableBuilder<List<MyPost>>(
-              valueListenable: viewModel.postsNotifier,
-              builder: (context, posts, _) {
-                if (posts.isEmpty) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
-                  return ListView.builder(
-                    itemCount: posts.length,
-                    itemBuilder: (context, index) {
-                      return PostCard(post: posts[index]);
-                    },
-                  );
-                }
-              },
-            ),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await viewModel.fetchUserPosts();
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Column(
+            children: [
+              ValueListenableBuilder<MyPostsData>(
+                valueListenable: viewModel.postsNotifier,
+                builder: (context, data, _) {
+                  if (data.username.isEmpty) {
+                    return Center(child: CircularProgressIndicator());
+                  } else {
+                    return UserInfo(
+                      userName: data.username,
+                      userImage: '',
+                    );
+                  }
+                },
+              ), // Display user info
+              Expanded(
+                child: ValueListenableBuilder<MyPostsData>(
+                  valueListenable: viewModel.postsNotifier,
+                  builder: (context, data, _) {
+                    if (data.posts.isEmpty) {
+                      return Center(child: CircularProgressIndicator());
+                    } else {
+                      return ListView.builder(
+                        itemCount: data.posts.length,
+                        itemBuilder: (context, index) {
+                          return PostCard(post: data.posts[index]);
+                        },
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
