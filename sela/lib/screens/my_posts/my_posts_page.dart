@@ -8,6 +8,8 @@ import 'my_posts_viewmodel.dart';
 
 class MyPostsPage extends StatefulWidget {
   static String routeName = '/my_posts';
+
+  const MyPostsPage({super.key});
   @override
   _MyPostsPageState createState() => _MyPostsPageState();
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'review_input_dialog.dart';
 
 class ReviewInput extends StatelessWidget {
-  final Function(String name, String review, double rating) onSubmit;
+  final Function(String review, double rating) onSubmit;
 
   const ReviewInput({super.key, required this.onSubmit});
 
@@ -14,6 +14,7 @@ class ReviewInput extends StatelessWidget {
         return ReviewInputDialog(onSubmit: onSubmit);
       },
     );
+    print('Review dialog opened');
   }
 
   @override

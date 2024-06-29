@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 
 class ReviewInputDialog extends StatefulWidget {
-  final Function(String name, String review, double rating) onSubmit;
+  final Function(String review, double rating) onSubmit;
 
-  const ReviewInputDialog({Key? key, required this.onSubmit}) : super(key: key);
+  const ReviewInputDialog({super.key, required this.onSubmit});
 
   @override
   _ReviewInputDialogState createState() => _ReviewInputDialogState();
 }
 
 class _ReviewInputDialogState extends State<ReviewInputDialog> {
-  final _nameController = TextEditingController();
   final _reviewController = TextEditingController();
   double _rating = 0.0;
 
   void _submitReview() {
-    if (_nameController.text.isNotEmpty &&
-        _reviewController.text.isNotEmpty &&
-        _rating > 0) {
-      widget.onSubmit(_nameController.text, _reviewController.text, _rating);
+    if (_reviewController.text.isNotEmpty && _rating > 0) {
+      widget.onSubmit(_reviewController.text, _rating);
       Navigator.of(context).pop();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -27,6 +24,9 @@ class _ReviewInputDialogState extends State<ReviewInputDialog> {
         ),
       );
     }
+    print('Review submitted');
+    print('Review: ${_reviewController.text}');
+    print('Rating: $_rating');
   }
 
   @override
@@ -41,11 +41,6 @@ class _ReviewInputDialogState extends State<ReviewInputDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(
-                controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-              ),
-              const SizedBox(height: 8),
               TextField(
                 controller: _reviewController,
                 decoration: const InputDecoration(labelText: 'Review'),

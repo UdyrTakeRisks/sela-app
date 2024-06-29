@@ -10,6 +10,7 @@ import '../../../components/default_button.dart';
 import '../../../models/Organizations.dart';
 import '../../../models/review.dart';
 import '../../../size_config.dart';
+import '../../../utils/colors.dart';
 import '../../../utils/env.dart';
 import 'details_images.dart';
 import 'top_rounded_container.dart';
@@ -61,6 +62,12 @@ class _BodyState extends State<Body> {
       print('Error launching URL: $e');
       // Handle error as needed, e.g., show a dialog or toast with an error message
     }
+  }
+
+  Future<void> refreshReviews() async {
+    setState(() {
+      futureReviews = fetchReviews(widget.organization.id);
+    });
   }
 
   @override
@@ -116,26 +123,51 @@ class _BodyState extends State<Body> {
                                   padding: const EdgeInsets.all(18.0),
                                   child: Text(widget.organization.about),
                                 ),
-                                FutureBuilder<List<Review>>(
-                                  future: futureReviews,
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return const Center(
-                                          child: CircularProgressIndicator());
-                                    } else if (snapshot.hasError) {
-                                      return Center(
-                                          child:
-                                              Text('Error: ${snapshot.error}'));
-                                    } else if (!snapshot.hasData ||
-                                        snapshot.data!.isEmpty) {
-                                      return const Center(
-                                        child: Reviews(reviews: []),
-                                      );
-                                    } else {
-                                      return Reviews(reviews: snapshot.data!);
-                                    }
+                                RefreshIndicator(
+                                  color: primaryColor,
+                                  semanticsLabel: "Refresh Organizations",
+                                  semanticsValue: "Refresh Organizations",
+                                  onRefresh: () async {
+                                    setState(() {
+                                      futureReviews =
+                                          fetchReviews(widget.organization.id);
+                                    });
+                                    // show a snackbar
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Reviews refreshed'),
+                                      ),
+                                    );
                                   },
+                                  child: FutureBuilder<List<Review>>(
+                                    future: futureReviews,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Center(
+                                            child: CircularProgressIndicator());
+                                      } else if (snapshot.hasError) {
+                                        return Center(
+                                            child: Text(
+                                                'Error: ${snapshot.error}'));
+                                      } else if (!snapshot.hasData ||
+                                          snapshot.data!.isEmpty) {
+                                        return Center(
+                                          child: Reviews(
+                                            reviews: const [],
+                                            postId: widget.organization.id,
+                                            refreshReviews: refreshReviews,
+                                          ),
+                                        );
+                                      } else {
+                                        return Reviews(
+                                          reviews: snapshot.data!,
+                                          postId: widget.organization.id,
+                                          refreshReviews: refreshReviews,
+                                        );
+                                      }
+                                    },
+                                  ),
                                 ),
                               ],
                             ),

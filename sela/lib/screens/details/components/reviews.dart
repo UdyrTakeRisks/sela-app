@@ -1,13 +1,24 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../models/review.dart';
 import '../../../utils/colors.dart';
+import '../../../utils/env.dart';
 import 'review_input.dart';
 
 class Reviews extends StatefulWidget {
   final List<Review> reviews;
+  final int postId;
+  final VoidCallback refreshReviews;
 
-  const Reviews({Key? key, required this.reviews}) : super(key: key);
+  const Reviews(
+      {super.key,
+      required this.reviews,
+      required this.postId,
+      required this.refreshReviews});
 
   @override
   _ReviewsState createState() => _ReviewsState();
@@ -22,10 +33,65 @@ class _ReviewsState extends State<Reviews> {
     _reviews.addAll(widget.reviews);
   }
 
-  void _addReview(String name, String review, double rating) {
-    setState(() {
-      _reviews.add(Review(username: name, description: review, rating: rating));
-    });
+  Future<void> _addReview(String reviewText, double rating) async {
+    print('Adding review: $reviewText, $rating');
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var cookies = prefs.getString('cookie');
+
+      print('Cookies: $cookies');
+      var url =
+          Uri.parse('$DOTNET_URL_API_BACKEND/Post/review/${widget.postId}');
+
+      print('URL: $url');
+
+      var headers = {
+        'Content-Type': 'application/json',
+        'Cookie': cookies!,
+      };
+
+      var body = jsonEncode({
+        'description': reviewText,
+        'rating': rating,
+      });
+
+      print('Adding review: $body');
+
+      var response = await http.post(
+        url,
+        headers: headers,
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        // Refresh the reviews in the parent widget
+        widget.refreshReviews();
+
+        print('Review added successfully');
+        print('Response: ${response.body}');
+        // Show a snackbar with a success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Review added successfully'),
+          ),
+        );
+      } else {
+        // Handle errors or show feedback based on response
+        print('Failed to add review: ${response.statusCode}');
+        // You can show an error message or handle the response accordingly
+        // e.g., show a dialog or toast with an error message
+
+        // Show a snackbar with an error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to add review. Please try again later.'),
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error adding review: $e');
+      // Handle any other errors
+    }
   }
 
   Widget _buildStarRating(double rating) {
@@ -103,7 +169,7 @@ class _ReviewsState extends State<Reviews> {
                 ),
         ),
         Padding(
-          padding: const EdgeInsets.all(18.0),
+          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
           child: ReviewInput(onSubmit: _addReview),
         ),
       ],
