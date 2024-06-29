@@ -62,7 +62,12 @@ class _MyPostsPageState extends State<MyPostsPage> {
                       return ListView.builder(
                         itemCount: data.posts.length,
                         itemBuilder: (context, index) {
-                          return PostCard(post: data.posts[index]);
+                          return PostCard(
+                            post: data.posts[index],
+                            onDelete: () async {
+                              await viewModel.fetchUserPosts();
+                            },
+                          );
                         },
                       );
                     }
