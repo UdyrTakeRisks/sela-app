@@ -169,6 +169,256 @@ namespace selaApplication.Services.User
                 return $"An error occurred while updating the user account: {ex.Message}";
             }
         }
-        
+
+        public async Task<string> UpdateNameById(int userId, string newName)
+        {
+            try
+            {
+                using var connector = new PostgresConnection();
+                connector.Connect();
+
+                const string sql =
+                    "UPDATE users SET name = @name " +
+                    "WHERE user_id = @user_id";
+
+                await using var command = new NpgsqlCommand(sql, connector._connection);
+
+                command.Parameters.AddWithValue("name", newName);
+                command.Parameters.AddWithValue("user_id", userId);
+
+                var rowsAffected = await command.ExecuteNonQueryAsync();
+                if (rowsAffected > 0)
+                    return "Name has been updated successfully";
+
+                return "No user found with this user id";
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"An error occurred while updating name of user: {ex.Message} ");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                return $"An error occurred while updating the name of the user: {ex.Message}";
+            }
+        }
+
+        public async Task<string> UpdateEmailById(int userId, string newEmail)
+        {
+            try
+            {
+                using var connector = new PostgresConnection();
+                connector.Connect();
+
+                const string sql =
+                    "UPDATE users SET email = @email " +
+                    "WHERE user_id = @user_id";
+
+                await using var command = new NpgsqlCommand(sql, connector._connection);
+                command.Parameters.AddWithValue("email", newEmail);
+                command.Parameters.AddWithValue("user_id", userId);
+
+                var rowsAffected = await command.ExecuteNonQueryAsync();
+                if (rowsAffected > 0)
+                    return "Email has been updated successfully";
+
+                return "No user found with this user id";
+
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"An error occurred while updating email of user: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                return $"An error occurred while updating the email of the user: {ex.Message}";
+            }
+        }
+
+        public async Task<string> UpdatePhoneNumberById(int userId, string newPhoneNumber)
+        {
+            try
+            {
+                var connector = new PostgresConnection();
+                connector.Connect();
+
+                const string sql =
+                    "UPDATE users SET phone_number = @phone_number " +
+                    "WHERE user_id = @user_id";
+                await using var command = new NpgsqlCommand(sql, connector._connection);
+                command.Parameters.AddWithValue("phone_number", newPhoneNumber);
+                command.Parameters.AddWithValue("user_id", userId);
+
+                var rowsAffected = await command.ExecuteNonQueryAsync();
+                if (rowsAffected > 0)
+                    return "Phone number has been updated successfully";
+
+                return "No user found with this user id";
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"An error occurred while updating phone number: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                return $"An error occurred while updating the phone number of the user: {ex.Message}";
+            }
+        }
+
+        public async Task<string> UpdatePasswordById(int userId, string newPassword)
+        {
+            try
+            {
+                var connector = new PostgresConnection();
+                connector.Connect();
+
+                const string sql =
+                    "UPDATE users SET password = @password " +
+                    "WHERE user_id = @user_id";
+                await using var command = new NpgsqlCommand(sql, connector._connection);
+                command.Parameters.AddWithValue("password", newPassword);
+                command.Parameters.AddWithValue("user_id", userId);
+
+                var rowsAffected = await command.ExecuteNonQueryAsync();
+                if (rowsAffected > 0)
+                    return "Password has been updated successfully";
+
+                return "No user found with this user id";
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"An error occurred while updating password: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                return $"An error occurred while updating the password of the user: {ex.Message}";
+
+            }
+        }
+
+        public async Task<string> GetPasswordById(int userId)
+        {
+            try
+            {
+                using var connector = new PostgresConnection();
+                connector.Connect();
+
+                const string sql =
+                    "SELECT password FROM users " +
+                    "WHERE user_id = @user_id";
+
+                await using var command = new NpgsqlCommand(sql, connector._connection);
+                command.Parameters.AddWithValue("user_id", userId);
+
+                var password = await command.ExecuteScalarAsync();
+                return password?.ToString();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while retrieving password: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                return ("An error occurred while retrieving the password of the user: {ex.Message}");
+            }
+        }
+
+        public async Task<string> GetUserPhoto(int userId)
+        {
+            try
+            {
+                using var connector = new PostgresConnection();
+                connector.Connect();
+
+                const string sql =
+                    "SELECT user_photo FROM users " +
+                    "WHERE user_id = @user_id";
+
+                await using var command = new NpgsqlCommand(sql, connector._connection);
+                command.Parameters.AddWithValue("user_id", userId);
+
+                var userPhoto = await command.ExecuteScalarAsync();
+                return userPhoto?.ToString();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while retrieving user photo: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                return ("An error occurred while retrieving the user photo of the user: {ex.Message}");
+            }
+        }
+
+        public async Task<string> GetNameUser(int userId)
+        {
+
+            try
+            {
+                using var connector = new PostgresConnection();
+                connector.Connect();
+
+                const string sql =
+                    "SELECT name FROM users " +
+                    "WHERE user_id = @user_id";
+
+                await using var command = new NpgsqlCommand(sql, connector._connection);
+                command.Parameters.AddWithValue("user_id", userId);
+
+                var name = await command.ExecuteScalarAsync();
+                return name?.ToString();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while retrieving user name: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                return ("An error occurred while retrieving the user name of the user: {ex.Message}");
+            }
+        }
+
+        public async Task<Models.User?> GetUserById(int userId)
+        {
+            try
+            {
+                using var connector = new PostgresConnection();
+                connector.Connect();
+
+                const string sql =
+                    "SELECT * FROM users " +
+                    "WHERE user_id = @user_id";
+
+                await using var command = new NpgsqlCommand(sql, connector._connection);
+                command.Parameters.AddWithValue("user_id", userId);
+
+                await using var reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    var user_id = reader.GetInt32(reader.GetOrdinal("user_id"));
+                    var userName = reader.GetString(reader.GetOrdinal("username"));
+                    var name = reader.GetString(reader.GetOrdinal("name"));
+                    var email = reader.GetString(reader.GetOrdinal("email"));
+                    var phoneNumber = reader.GetString(reader.GetOrdinal("phone_number"));
+                    var userPhoto = reader.GetString(reader.GetOrdinal("user_photo"));
+
+                    return new Models.User
+                    {
+                        user_id = user_id,
+                        username = userName,
+                        name = name,
+                        email = email,
+                        phoneNumber = phoneNumber,
+                        userPhoto = userPhoto
+                    };
+                }
+                
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while retrieving user: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                return null;
+            }
+        }
+
+
+
     }
 }

@@ -1,14 +1,15 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace selaApplication.Models;
 
 public class User
 {
-    public string? userPhoto { get; set; }  
+    public int user_id { get; set; }
+    public string? userPhoto { get; set; }
     [MaxLength(255)] public string username { get; set; }
     [MaxLength(255)] public string name { get; set; }
     [MaxLength(255)] public string email { get; set; }
-    public long phoneNumber { get; set; } 
-    [MaxLength(255)] public string password { get; set; }
+    [JsonIgnore] public string phoneNumber { get; set; }
+    [MaxLength(255)][JsonIgnore] public string password { get; set; }
 }
