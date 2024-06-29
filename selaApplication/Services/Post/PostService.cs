@@ -7,28 +7,31 @@ namespace selaApplication.Services.Post;
 
 public class PostService : IPostService
 {
-    public async Task<string> AddAdminPost(Models.Post post) // behind
+    public async Task<string> AddAdminPost(Models.Post post) 
     {
         try
         {
-            // int typeValue = (int)Models.Post.Type.Organization;
             using var connector = new PostgresConnection();
             connector.Connect();
 
-            const string sql = "INSERT INTO posts (name, post_type, title, description, about, social_links)" +
-                               " VALUES (@name, @post_type, @title, @description, @about, @social_links)";
+            const string sql =
+                "INSERT INTO posts (imageurls, name, post_type, tags, title, description, providers, about, social_links)" +
+                " VALUES (@imageURLs, @name, @post_type, @tags, @title, @description, @providers, @about, @social_links)";
 
             await using var command = new NpgsqlCommand(sql, connector._connection);
+
+            command.Parameters.AddWithValue("imageURLs", post.ImageUrLs);
             command.Parameters.AddWithValue("name", post.name);
             command.Parameters.AddWithValue("post_type", post.Type.ToString());
+            command.Parameters.AddWithValue("tags", post.tags);
             command.Parameters.AddWithValue("title", post.title);
             command.Parameters.AddWithValue("description", post.description);
+            command.Parameters.AddWithValue("providers", post.providers);
             command.Parameters.AddWithValue("about", post.about);
             command.Parameters.AddWithValue("social_links", post.socialLinks);
-
             await command.ExecuteNonQueryAsync();
 
-            return "post has been added successfully";
+            return "Post has been added successfully";
         }
         catch (Exception ex)
         {
@@ -69,7 +72,7 @@ public class PostService : IPostService
             command.Parameters.AddWithValue("user_id", userId);
             await command.ExecuteNonQueryAsync();
 
-            return "post has been added Successfully";
+            return "Post has been added Successfully";
         }
         catch (Exception ex)
         {
@@ -218,7 +221,7 @@ public class PostService : IPostService
                 $"about={post.about}, social_links={post.socialLinks}, postId={post.post_id}, userId={userId}");
 
             command.Parameters.AddWithValue("imageURLs", post.ImageUrLs ?? (object)DBNull.Value);
-            command.Parameters.AddWithValue("name", post.name ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("name", post.name);
             command.Parameters.AddWithValue("post_type", post.Type.ToString());
             command.Parameters.AddWithValue("tags", post.tags ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("title", post.title ?? (object)DBNull.Value);

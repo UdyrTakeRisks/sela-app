@@ -88,15 +88,16 @@ public class PostController : ControllerBase
             ImageUrLs = dto.ImageUrLs,
             name = dto.name,
             Type = dto.Type,
+            tags = dto.tags,
             title = dto.title,
             description = dto.description,
+            providers = dto.providers,
             about = dto.about,
             socialLinks = dto.socialLinks
         };
 
-        await _postsService.AddAdminPost(post);
-        // return Ok(user);
-        return Ok("Post has been added Successfully");
+        var response = await _postsService.AddAdminPost(post);
+        return Ok(response);
     }
 
     [HttpGet("view/all/orgs")]

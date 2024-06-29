@@ -35,9 +35,9 @@ public static class UserHelper
             return false;
 
         // Regular expression pattern for basic email validation
-        string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+        const string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
 
-        Regex regex = new Regex(pattern);
+        var regex = new Regex(pattern);
         return regex.IsMatch(email);
     }
 
@@ -50,7 +50,7 @@ public static class UserHelper
         }
 
         // Check if the phone number starts with the specified prefixes
-        string prefix = phoneNumber.Substring(0, 2);
+        var prefix = phoneNumber.Substring(0, 2);
         if (prefix != "11" && prefix != "15" && prefix != "10" && prefix != "12")
         {
             return false;

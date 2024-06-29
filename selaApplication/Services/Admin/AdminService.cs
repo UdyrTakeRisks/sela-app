@@ -1,16 +1,10 @@
 using Npgsql;
-using selaApplication.Dtos;
-using selaApplication.Models;
 using selaApplication.Persistence;
-using selaApplication.Services.Post;
 namespace selaApplication.Services.Admin
 {
     public class AdminService : IAdminService
     {
-
-        private readonly IPostService _postService;
-
-
+        
         public async Task<bool> DeletePost(int postId)
         {
             try
@@ -39,10 +33,10 @@ namespace selaApplication.Services.Admin
                 using var connector = new PostgresConnection();
                 connector.Connect();
 
-                const string deletePostsSql = "DELETE FROM posts WHERE user_id = @user_id";
-                await using var deletePostsCommand = new NpgsqlCommand(deletePostsSql, connector._connection);
-                deletePostsCommand.Parameters.AddWithValue("user_id", userId);
-                await deletePostsCommand.ExecuteNonQueryAsync();
+                // const string deletePostsSql = "DELETE FROM posts WHERE user_id = @user_id";
+                // await using var deletePostsCommand = new NpgsqlCommand(deletePostsSql, connector._connection);
+                // deletePostsCommand.Parameters.AddWithValue("user_id", userId);
+                // await deletePostsCommand.ExecuteNonQueryAsync();
 
                 const string deleteUserSql = "DELETE FROM users WHERE user_id = @user_id";
                 await using var deleteUserCommand = new NpgsqlCommand(deleteUserSql, connector._connection);
@@ -57,5 +51,43 @@ namespace selaApplication.Services.Admin
                 return false;
             }
         }
+
+        public async Task<IEnumerable<Models.User>> GetAllUsers()
+        {
+            try
+            {
+                using var connector = new PostgresConnection();
+                connector.Connect();
+
+                const string sql = "SELECT * FROM users";
+
+                var users = new List<Models.User>();
+
+                await using var command = new NpgsqlCommand(sql, connector._connection);
+                
+                await using var reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    var fetchedUser = new Models.User
+                    {
+                        user_id = reader.GetInt32(reader.GetOrdinal("user_id")),
+                        // userPhoto = reader.GetString(reader.GetOrdinal("user_photo")),
+                        username = reader.GetString(reader.GetOrdinal("username")),
+                        name = reader.GetString(reader.GetOrdinal("name")),
+                        email = reader.GetString(reader.GetOrdinal("email"))
+                    };
+                    users.Add(fetchedUser);
+                }
+
+                return users;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while getting users: {ex.Message}");
+
+                return null;
+            }
+        }
+        
     }
 }
