@@ -62,9 +62,9 @@ namespace selaApplication.Controllers
             var hashedPassword = UserHelper.HashPassword(user.password);
             user.password = hashedPassword;
 
-            await _usersService.AddUser(user);
+            var response = await _usersService.AddUser(user);
             // return Ok(user);
-            return Ok("User Registered Successfully");
+            return Ok(response);
         }
 
         [HttpPost("login")]
@@ -145,9 +145,7 @@ namespace selaApplication.Controllers
             var userId = await _usersService.GetIdByUsername(sessionUser.username);
 
             var userPhoto = dto.userPhoto;
-
-
-
+            
             //update user photo in database
             var response = await _usersService.UpdateUserPhoto(userId, userPhoto);
             return Ok(response);
@@ -310,7 +308,31 @@ namespace selaApplication.Controllers
 
             var response = await _usersService.UpdatePasswordById(userId, hashedNewPassword);
 
-            return Ok("Password updated successfully.");
+            return Ok(response);
+        }
+
+
+        // delete user account endpoint - front should send the cookie
+        [HttpDelete("delete")]
+        public async Task<IActionResult> RemoveUserAsync()
+        {
+            var serializedUserObj = HttpContext.Session.GetString("UserSession");
+            if (serializedUserObj == null)
+            {
+                return Unauthorized("You should login first to remove your account");
+            }
+
+            var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+            if (sessionUser == null)
+            {
+                return Unauthorized("User Session is Expired. Please log in first.");
+            }
+
+            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+
+            var result = await _usersService.DeleteUser(userId);
+
+            return Ok(result);
         }
 
 
@@ -371,29 +393,5 @@ namespace selaApplication.Controllers
             return Ok(user);
         }
 
-
-
-        // delete user account endpoint - front should send the cookie
-        [HttpDelete("delete")]
-        public async Task<IActionResult> RemoveUserAsync()
-        {
-            var serializedUserObj = HttpContext.Session.GetString("UserSession");
-            if (serializedUserObj == null)
-            {
-                return Unauthorized("You should login first to remove your account");
-            }
-
-            var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
-            if (sessionUser == null)
-            {
-                return Unauthorized("User Session is Expired. Please log in first.");
-            }
-
-            var userId = await _usersService.GetIdByUsername(sessionUser.username);
-
-            var result = await _usersService.DeleteUser(userId);
-
-            return Ok(result);
-        }
     }
 }
