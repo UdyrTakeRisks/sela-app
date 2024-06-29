@@ -3,16 +3,84 @@
   "WorkspaceRootPath": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\controllers\\postcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:controllers\\postcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\services\\post\\ipostservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:services\\post\\ipostservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\services\\admin\\adminservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:services\\admin\\adminservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\services\\admin\\iadminservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:services\\admin\\iadminservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\persistence\\postgresconnection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:persistence\\postgresconnection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\models\\reviewpost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:models\\reviewpost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\models\\admin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:models\\admin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\models\\post.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:models\\post.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\helpers\\userhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:helpers\\userhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\dtos\\userphotodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:dtos\\userphotodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\dtos\\userlogindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:dtos\\userlogindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\dtos\\postdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:dtos\\postdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\dtos\\reviewpostdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:dtos\\reviewpostdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\services\\post\\postservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:services\\post\\postservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\services\\user\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:services\\user\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\services\\user\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:services\\user\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|d:\\moalaa_selaapp\\sela-app\\selaapplication\\services\\post\\ipostservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7421DAA5-3915-4F32-BC5C-F237A50B9E67}|selaApplication.csproj|solutionrelative:services\\post\\ipostservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,45 +90,266 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ReviewPost.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Models\\ReviewPost.cs",
+              "RelativeDocumentMoniker": "Models\\ReviewPost.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Models\\ReviewPost.cs",
+              "RelativeToolTip": "Models\\ReviewPost.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-29T03:33:41.427Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "User.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Models\\User.cs",
+              "RelativeDocumentMoniker": "Models\\User.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Models\\User.cs",
+              "RelativeToolTip": "Models\\User.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-29T03:33:43.415Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "PostgresConnection.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Persistence\\PostgresConnection.cs",
+              "RelativeDocumentMoniker": "Persistence\\PostgresConnection.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Persistence\\PostgresConnection.cs",
+              "RelativeToolTip": "Persistence\\PostgresConnection.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-29T03:34:16.226Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AdminController.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Controllers\\AdminController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AdminController.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Controllers\\AdminController.cs",
+              "RelativeToolTip": "Controllers\\AdminController.cs",
+              "ViewState": "AQIAAEwAAAAAAAAAAAAAAEwAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-29T03:16:44.986Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AdminService.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Services\\Admin\\AdminService.cs",
+              "RelativeDocumentMoniker": "Services\\Admin\\AdminService.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Services\\Admin\\AdminService.cs",
+              "RelativeToolTip": "Services\\Admin\\AdminService.cs",
+              "ViewState": "AQIAAAsAAAAAAAAAAAAqwAsAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-29T03:11:06.627Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IAdminService.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Services\\Admin\\IAdminService.cs",
+              "RelativeDocumentMoniker": "Services\\Admin\\IAdminService.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Services\\Admin\\IAdminService.cs",
+              "RelativeToolTip": "Services\\Admin\\IAdminService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-29T03:11:09.876Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "PostController.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Controllers\\PostController.cs",
+              "RelativeDocumentMoniker": "Controllers\\PostController.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Controllers\\PostController.cs",
+              "RelativeToolTip": "Controllers\\PostController.cs",
+              "ViewState": "AQIAAF4BAAAAAAAAAAAswG4BAAAjAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-23T18:08:06.319Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserDto.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Dtos\\UserDto.cs",
+              "RelativeDocumentMoniker": "Dtos\\UserDto.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Dtos\\UserDto.cs",
+              "RelativeToolTip": "Dtos\\UserDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAoAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-29T03:07:19.8Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Admin.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Models\\Admin.cs",
+              "RelativeDocumentMoniker": "Models\\Admin.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Models\\Admin.cs",
+              "RelativeToolTip": "Models\\Admin.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-29T03:33:32.056Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Post.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Models\\Post.cs",
+              "RelativeDocumentMoniker": "Models\\Post.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Models\\Post.cs",
+              "RelativeToolTip": "Models\\Post.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAkwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-29T03:33:39.696Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "UserHelper.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Helpers\\UserHelper.cs",
+              "RelativeDocumentMoniker": "Helpers\\UserHelper.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Helpers\\UserHelper.cs",
+              "RelativeToolTip": "Helpers\\UserHelper.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-29T03:33:30.335Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "UserPhotoDto.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Dtos\\UserPhotoDto.cs",
+              "RelativeDocumentMoniker": "Dtos\\UserPhotoDto.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Dtos\\UserPhotoDto.cs",
+              "RelativeToolTip": "Dtos\\UserPhotoDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-29T03:33:26.322Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "UserLoginDto.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Dtos\\UserLoginDto.cs",
+              "RelativeDocumentMoniker": "Dtos\\UserLoginDto.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Dtos\\UserLoginDto.cs",
+              "RelativeToolTip": "Dtos\\UserLoginDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-29T03:33:24.39Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "PostDto.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Dtos\\PostDto.cs",
+              "RelativeDocumentMoniker": "Dtos\\PostDto.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Dtos\\PostDto.cs",
+              "RelativeToolTip": "Dtos\\PostDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-29T03:03:53.085Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ReviewPostDto.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Dtos\\ReviewPostDto.cs",
+              "RelativeDocumentMoniker": "Dtos\\ReviewPostDto.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Dtos\\ReviewPostDto.cs",
+              "RelativeToolTip": "Dtos\\ReviewPostDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-29T03:33:19.84Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UserController.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Controllers\\UserController.cs",
+              "RelativeToolTip": "Controllers\\UserController.cs",
+              "ViewState": "AQIAAG8AAAAAAAAAAAAowBEAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-29T03:33:12.75Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
               "Title": "PostService.cs",
               "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Services\\Post\\PostService.cs",
               "RelativeDocumentMoniker": "Services\\Post\\PostService.cs",
               "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Services\\Post\\PostService.cs",
               "RelativeToolTip": "Services\\Post\\PostService.cs",
-              "ViewState": "AQIAABEBAAAAAAAAAAAiwF8BAAAFAAAA",
+              "ViewState": "AQIAAJAAAAAAAAAAAAAjwJwAAAAEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-23T18:11:13.811Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 17,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Services\\User\\UserService.cs",
+              "RelativeDocumentMoniker": "Services\\User\\UserService.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Services\\User\\UserService.cs",
+              "RelativeToolTip": "Services\\User\\UserService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAJcAAABJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-29T03:34:24.506Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "IUserService.cs",
+              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Services\\User\\IUserService.cs",
+              "RelativeDocumentMoniker": "Services\\User\\IUserService.cs",
+              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Services\\User\\IUserService.cs",
+              "RelativeToolTip": "Services\\User\\IUserService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-29T03:34:23.489Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
               "Title": "IPostService.cs",
               "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Services\\Post\\IPostService.cs",
               "RelativeDocumentMoniker": "Services\\Post\\IPostService.cs",
               "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Services\\Post\\IPostService.cs",
               "RelativeToolTip": "Services\\Post\\IPostService.cs",
-              "ViewState": "AQIAAAUAAAAAAAAAAAAAwA4AAAABAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAjAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-23T18:10:22.907Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "PostController.cs",
-              "DocumentMoniker": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Controllers\\PostController.cs",
-              "RelativeDocumentMoniker": "Controllers\\PostController.cs",
-              "ToolTip": "D:\\moalaa_selaApp\\sela-app\\selaApplication\\Controllers\\PostController.cs",
-              "RelativeToolTip": "Controllers\\PostController.cs",
-              "ViewState": "AQIAAOAAAAAAAAAAAAAqwPAAAAAtAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-23T18:08:06.319Z",
               "EditorCaption": ""
             }
           ]
