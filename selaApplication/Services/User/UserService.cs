@@ -297,6 +297,32 @@ namespace selaApplication.Services.User
             }
         }
 
+        public async Task<string> GetPasswordById(int userId)
+        {
+            try
+            {
+                using var connector = new PostgresConnection();
+                connector.Connect();
+
+                const string sql =
+                    "SELECT password FROM users " +
+                    "WHERE user_id = @user_id";
+
+                await using var command = new NpgsqlCommand(sql, connector._connection);
+                command.Parameters.AddWithValue("user_id", userId);
+
+                var password = await command.ExecuteScalarAsync();
+                return password?.ToString();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while retrieving password: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                return ("An error occurred while retrieving the password of the user: {ex.Message}");
+            }
+        }
+
+
 
 
 
