@@ -322,7 +322,30 @@ namespace selaApplication.Services.User
             }
         }
 
+        public async Task<string> GetUserPhoto(int userId)
+        {
+            try
+            {
+                using var connector = new PostgresConnection();
+                connector.Connect();
 
+                const string sql =
+                    "SELECT user_photo FROM users " +
+                    "WHERE user_id = @user_id";
+
+                await using var command = new NpgsqlCommand(sql, connector._connection);
+                command.Parameters.AddWithValue("user_id", userId);
+
+                var userPhoto = await command.ExecuteScalarAsync();
+                return userPhoto?.ToString();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while retrieving user photo: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                return ("An error occurred while retrieving the user photo of the user: {ex.Message}");
+            }
+        }
 
 
 

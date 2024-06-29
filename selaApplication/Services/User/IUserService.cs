@@ -18,4 +18,6 @@ public interface IUserService
 
     Task<string> UpdatePasswordById(int userId, string newPassword);
 
+    Task<string> GetUserPhoto(int userId);
+
 }
