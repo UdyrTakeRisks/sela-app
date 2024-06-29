@@ -87,7 +87,35 @@ class _AllOrganizationsScreenState extends State<AllOrganizationsScreen>
                       SizedBox(
                         height: getProportionateScreenHeight(10),
                       ),
-                      const SearchField(),
+                      GestureDetector(
+                        onTap: () => Navigator.pushNamed(
+                            context, SearchScreen.routeName),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 15,
+                          ),
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(30),
+                            boxShadow: [
+                              BoxShadow(
+                                offset: const Offset(0, 4),
+                                blurRadius: 30,
+                                color: primaryColor.withOpacity(0.23),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: const [
+                              Icon(Icons.search),
+                              SizedBox(width: 10),
+                              Text('Search'),
+                            ],
+                          ),
+                        ),
+                      ),
                       SizedBox(
                         height: getProportionateScreenHeight(20),
                       ),
