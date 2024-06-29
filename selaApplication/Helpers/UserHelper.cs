@@ -6,7 +6,7 @@ namespace selaApplication.Helpers;
 public static class UserHelper
 {
     public static string HashPassword(string password)
-    {
+    { 
         using var sha256Hash = SHA256.Create();
         var bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
 
@@ -22,26 +22,20 @@ public static class UserHelper
     {
         return true;
     }
-
+    
     public static bool ValidatePassword(string password)
     {
         return true;
     }
-
+    
     public static bool ValidateEmail(string email)
     {
         return true;
     }
-
+    
     public static bool ValidatePhoneNumber(int phoneNumber)
     {
         return true;
     }
-
-    public static bool VerifyPassword(string password, string hashedPassword)
-    {
-        var hashedInputPassword = HashPassword(password);
-        return hashedInputPassword == hashedPassword;
-    }
-
+    
 }
