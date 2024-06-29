@@ -32,6 +32,16 @@ namespace selaApplication.Controllers
         {
             // validate credentials using regex before adding it to the database
 
+            if (!UserHelper.ValidateEmail(dto.email))
+            {
+                return BadRequest("Invalid email format.");
+            }
+
+            // Validate the new phone number format
+            if (!UserHelper.ValidatePhoneNumber(dto.phoneNumber))
+            {
+                return BadRequest("Invalid phone number format.");
+            }
             var user = new User
             {
                 username = dto.username,
@@ -136,6 +146,8 @@ namespace selaApplication.Controllers
 
             var userPhoto = dto.userPhoto;
 
+
+
             //update user photo in database
             var response = await _usersService.UpdateUserPhoto(userId, userPhoto);
             return Ok(response);
@@ -216,6 +228,12 @@ namespace selaApplication.Controllers
 
             var newEmail = dto.email;
 
+            // Validate new email format before updating
+            if (!UserHelper.ValidateEmail(newEmail))
+            {
+                return BadRequest("Invalid email format.");
+            }
+
             //update user email in database
             var response = await _usersService.UpdateEmailById(userId, newEmail);
 
@@ -242,6 +260,12 @@ namespace selaApplication.Controllers
 
             var newPhoneNumber = dto.phoneNumber;
 
+            // Validate the new phone number format
+            if (!UserHelper.ValidatePhoneNumber(newPhoneNumber))
+            {
+                return BadRequest("Invalid phone number format.");
+            }
+
             //update user phone number in database
             var response = await _usersService.UpdatePhoneNumberById(userId, newPhoneNumber);
 
@@ -254,24 +278,44 @@ namespace selaApplication.Controllers
             var serializedUserObj = HttpContext.Session.GetString("UserSession");
             if (serializedUserObj == null)
             {
-                return Unauthorized("You should login first to update your account");
+                return Unauthorized("You should log in first to update your account.");
             }
 
             var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
             if (sessionUser == null)
             {
-                return Unauthorized("User Session is Expired. Please log in first.");
+                return Unauthorized("User Session is expired. Please log in first.");
+            }
+
+            if (string.IsNullOrEmpty(dto.newPassword))
+            {
+                return BadRequest("New password cannot be empty.");
             }
 
             var userId = await _usersService.GetIdByUsername(sessionUser.username);
 
-            var newPassword = dto.password;
+            if (userId == 0)
+            {
+                return NotFound("User not found.");
+            }
 
-            //update user password in database
-            var response = await _usersService.UpdatePasswordById(userId, newPassword);
+            var existingUserPassword = await _usersService.GetPasswordById(userId);
+            var isOldPasswordValid = UserHelper.VerifyPassword(dto.oldPassword, existingUserPassword);
+            if (!isOldPasswordValid)
+            {
+                return BadRequest("Old password is incorrect.");
+            }
 
-            return Ok(response);
+            var hashedNewPassword = UserHelper.HashPassword(dto.newPassword);
+
+            var response = await _usersService.UpdatePasswordById(userId, hashedNewPassword);
+
+            return Ok("Password updated successfully.");
         }
+
+
+
+
 
         // delete user account endpoint - front should send the cookie
         [HttpDelete("delete")]

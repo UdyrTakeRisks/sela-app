@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace selaApplication.Helpers;
 
@@ -30,13 +31,48 @@ public static class UserHelper
 
     public static bool ValidateEmail(string email)
     {
+        if (string.IsNullOrWhiteSpace(email))
+            return false;
+
+        // Regular expression pattern for basic email validation
+        string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+
+        Regex regex = new Regex(pattern);
+        return regex.IsMatch(email);
+    }
+
+    public static bool ValidatePhoneNumber(string phoneNumber)
+    {
+        // Check if the phone number is null or its length is not 10
+        if (string.IsNullOrEmpty(phoneNumber) || phoneNumber.Length != 10)
+        {
+            return false;
+        }
+
+        // Check if the phone number starts with the specified prefixes
+        string prefix = phoneNumber.Substring(0, 2);
+        if (prefix != "11" && prefix != "15" && prefix != "10" && prefix != "12")
+        {
+            return false;
+        }
+
+        // Check if all characters are digits
+        foreach (char c in phoneNumber)
+        {
+            if (!char.IsDigit(c))
+            {
+                return false;
+            }
+        }
+
+        // If all checks pass, the phone number is valid
+        // example of valid phone number: 1095032345
+
         return true;
     }
 
-    public static bool ValidatePhoneNumber(int phoneNumber)
-    {
-        return true;
-    }
+
+
 
     public static bool VerifyPassword(string password, string hashedPassword)
     {

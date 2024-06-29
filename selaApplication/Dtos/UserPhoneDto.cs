@@ -2,7 +2,7 @@
 {
     public class UserPhoneDto
     {
-        public long phoneNumber { get; set; }
+        public string phoneNumber { get; set; }
 
     }
 }

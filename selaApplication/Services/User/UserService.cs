@@ -235,7 +235,7 @@ namespace selaApplication.Services.User
             }
         }
 
-        public async Task<string> UpdatePhoneNumberById(int userId, long newPhoneNumber)
+        public async Task<string> UpdatePhoneNumberById(int userId, string newPhoneNumber)
         {
             try
             {
