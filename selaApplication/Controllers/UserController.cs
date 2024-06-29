@@ -150,38 +150,7 @@ namespace selaApplication.Controllers
             var response = await _usersService.UpdateUserPhoto(userId, userPhoto);
             return Ok(response);
         }
-
-        // update user details - update it all or update each one alone ? - front should send the cookie
-        [HttpPut("update/details")]
-        public async Task<IActionResult> UpdateUserDetailsAsync(UserDto dto)
-        {
-            var serializedUserObj = HttpContext.Session.GetString("UserSession");
-            if (serializedUserObj == null)
-            {
-                return Unauthorized("You should login first to update your account");
-            }
-
-            var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
-            if (sessionUser == null)
-            {
-                return Unauthorized("User Session is Expired. Please log in first.");
-            }
-
-            var userId = await _usersService.GetIdByUsername(sessionUser.username);
-
-            var userUpdate = new User
-            {
-                userPhoto = dto.userPhoto,
-                username = dto.username,
-                name = dto.name,
-                email = dto.email,
-                phoneNumber = dto.phoneNumber,
-                password = dto.password
-            };
-            //update user details in database
-
-            return Ok();
-        }
+        
 
         [HttpPut("update/name")]
         public async Task<IActionResult> UpdateNameAsync(UserNameDto dto)
@@ -342,7 +311,7 @@ namespace selaApplication.Controllers
             var serializedUserObj = HttpContext.Session.GetString("UserSession");
             if (serializedUserObj == null)
             {
-                return Unauthorized("You should login first to view your account");
+                return Unauthorized("You should login first to view your photo");
             }
 
             var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
@@ -364,7 +333,7 @@ namespace selaApplication.Controllers
             var serializedUserObj = HttpContext.Session.GetString("UserSession");
             if (serializedUserObj == null)
             {
-                return Unauthorized("You should login first to view your account");
+                return Unauthorized("You should login first to view your name");
             }
 
             var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
@@ -380,10 +349,23 @@ namespace selaApplication.Controllers
             return Ok(userName);
         }
 
-        [HttpGet("view/UserDetails/{userId}")]
-
-        public async Task<IActionResult> GetUserDetailsAsync(int userId)
+        [HttpGet("view/details")]
+        public async Task<IActionResult> GetUserDetailsAsync()
         {
+            var serializedUserObj = HttpContext.Session.GetString("UserSession");
+            if (serializedUserObj == null)
+            {
+                return Unauthorized("You should login first to view your personal details");
+            }
+
+            var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+            if (sessionUser == null)
+            {
+                return Unauthorized("User Session is Expired. Please log in first.");
+            }
+
+            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+            
             var user = await _usersService.GetUserById(userId);
             if (user == null)
             {
