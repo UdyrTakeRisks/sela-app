@@ -6,5 +6,6 @@ namespace selaApplication.Services.Admin
     {
         Task<bool> DeletePost(int postId);
         Task<bool> DeleteUser(int userId);
+        Task<IEnumerable<Models.User>> GetAllUsers();
     }
 }

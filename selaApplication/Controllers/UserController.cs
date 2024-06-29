@@ -1,10 +1,9 @@
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using selaApplication.Dtos;
-using selaApplication.Models;
-using selaApplication.Services;
 using selaApplication.Helpers;
+using selaApplication.Models;
 using selaApplication.Services.User;
+using System.Text.Json;
 
 namespace selaApplication.Controllers
 {
@@ -33,6 +32,16 @@ namespace selaApplication.Controllers
         {
             // validate credentials using regex before adding it to the database
 
+            if (!UserHelper.ValidateEmail(dto.email))
+            {
+                return BadRequest("Invalid email format.");
+            }
+
+            // Validate the new phone number format
+            if (!UserHelper.ValidatePhoneNumber(dto.phoneNumber))
+            {
+                return BadRequest("Invalid phone number format.");
+            }
             var user = new User
             {
                 username = dto.username,
@@ -53,9 +62,9 @@ namespace selaApplication.Controllers
             var hashedPassword = UserHelper.HashPassword(user.password);
             user.password = hashedPassword;
 
-            await _usersService.AddUser(user);
+            var response = await _usersService.AddUser(user);
             // return Ok(user);
-            return Ok("User Registered Successfully");
+            return Ok(response);
         }
 
         [HttpPost("login")]
@@ -136,7 +145,7 @@ namespace selaApplication.Controllers
             var userId = await _usersService.GetIdByUsername(sessionUser.username);
 
             var userPhoto = dto.userPhoto;
-
+            
             //update user photo in database
             var response = await _usersService.UpdateUserPhoto(userId, userPhoto);
             return Ok(response);
@@ -174,6 +183,135 @@ namespace selaApplication.Controllers
             return Ok();
         }
 
+        [HttpPut("update/name")]
+        public async Task<IActionResult> UpdateNameAsync(UserNameDto dto)
+        {
+            var serializedUserObj = HttpContext.Session.GetString("UserSession");
+            if (serializedUserObj == null)
+            {
+                return Unauthorized("You should login first to update your account");
+            }
+
+            var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+            if (sessionUser == null)
+            {
+                return Unauthorized("User Session is Expired. Please log in first.");
+            }
+
+            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+
+            var newName = dto.name;
+
+            //update user name in database
+            var response = await _usersService.UpdateNameById(userId, newName);
+            return Ok(response);
+        }
+
+        [HttpPut("update/email")]
+        public async Task<IActionResult> UpdateEmailAsync(UserEmailDto dto)
+        {
+            var serializedUserObj = HttpContext.Session.GetString("UserSession");
+            if (serializedUserObj == null)
+            {
+                return Unauthorized("You should login first to update your account");
+            }
+
+            var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+            if (sessionUser == null)
+            {
+                return Unauthorized("User Session is Expired. Please log in first.");
+            }
+
+            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+
+            var newEmail = dto.email;
+
+            // Validate new email format before updating
+            if (!UserHelper.ValidateEmail(newEmail))
+            {
+                return BadRequest("Invalid email format.");
+            }
+
+            //update user email in database
+            var response = await _usersService.UpdateEmailById(userId, newEmail);
+
+            return Ok(response);
+
+        }
+
+        [HttpPut("update/phone")]
+        public async Task<IActionResult> UpdatePhoneNumberAsync(UserPhoneDto dto)
+        {
+            var serializedUserObj = HttpContext.Session.GetString("UserSession");
+            if (serializedUserObj == null)
+            {
+                return Unauthorized("You should login first to update your account");
+            }
+
+            var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+            if (sessionUser == null)
+            {
+                return Unauthorized("User Session is Expired. Please log in first.");
+            }
+
+            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+
+            var newPhoneNumber = dto.phoneNumber;
+
+            // Validate the new phone number format
+            if (!UserHelper.ValidatePhoneNumber(newPhoneNumber))
+            {
+                return BadRequest("Invalid phone number format.");
+            }
+
+            //update user phone number in database
+            var response = await _usersService.UpdatePhoneNumberById(userId, newPhoneNumber);
+
+            return Ok(response);
+        }
+
+        [HttpPut("update/password")]
+        public async Task<IActionResult> UpdatePasswordAsync(UserPasswordDto dto)
+        {
+            var serializedUserObj = HttpContext.Session.GetString("UserSession");
+            if (serializedUserObj == null)
+            {
+                return Unauthorized("You should log in first to update your account.");
+            }
+
+            var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+            if (sessionUser == null)
+            {
+                return Unauthorized("User Session is expired. Please log in first.");
+            }
+
+            if (string.IsNullOrEmpty(dto.newPassword))
+            {
+                return BadRequest("New password cannot be empty.");
+            }
+
+            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+
+            if (userId == 0)
+            {
+                return NotFound("User not found.");
+            }
+
+            var existingUserPassword = await _usersService.GetPasswordById(userId);
+            var isOldPasswordValid = UserHelper.VerifyPassword(dto.oldPassword, existingUserPassword);
+            if (!isOldPasswordValid)
+            {
+                return BadRequest("Old password is incorrect.");
+            }
+
+            var hashedNewPassword = UserHelper.HashPassword(dto.newPassword);
+
+            var response = await _usersService.UpdatePasswordById(userId, hashedNewPassword);
+
+            return Ok(response);
+        }
+        
+        
         // delete user account endpoint - front should send the cookie
         [HttpDelete("delete")]
         public async Task<IActionResult> RemoveUserAsync()
