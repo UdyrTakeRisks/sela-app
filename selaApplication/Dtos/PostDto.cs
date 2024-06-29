@@ -6,10 +6,10 @@ namespace selaApplication.Dtos;
 public class PostDto
 {
     public string[]? ImageUrLs { get; set; }
-
-    [Required(ErrorMessage = "The Post type field is required.")]
+    
     public string name { get; set; }
 
+    [Required(ErrorMessage = "The Post type field is required.")]
     public PostType Type { get; set; }
 
     public string[]? tags { get; set; }

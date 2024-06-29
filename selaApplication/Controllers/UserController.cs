@@ -87,16 +87,114 @@ namespace selaApplication.Controllers
                 // if(sessionUser == null) // test condition
                 HttpContext.Session.SetString("UserSession", JsonSerializer.Serialize(user));
 
-                // to retrieve the session
-                // var serializedObj = HttpContext.Session.GetString("UserSession");
-                // var sessionUser = JsonSerializer.Deserialize<User>(serializedObj);
+                var cookieExpirationTimestamp = DateTime.UtcNow.AddDays(1);
+                // var cookieExpirationTimestampV2 = TimeSpan.FromDays(1);
 
-                return Ok("User logged in Successfully");
+                var response = new
+                {
+                    message = "User logged in Successfully",
+                    cookieExpirationTimestamp
+                    // cookieExpirationTimestampV2
+                };
+                return Ok(response); // add user login timestamp to check cookie validation on frontend
             }
 
-            // var jsonData = new { key1 = "test1", key2 = "test2" };
-            // return new JsonResult(jsonData);
             return Unauthorized("You are unauthorized to log in");
+        }
+
+        // log out
+        [HttpPost("logout")]
+        public IActionResult LogoutUser()
+        {
+            var serializedUserObj = HttpContext.Session.GetString("UserSession");
+            if (serializedUserObj == null)
+            {
+                return Unauthorized("You already logged out");
+            }
+
+            HttpContext.Session.Remove("UserSession");
+
+            return Ok("User logged out successfully");
+        }
+
+        // update user account endpoint - not done - front should send the cookie
+        [HttpPut("update/photo")]
+        public async Task<IActionResult> UpdateUserPhotoAsync(UserPhotoDto dto)
+        {
+            var serializedUserObj = HttpContext.Session.GetString("UserSession");
+            if (serializedUserObj == null)
+            {
+                return Unauthorized("You should login first to update your account");
+            }
+
+            var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+            if (sessionUser == null)
+            {
+                return Unauthorized("User Session is Expired. Please log in first.");
+            }
+
+            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+
+            var userPhoto = dto.userPhoto;
+
+            //update user photo in database
+            var response = await _usersService.UpdateUserPhoto(userId, userPhoto);
+            return Ok(response);
+        }
+
+        // update user details - update it all or update each one alone ? - front should send the cookie
+        [HttpPut("update/details")]
+        public async Task<IActionResult> UpdateUserDetailsAsync(UserDto dto)
+        {
+            var serializedUserObj = HttpContext.Session.GetString("UserSession");
+            if (serializedUserObj == null)
+            {
+                return Unauthorized("You should login first to update your account");
+            }
+
+            var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+            if (sessionUser == null)
+            {
+                return Unauthorized("User Session is Expired. Please log in first.");
+            }
+
+            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+
+            var userUpdate = new User
+            {
+                userPhoto = dto.userPhoto,
+                username = dto.username,
+                name = dto.name,
+                email = dto.email,
+                phoneNumber = dto.phoneNumber,
+                password = dto.password
+            };
+            //update user details in database
+
+            return Ok();
+        }
+
+        // delete user account endpoint - front should send the cookie
+        [HttpDelete("delete")]
+        public async Task<IActionResult> RemoveUserAsync()
+        {
+            var serializedUserObj = HttpContext.Session.GetString("UserSession");
+            if (serializedUserObj == null)
+            {
+                return Unauthorized("You should login first to remove your account");
+            }
+
+            var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+            if (sessionUser == null)
+            {
+                return Unauthorized("User Session is Expired. Please log in first.");
+            }
+
+            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+
+            var result = await _usersService.DeleteUser(userId);
+
+            return Ok(result);
         }
     }
 }
