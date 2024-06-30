@@ -19,7 +19,6 @@ namespace selaApplication.Controllers
         }
 
         [HttpGet("health")]
-        // [Route("/health")]
         public Task<IActionResult> CheckAppHealth()
         {
             var jsonData = new { Health = "Good", SELA = "Working", Type = "User" };
@@ -64,6 +63,7 @@ namespace selaApplication.Controllers
 
             var response = await _usersService.AddUser(user);
             // return Ok(user);
+            
             return Ok(response);
         }
 
