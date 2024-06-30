@@ -321,7 +321,7 @@ public class PostController : ControllerBase
         var postName = await _postsService.GetPostNameById(postId);
         if (dto.rating is < 0 or > 5)
             return BadRequest("Please Rate Post from 1 to 5");
-        
+
         var review = new ReviewPost
         {
             post_id = postId,
@@ -370,7 +370,7 @@ public class PostController : ControllerBase
 
         return Ok(enumerablePosts);
     }
-    
+
     [HttpGet("view/overall/rating")]
     public async Task<IActionResult> ShowPostRatingAsync([FromQuery] int postId)
     {
@@ -383,7 +383,28 @@ public class PostController : ControllerBase
         };
         return Ok(result);
     }
-    
-    
-    
+
+    [HttpGet("is-saved/{postId:int}")]
+    public async Task<IActionResult> CheckIfPostIsSavedAsync(int postId)
+    {
+        var serializedUserObj = HttpContext.Session.GetString("UserSession");
+        if (serializedUserObj == null)
+        {
+            return Unauthorized("You should login first to check if the post is saved");
+        }
+
+        var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
+        if (sessionUser == null)
+        {
+            return Unauthorized("User Session is Expired. Please log in first.");
+        }
+
+        var userId = await _usersService.GetIdByUsername(sessionUser.username);
+        var response = await _postsService.isSavedPost(userId, postId);
+
+        return Ok(response);
+    }
+
+
+
 }
