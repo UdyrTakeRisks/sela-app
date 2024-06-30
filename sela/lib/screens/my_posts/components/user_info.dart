@@ -19,7 +19,7 @@ class UserInfo extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 40,
-            backgroundColor: backgroundColor2,
+            backgroundColor: backgroundColor4,
             // if there is no image, display the user's first letter
             backgroundImage: userImage.isNotEmpty
                 ? NetworkImage(userImage)

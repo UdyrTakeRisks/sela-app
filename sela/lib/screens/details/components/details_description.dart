@@ -26,16 +26,41 @@ class OrganizationDescription extends StatefulWidget {
 class _OrganizationDescriptionState extends State<OrganizationDescription> {
   bool isSaved = false;
 
-  void _saved() {
-    setState(() {
-      isSaved = !isSaved;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _checkIfSaved();
   }
 
   Future<void> _checkIfSaved() async {
-    // Logic to check if the post is already saved
-    // This could be a network request or checking local storage
-    // Update isSaved based on the result
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var cookies = prefs.getString('cookie');
+
+      var headers = {
+        'Content-Type': 'application/json',
+        'Cookie': cookies!,
+      };
+
+      var url = Uri.parse(
+          '$DOTNET_URL_API_BACKEND/Post/is-saved/${widget.organization.id}');
+
+      var response = await http.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        // Parse the response body to determine if the post is saved
+        var responseBody = response.body;
+        var saved = responseBody.toLowerCase() == 'true';
+
+        setState(() {
+          isSaved = saved;
+        });
+      } else {
+        throw Exception('Failed to fetch save status');
+      }
+    } catch (e) {
+      print('Error checking save status: $e');
+    }
   }
 
   Future<void> _toggleSaveStatus() async {

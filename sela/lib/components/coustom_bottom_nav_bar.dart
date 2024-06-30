@@ -4,6 +4,7 @@ import 'package:sela/screens/my_posts/my_posts_page.dart';
 import '../screens/create_post/post_page.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/profile/profile_screen.dart';
+import '../screens/saved/saved_screen.dart';
 import '../utils/constants.dart';
 import '../utils/enums.dart';
 
@@ -52,7 +53,7 @@ class CustomBottomNavBar extends StatelessWidget {
               IconButton(
                 icon: Icon(
                   Icons.my_library_books_outlined,
-                  color: MenuState.bookmark == selectedMenu
+                  color: MenuState.myPosts == selectedMenu
                       ? kPrimaryColor
                       : inActiveIconColor,
                 ),
@@ -72,12 +73,13 @@ class CustomBottomNavBar extends StatelessWidget {
               ),
               IconButton(
                 icon: Icon(
-                  Icons.notifications_none_rounded,
-                  color: MenuState.notification == selectedMenu
+                  Icons.bookmark_add_outlined,
+                  color: MenuState.bookmark == selectedMenu
                       ? kPrimaryColor
                       : inActiveIconColor,
                 ),
-                onPressed: () {},
+                onPressed: () =>
+                    Navigator.pushNamed(context, SavedScreen.routeName),
               ),
               IconButton(
                 icon: Icon(
