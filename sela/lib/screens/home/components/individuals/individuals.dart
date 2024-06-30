@@ -1,49 +1,67 @@
+// lib/screens/home/components/individuals/individuals.dart
+
 import 'package:flutter/material.dart';
-import 'package:sela/screens/home/components/section_title.dart';
+import 'package:sela/models/individual.dart';
 
-import '../../../../models/Individual.dart';
+import '../../../../size_config.dart';
+import '../section_title.dart';
 import 'IndividualCard.dart';
+import 'individual_service.dart';
 
-class Individuals extends StatelessWidget {
-  final List<Individual> individuals = [
-    Individual(
-      name: 'Ahmed Ali',
-      service: 'Learning',
-      imageUrl:
-          'https://ihaofykdrzgouxpitrvi.supabase.co/storage/v1/object/public/postimages/yanfaa/images/yanfaa_4.png?t=2024-06-19T15%3A23%3A07.781Z',
-    ),
-    Individual(
-      name: 'Mohamed Alaa',
-      service: 'Volunteering',
-      imageUrl:
-          'https://www.wilsoncenter.org/sites/default/files/media/images/person/james-person-1.jpg',
-    ),
-  ];
+class Individuals extends StatefulWidget {
+  const Individuals({Key? key}) : super(key: key);
+
+  @override
+  _IndividualsState createState() => _IndividualsState();
+}
+
+class _IndividualsState extends State<Individuals> {
+  late Future<List<Individual>> futureIndividuals;
+
+  @override
+  void initState() {
+    super.initState();
+    futureIndividuals = IndividualService().fetchIndividuals();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding:
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SectionTitle(
             title: 'Individuals',
             press: () {},
           ),
         ),
         const SizedBox(height: 20),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: individuals.map((individual) {
-              return IndividualCard(
-                individual: individual,
-                press: () {
-                  // Navigate to detail page
-                },
+        FutureBuilder<List<Individual>>(
+          future: futureIndividuals,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              print(snapshot.error);
+              return Text("ERROR: ${snapshot.error}");
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Text("No Individuals Found");
+            } else {
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    ...snapshot.data!.map((individual) => IndividualCard(
+                          individual: individual,
+                          press: () {},
+                        )),
+                    SizedBox(width: getProportionateScreenWidth(20)),
+                  ],
+                ),
               );
-            }).toList(),
-          ),
+            }
+          },
         ),
       ],
     );

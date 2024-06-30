@@ -1,16 +1,16 @@
-import 'package:flutter/material.dart';
+// lib/screens/home/components/individuals/individual_card.dart
 
-import '../../../../models/Individual.dart';
+import 'package:flutter/material.dart';
+import 'package:sela/models/individual.dart';
 
 class IndividualCard extends StatelessWidget {
   final Individual individual;
-  final GestureTapCallback press;
+  final VoidCallback press;
 
-  const IndividualCard({
-    Key? key,
+  IndividualCard({
     required this.individual,
     required this.press,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +35,11 @@ class IndividualCard extends StatelessWidget {
           children: [
             ClipOval(
               child: Image.network(
-                individual.imageUrl,
-                width: 60,
-                height: 60,
+                individual.imageUrls.isNotEmpty
+                    ? individual.imageUrls[0]
+                    : AssetImage('assets/images/individual.png') as String,
+                width: 80,
+                height: 80,
                 fit: BoxFit.cover,
               ),
             ),
@@ -49,9 +51,10 @@ class IndividualCard extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
-            const SizedBox(height: 5),
             Text(
-              individual.service,
+              individual.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 color: Colors.grey,
               ),
