@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using selaApplication.Services;
 using selaApplication.Services.Admin;
+using selaApplication.Services.Notification;
 using selaApplication.Services.Post;
 using selaApplication.Services.User;
 
@@ -24,6 +25,8 @@ namespace selaApplication
 
             builder.Services.AddScoped<IPostService, PostService>(); //dip, maintains state
 
+            builder.Services.AddScoped<INotificationService, NotificationService>(); //dip, maintains state
+            
             builder.Services.AddCors();
 
             builder.Services.AddSwaggerGen();

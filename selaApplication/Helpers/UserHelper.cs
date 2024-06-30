@@ -70,10 +70,7 @@ public static class UserHelper
 
         return true;
     }
-
-
-
-
+    
     public static bool VerifyPassword(string password, string hashedPassword)
     {
         var hashedInputPassword = HashPassword(password);
