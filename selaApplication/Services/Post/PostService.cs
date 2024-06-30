@@ -1,4 +1,3 @@
-using System.ComponentModel.Design.Serialization;
 using Npgsql;
 using selaApplication.Models;
 using selaApplication.Persistence;
@@ -134,7 +133,7 @@ public class PostService : IPostService
                 var fetchedPost = new Models.Post
                 {
                     post_id = reader.GetInt32(reader.GetOrdinal("post_id")),
-                    // Type = (PostType)reader.GetInt32(reader.GetOrdinal("post_type")),
+                    type = reader.GetString(reader.GetOrdinal("post_type")),
                     ImageUrLs = reader.GetFieldValue<string[]>(reader.GetOrdinal("imageurls")),
                     name = reader.GetString(reader.GetOrdinal("name")),
                     tags = reader.GetFieldValue<string[]>(reader.GetOrdinal("tags")),
@@ -177,7 +176,7 @@ public class PostService : IPostService
                 var fetchedPost = new Models.Post
                 {
                     post_id = reader.GetInt32(reader.GetOrdinal("post_id")),
-                    // Type = (PostType)reader.GetInt32(reader.GetOrdinal("post_type")),
+                    type = reader.GetString(reader.GetOrdinal("post_type")),
                     ImageUrLs = reader.GetFieldValue<string[]>(reader.GetOrdinal("imageurls")),
                     name = reader.GetString(reader.GetOrdinal("name")),
                     tags = reader.GetFieldValue<string[]>(reader.GetOrdinal("tags")),
@@ -456,7 +455,7 @@ public class PostService : IPostService
             connector.Connect();
 
             const string sql = @"
-                                SELECT p.post_id, p.imageurls, p.name, p.tags, p.title, p.description,
+                                SELECT p.post_id, p.imageurls, p.name, p.post_type, p.tags, p.title, p.description,
                                        p.providers, p.about, p.social_links
                                 FROM save_posts sp 
                                 JOIN posts p
@@ -477,6 +476,7 @@ public class PostService : IPostService
                     // Type = (PostType)reader.GetInt32(reader.GetOrdinal("post_type")),
                     ImageUrLs = reader.GetFieldValue<string[]>(reader.GetOrdinal("imageurls")),
                     name = reader.GetString(reader.GetOrdinal("name")),
+                    type = reader.GetString(reader.GetOrdinal("post_type")),
                     tags = reader.GetFieldValue<string[]>(reader.GetOrdinal("tags")),
                     title = reader.GetString(reader.GetOrdinal("title")),
                     description = reader.GetString(reader.GetOrdinal("description")),
@@ -606,6 +606,7 @@ public class PostService : IPostService
     }
 
     public async Task<double> GetPostRatingById(int postId)
+
     {
         try
         {
@@ -619,16 +620,16 @@ public class PostService : IPostService
 
             await using var reader = await command.ExecuteReaderAsync();
 
-            if (!await reader.ReadAsync()) 
-                return 0.0; 
-
-            if (reader.IsDBNull(reader.GetOrdinal("overall_rating"))) 
+            if (!await reader.ReadAsync())
                 return 0.0;
-            
+
+            if (reader.IsDBNull(reader.GetOrdinal("overall_rating")))
+                return 0.0;
+
             var overallRating = reader.GetDouble(reader.GetOrdinal("overall_rating"));
-            
+
             return overallRating;
-            
+
         }
         catch (Exception ex)
         {
@@ -638,5 +639,32 @@ public class PostService : IPostService
         }
     }
 
-    
+    public async Task<bool> isSavedPost(int userId, int postId)
+    {
+
+        try
+        {
+            using var connector = new PostgresConnection();
+            connector.Connect();
+
+            const string sql =
+                "SELECT * FROM save_posts " +
+                "WHERE user_id = @user_id AND post_id = @post_id";
+
+            await using var command = new NpgsqlCommand(sql, connector._connection);
+            command.Parameters.AddWithValue("user_id", userId);
+            command.Parameters.AddWithValue("post_id", postId);
+
+            await using var reader = command.ExecuteReader();
+            return reader.Read();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred while checking if post is saved: {ex.Message}");
+            Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+            return false;
+        }
+    }
+
+
 }
