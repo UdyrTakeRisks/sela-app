@@ -35,9 +35,7 @@ class _BodyState extends State<Body> {
         print('Response body: ${response.body}');
         print('Response headers: ${response.headers}');
 
-        if (response.statusCode != 200) {
-          throw Exception('Failed to logout');
-        } else {
+        if (response.statusCode == 200) {
           print('Logout successful');
           // Remove the saved cookie
           await prefs.remove('cookie');
@@ -52,6 +50,30 @@ class _BodyState extends State<Body> {
               content: Text('Logout Successful'),
             ),
           );
+        } else if (response.statusCode == 401) {
+          print('You already logged out. Redirecting to login screen');
+          // Remove the saved cookie
+          await prefs.remove('cookie');
+          await prefs.remove('cookieExpirationTimestamp');
+          print('Cookie removed');
+
+          // Navigate to the login screen
+          Navigator.pushReplacementNamed(context, '/sign_in');
+          // Show a Snackbar
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Logout Successful'),
+            ),
+          );
+        } else {
+          _showErrorDialog();
+          // Show a Snackbar
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Logout Failed'),
+            ),
+          );
+          throw Exception('Failed to logout');
         }
       } else {
         print('No cookie found, redirecting to login');
