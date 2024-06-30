@@ -6,13 +6,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../models/my_post_model.dart';
 import '../../../size_config.dart';
 import '../../../utils/env.dart';
+import '../edit_post_page.dart';
 
 class PostCard extends StatelessWidget {
   final MyPost post;
   final Function onDelete;
+  final Function onEdit;
 
-  const PostCard({Key? key, required this.post, required this.onDelete})
-      : super(key: key);
+  const PostCard(
+      {super.key,
+      required this.post,
+      required this.onDelete,
+      required this.onEdit});
 
   Future<void> _deletePost(BuildContext context, int postId) async {
     final url = Uri.parse('$DOTNET_URL_API_BACKEND/Post/delete/$postId');
@@ -140,8 +145,15 @@ class PostCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      onPressed: () {
-                        // Implement edit functionality here
+                      onPressed: () async {
+                        final result = await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => EditPostPage(post: post),
+                          ),
+                        );
+                        if (result == true) {
+                          onEdit();
+                        }
                       },
                       icon: const Icon(Icons.edit),
                     ),

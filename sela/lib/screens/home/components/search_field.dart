@@ -92,6 +92,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     setState(() {
                       _searchResults = [];
                     });
+                    Navigator.pop(context);
                   },
                 ),
               ),

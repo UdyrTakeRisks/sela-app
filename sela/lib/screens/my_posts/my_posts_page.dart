@@ -67,6 +67,9 @@ class _MyPostsPageState extends State<MyPostsPage> {
                             onDelete: () async {
                               await viewModel.fetchUserPosts();
                             },
+                            onEdit: () async {
+                              await viewModel.fetchUserPosts();
+                            },
                           );
                         },
                       );
