@@ -1,4 +1,4 @@
-using Newtonsoft.Json.Converters;
+using System.Collections;
 using System.Text.Json.Serialization;
 
 
@@ -10,8 +10,7 @@ public class Post
     public string[]? ImageUrLs { get; set; }
     public string name { get; set; }
 
-    public PostType Type { get; set; }
-
+    [JsonIgnore] public PostType Type { get; set; }
 
     public string[]? tags { get; set; }
     public string title { get; set; }
@@ -23,11 +22,8 @@ public class Post
     [JsonIgnore] public int UserId { get; set; }
 }
 
-
-[JsonConverter(typeof(StringEnumConverter))]
 public enum PostType
 {
     Organization,
-    Individual,
-    Unknown
+    Individual
 }
