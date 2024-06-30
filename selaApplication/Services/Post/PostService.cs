@@ -6,7 +6,7 @@ namespace selaApplication.Services.Post;
 
 public class PostService : IPostService
 {
-    public async Task<string> AddAdminPost(Models.Post post) 
+    public async Task<string> AddAdminPost(Models.Post post)
     {
         try
         {
@@ -455,7 +455,7 @@ public class PostService : IPostService
             connector.Connect();
 
             const string sql = @"
-                                SELECT p.post_id, p.imageurls, p.name, p.tags, p.title, p.description,
+                                SELECT p.post_id, p.imageurls, p.name, p.post_type ,p.tags, p.title, p.description,
                                        p.providers, p.about, p.social_links
                                 FROM save_posts sp 
                                 JOIN posts p
@@ -473,9 +473,10 @@ public class PostService : IPostService
                 var fetchedPost = new Models.Post
                 {
                     post_id = reader.GetInt32(reader.GetOrdinal("post_id")),
-                    // Type = (PostType)reader.GetInt32(reader.GetOrdinal("post_type")),
+
                     ImageUrLs = reader.GetFieldValue<string[]>(reader.GetOrdinal("imageurls")),
                     name = reader.GetString(reader.GetOrdinal("name")),
+                    Type = Enum.TryParse<PostType>(reader.GetString(reader.GetOrdinal("post_type")), true, out var postType) ? postType : PostType.Unknown,
                     tags = reader.GetFieldValue<string[]>(reader.GetOrdinal("tags")),
                     title = reader.GetString(reader.GetOrdinal("title")),
                     description = reader.GetString(reader.GetOrdinal("description")),

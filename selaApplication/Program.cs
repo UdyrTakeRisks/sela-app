@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using selaApplication.Services;
 using selaApplication.Services.Admin;
 using selaApplication.Services.Post;
 using selaApplication.Services.User;
+using System.Text.Json.Serialization;
 
 namespace selaApplication
 {
@@ -36,13 +36,18 @@ namespace selaApplication
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
-            
+
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer();
-            
+
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -62,7 +67,7 @@ namespace selaApplication
 
             app.UseAuthentication();
             app.UseAuthorization();
-            
+
             app.MapControllers();
 
             app.Run();
