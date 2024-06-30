@@ -1,9 +1,9 @@
-// lib/screens/home/components/individuals/individuals.dart
-
 import 'package:flutter/material.dart';
+import 'package:sela/models/Organizations.dart'; // Import your Organization model
 import 'package:sela/models/individual.dart';
 
 import '../../../../size_config.dart';
+import '../../../details/details_screen.dart'; // Import DetailsScreen if not already imported
 import '../section_title.dart';
 import 'IndividualCard.dart';
 import 'individual_service.dart';
@@ -52,10 +52,8 @@ class _IndividualsState extends State<Individuals> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    ...snapshot.data!.map((individual) => IndividualCard(
-                          individual: individual,
-                          press: () {},
-                        )),
+                    ...snapshot.data!.map((individual) => buildIndividualCard(
+                        individual, snapshot.data!.indexOf(individual))),
                     SizedBox(width: getProportionateScreenWidth(20)),
                   ],
                 ),
@@ -64,6 +62,38 @@ class _IndividualsState extends State<Individuals> {
           },
         ),
       ],
+    );
+  }
+
+  Widget buildIndividualCard(Individual individual, int index) {
+    // Map Individual to Organization
+    Organization organization = Organization(
+      id: individual.postId, // Adjust according to your Individual model
+      name: individual.name,
+      title: individual.title,
+      description: individual.description,
+      imageUrls: individual.imageUrls,
+      type: individual.type == 'Organization'
+          ? 0
+          : 1, // Adjust based on your conditions
+      tags: individual.tags,
+      providers: individual.providers,
+      about: individual.about,
+      socialLinks: individual.socialLinks,
+    );
+
+    return IndividualCard(
+      individual: individual,
+      press: () {
+        Navigator.pushNamed(
+          context,
+          DetailsScreen.routeName,
+          arguments: DetailsArguments(
+            organization: organization,
+            index: index,
+          ),
+        );
+      },
     );
   }
 }

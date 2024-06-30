@@ -65,8 +65,8 @@ class _BodyState extends State<Body> {
                       ),
                     ],
                   ),
-                  child: Row(
-                    children: const [
+                  child: const Row(
+                    children: [
                       Icon(Icons.search),
                       SizedBox(width: 10),
                       Text('Search'),
@@ -78,7 +78,7 @@ class _BodyState extends State<Body> {
               const DiscountBanner(),
               Organizations(key: _organizationsKey),
               SizedBox(height: getProportionateScreenWidth(10)),
-              Individuals(),
+              const Individuals(),
               SizedBox(height: getProportionateScreenWidth(30)),
             ],
           ),

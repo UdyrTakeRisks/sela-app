@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:sela/models/individual.dart';
+import 'package:sela/utils/colors.dart';
 
 class IndividualCard extends StatelessWidget {
   final Individual individual;
@@ -63,7 +64,7 @@ class IndividualCard extends StatelessWidget {
             ElevatedButton(
               onPressed: press,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF5397F0),
+                backgroundColor: primaryColor,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
