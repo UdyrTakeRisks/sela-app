@@ -1,4 +1,3 @@
-using System.ComponentModel.Design.Serialization;
 using Npgsql;
 using selaApplication.Models;
 using selaApplication.Persistence;
@@ -607,6 +606,7 @@ public class PostService : IPostService
     }
 
     public async Task<double> GetPostRatingById(int postId)
+
     {
         try
         {
@@ -620,16 +620,16 @@ public class PostService : IPostService
 
             await using var reader = await command.ExecuteReaderAsync();
 
-            if (!await reader.ReadAsync()) 
-                return 0.0; 
-
-            if (reader.IsDBNull(reader.GetOrdinal("overall_rating"))) 
+            if (!await reader.ReadAsync())
                 return 0.0;
-            
+
+            if (reader.IsDBNull(reader.GetOrdinal("overall_rating")))
+                return 0.0;
+
             var overallRating = reader.GetDouble(reader.GetOrdinal("overall_rating"));
-            
+
             return overallRating;
-            
+
         }
         catch (Exception ex)
         {
@@ -639,5 +639,32 @@ public class PostService : IPostService
         }
     }
 
-    
+    public async Task<bool> isSavedPost(int userId, int postId)
+    {
+
+        try
+        {
+            using var connector = new PostgresConnection();
+            connector.Connect();
+
+            const string sql =
+                "SELECT * FROM save_posts " +
+                "WHERE user_id = @user_id AND post_id = @post_id";
+
+            await using var command = new NpgsqlCommand(sql, connector._connection);
+            command.Parameters.AddWithValue("user_id", userId);
+            command.Parameters.AddWithValue("post_id", postId);
+
+            await using var reader = command.ExecuteReader();
+            return reader.Read();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred while checking if post is saved: {ex.Message}");
+            Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+            return false;
+        }
+    }
+
+
 }
