@@ -22,6 +22,7 @@ class _MyPostsPageState extends State<MyPostsPage> {
   void initState() {
     super.initState();
     viewModel.fetchUserPosts();
+    viewModel.fetchPhoto(); // Fetch photo on init
   }
 
   @override
@@ -34,6 +35,7 @@ class _MyPostsPageState extends State<MyPostsPage> {
       body: RefreshIndicator(
         onRefresh: () async {
           await viewModel.fetchUserPosts();
+          await viewModel.fetchPhoto(); // Fetch photo on refresh
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -45,9 +47,14 @@ class _MyPostsPageState extends State<MyPostsPage> {
                   if (data.username.isEmpty) {
                     return Center(child: CircularProgressIndicator());
                   } else {
-                    return UserInfo(
-                      userName: data.username,
-                      userImage: '',
+                    return ValueListenableBuilder<String>(
+                      valueListenable: viewModel.photoNotifier,
+                      builder: (context, photoUrl, _) {
+                        return UserInfo(
+                          userName: data.username,
+                          userImage: photoUrl,
+                        );
+                      },
                     );
                   }
                 },

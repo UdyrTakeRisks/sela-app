@@ -37,7 +37,6 @@ class MyPostsService {
             postsJson.map((json) => MyPost.fromJson(json)).toList();
 
         print('username: ' + username);
-
         print('posts count: ' + posts.length.toString());
 
         // Print the imageUrls from the first post for debugging
@@ -52,6 +51,25 @@ class MyPostsService {
       }
     } else {
       throw Exception('Failed to load posts');
+    }
+  }
+
+  Future<String> fetchPhoto() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? cookie = prefs.getString('cookie');
+
+    final url = Uri.parse('$DOTNET_URL_API_BACKEND/User/view/photo');
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      if (cookie != null) 'Cookie': cookie,
+    });
+
+    if (response.statusCode == 200) {
+      print('Fetched photo successfully');
+      print('photoUrl: ' + response.body);
+      return response.body;
+    } else {
+      throw Exception('Failed to load photo');
     }
   }
 }

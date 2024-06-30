@@ -21,15 +21,15 @@ class UserInfo extends StatelessWidget {
             radius: 40,
             backgroundColor: backgroundColor2,
             // if there is no image, display the user's first letter
-            backgroundImage: userImage.isEmpty
-                ? NetworkImage(
-                    'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')
-                : NetworkImage(userImage),
+            backgroundImage: userImage.isNotEmpty
+                ? NetworkImage(userImage)
+                : const AssetImage('assets/images/profile.png')
+                    as ImageProvider,
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Text(
             userName,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
