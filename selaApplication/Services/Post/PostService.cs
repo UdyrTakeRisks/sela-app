@@ -134,7 +134,7 @@ public class PostService : IPostService
                 var fetchedPost = new Models.Post
                 {
                     post_id = reader.GetInt32(reader.GetOrdinal("post_id")),
-                    // Type = (PostType)reader.GetInt32(reader.GetOrdinal("post_type")),
+                    type = reader.GetString(reader.GetOrdinal("post_type")),
                     ImageUrLs = reader.GetFieldValue<string[]>(reader.GetOrdinal("imageurls")),
                     name = reader.GetString(reader.GetOrdinal("name")),
                     tags = reader.GetFieldValue<string[]>(reader.GetOrdinal("tags")),
@@ -177,7 +177,7 @@ public class PostService : IPostService
                 var fetchedPost = new Models.Post
                 {
                     post_id = reader.GetInt32(reader.GetOrdinal("post_id")),
-                    // Type = (PostType)reader.GetInt32(reader.GetOrdinal("post_type")),
+                    type = reader.GetString(reader.GetOrdinal("post_type")),
                     ImageUrLs = reader.GetFieldValue<string[]>(reader.GetOrdinal("imageurls")),
                     name = reader.GetString(reader.GetOrdinal("name")),
                     tags = reader.GetFieldValue<string[]>(reader.GetOrdinal("tags")),
@@ -456,7 +456,7 @@ public class PostService : IPostService
             connector.Connect();
 
             const string sql = @"
-                                SELECT p.post_id, p.imageurls, p.name, p.tags, p.title, p.description,
+                                SELECT p.post_id, p.imageurls, p.name, p.post_type, p.tags, p.title, p.description,
                                        p.providers, p.about, p.social_links
                                 FROM save_posts sp 
                                 JOIN posts p
@@ -477,6 +477,7 @@ public class PostService : IPostService
                     // Type = (PostType)reader.GetInt32(reader.GetOrdinal("post_type")),
                     ImageUrLs = reader.GetFieldValue<string[]>(reader.GetOrdinal("imageurls")),
                     name = reader.GetString(reader.GetOrdinal("name")),
+                    type = reader.GetString(reader.GetOrdinal("post_type")),
                     tags = reader.GetFieldValue<string[]>(reader.GetOrdinal("tags")),
                     title = reader.GetString(reader.GetOrdinal("title")),
                     description = reader.GetString(reader.GetOrdinal("description")),
