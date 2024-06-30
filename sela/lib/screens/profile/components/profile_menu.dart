@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../utils/constants.dart';
 
@@ -11,34 +10,28 @@ class ProfileMenu extends StatelessWidget {
     required this.press,
   }) : super(key: key);
 
-  final String text, icon;
+  final String text;
+  final IconData icon;
   final VoidCallback press;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: TextButton(
-        // padding: EdgeInsets.all(20),
-        // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        // color: Color(0xFFF5F6F9),
         style: ButtonStyle(
-          padding: MaterialStateProperty.all(EdgeInsets.all(20)),
-          shape: MaterialStateProperty.all(
+          padding: WidgetStateProperty.all(const EdgeInsets.all(20)),
+          shape: WidgetStateProperty.all(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-          backgroundColor: MaterialStateProperty.all(Color(0xFFF5F6F9)),
+          backgroundColor: WidgetStateProperty.all(const Color(0xFFF5F6F9)),
         ),
         onPressed: press,
         child: Row(
           children: [
-            SvgPicture.asset(
-              icon,
-              color: kPrimaryColor,
-              width: 22,
-            ),
-            SizedBox(width: 20),
+            Icon(icon, color: kPrimaryColor, size: 22),
+            const SizedBox(width: 20),
             Expanded(child: Text(text)),
-            Icon(Icons.arrow_forward_ios),
+            const Icon(Icons.arrow_forward_ios),
           ],
         ),
       ),

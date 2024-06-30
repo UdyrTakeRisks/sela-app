@@ -7,6 +7,8 @@ import 'package:sela/screens/home/home_screen.dart';
 import 'package:sela/screens/login_success/login_success.dart';
 import 'package:sela/screens/my_posts/edit_post_page.dart';
 import 'package:sela/screens/my_posts/my_posts_page.dart';
+import 'package:sela/screens/profile/components/help_center.dart';
+import 'package:sela/screens/profile/components/my_account_page.dart';
 import 'package:sela/screens/profile/profile_screen.dart';
 import 'package:sela/screens/saved/saved_screen.dart';
 import 'package:sela/screens/sign_in/sign_in_screen.dart';
@@ -30,13 +32,15 @@ final Map<String, WidgetBuilder> routes = {
   OtpScreen.routeName: (context) => const OtpScreen(),
   HomeScreen.routeName: (context) => const HomeScreen(),
   DetailsScreen.routeName: (context) => const DetailsScreen(),
-  ProfileScreen.routeName: (context) => ProfileScreen(),
+  ProfileScreen.routeName: (context) => const ProfileScreen(),
   SavedScreen.routeName: (context) => SavedScreen(),
   PostPage.routeName: (context) => PostPage(),
-  MyPostsPage.routeName: (context) => MyPostsPage(),
+  MyPostsPage.routeName: (context) => const MyPostsPage(),
   AllOrganizationsScreen.routeName: (context) => const AllOrganizationsScreen(),
   SearchScreen.routeName: (context) => SearchScreen(),
   EditPostPage.routeName: (context) => EditPostPage(
         post: ModalRoute.of(context)!.settings.arguments as MyPost,
       ),
+  MyAccountPage.routeName: (context) => const MyAccountPage(),
+  HelpCenterPage.routeName: (context) => const HelpCenterPage(),
 };
