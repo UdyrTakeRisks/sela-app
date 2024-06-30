@@ -1,8 +1,8 @@
-class Organization {
-  final int id;
+class SavedPost {
+  final int postId;
   final List<String> imageUrls;
-  final int type;
   final String name;
+  final String type;
   final List<String> tags;
   final String title;
   final String description;
@@ -10,30 +10,25 @@ class Organization {
   final String about;
   final String socialLinks;
 
-  final double rating;
-
-  bool isFavourite, isPopular;
-
-  Organization({
-    required this.id,
+  SavedPost({
+    required this.postId,
     required this.imageUrls,
     required this.name,
+    required this.type,
     required this.tags,
     required this.title,
     required this.description,
     required this.providers,
     required this.about,
     required this.socialLinks,
-    this.type = 0,
-    this.rating = 0.0,
-    this.isFavourite = false,
-    this.isPopular = false,
   });
-  factory Organization.fromJson(Map<String, dynamic> json) {
-    return Organization(
-      id: json['post_id'],
+
+  factory SavedPost.fromJson(Map<String, dynamic> json) {
+    return SavedPost(
+      postId: json['post_id'],
       imageUrls: List<String>.from(json['imageUrLs']),
       name: json['name'],
+      type: json['type'],
       tags: List<String>.from(json['tags']),
       title: json['title'],
       description: json['description'],
