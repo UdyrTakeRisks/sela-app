@@ -10,6 +10,6 @@ public class User
     [MaxLength(255)] public string username { get; set; }
     [MaxLength(255)] public string name { get; set; }
     [MaxLength(255)] public string email { get; set; }
-    [JsonIgnore] public string phoneNumber { get; set; }
+    public string phoneNumber { get; set; }
     [MaxLength(255)][JsonIgnore] public string password { get; set; }
 }
