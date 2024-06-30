@@ -1,6 +1,6 @@
 namespace selaApplication.Dtos;
 
-public class WelcomeNotificationDto
+public class NotificationDto
 {
     public string message { get; set; }
     
