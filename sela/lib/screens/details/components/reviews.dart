@@ -94,6 +94,50 @@ class _ReviewsState extends State<Reviews> {
     }
   }
 
+  Future<void> _deleteReview() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var cookies = prefs.getString('cookie');
+
+      var url =
+          Uri.parse('$DOTNET_URL_API_BACKEND/Post/un-review/${widget.postId}');
+
+      var headers = {
+        'Content-Type': 'application/json',
+        'Cookie': cookies!,
+      };
+
+      var response = await http.delete(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        // Refresh the reviews in the parent widget
+        widget.refreshReviews();
+
+        // Show a snackbar with a success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Review deleted successfully'),
+          ),
+        );
+      } else {
+        // Handle errors or show feedback based on response
+        print('Failed to delete review: ${response.statusCode}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to delete review. Please try again later.'),
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error deleting review: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error occurred while deleting review.'),
+        ),
+      );
+    }
+  }
+
   Widget _buildStarRating(double rating) {
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -134,23 +178,37 @@ class _ReviewsState extends State<Reviews> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                CircleAvatar(
-                                  radius: 20,
-                                  backgroundColor: backgroundColor2,
-                                  child: Text(
-                                    review.username[0],
-                                    style: TextStyle(color: primaryColor),
-                                  ),
+                                Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 20,
+                                      backgroundColor: backgroundColor2,
+                                      child: Text(
+                                        review.username[0],
+                                        style: TextStyle(color: primaryColor),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      review.username,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        color: textColor1,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  review.username,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: textColor1,
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
                                   ),
+                                  onPressed: () {
+                                    _deleteReview();
+                                  },
                                 ),
                               ],
                             ),
