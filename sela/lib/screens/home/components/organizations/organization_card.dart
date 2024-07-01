@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sela/utils/colors.dart';
 
 import '../../../../size_config.dart';
 
@@ -40,7 +41,7 @@ class OrganizationCard extends StatelessWidget {
                 BlendMode.screen,
               ),
             ),
-            color: const Color(0xFF356899),
+            color: primaryColor,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
@@ -56,20 +57,27 @@ class OrganizationCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  ClipOval(
-                    child: logo != null
-                        ? Image.network(
-                            logo!,
-                            width: 40,
-                            height: 40,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.asset(
-                            "assets/images/org.jpg",
-                            width: 40,
-                            height: 40,
-                            fit: BoxFit.cover,
-                          ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    padding: const EdgeInsets.all(5),
+                    child: ClipOval(
+                      child: logo != null
+                          ? Image.network(
+                              logo!,
+                              width: 40,
+                              height: 40,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              "assets/images/org.jpg",
+                              width: 40,
+                              height: 40,
+                              fit: BoxFit.cover,
+                            ),
+                    ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(

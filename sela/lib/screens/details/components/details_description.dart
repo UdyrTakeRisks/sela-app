@@ -115,31 +115,37 @@ class _OrganizationDescriptionState extends State<OrganizationDescription> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: getProportionateScreenWidth(20)),
-              child: Text(
-                widget.organization.name,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                left: getProportionateScreenWidth(20),
-                right: getProportionateScreenWidth(64),
-              ),
-              child: Text(
-                widget.organization.title,
-                style: const TextStyle(
-                  color: kPrimaryColor,
-                  fontWeight: FontWeight.w600,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: getProportionateScreenWidth(20)),
+                child: Text(
+                  widget.organization.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: EdgeInsets.only(
+                  left: getProportionateScreenWidth(20),
+                  right: getProportionateScreenWidth(64),
+                ),
+                child: Text(
+                  widget.organization.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: kPrimaryColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         Padding(
           padding: const EdgeInsets.only(right: 15),

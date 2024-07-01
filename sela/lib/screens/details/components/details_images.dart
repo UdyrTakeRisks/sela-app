@@ -55,10 +55,10 @@ class _ProductImagesState extends State<OrganizationImages> {
                   child: Hero(
                     tag: widget.organization.id.toString(),
                     child: Image.network(
-                      widget.organization.imageUrls![selectedImage],
+                      widget.organization.imageUrls![index],
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
-                        return Center(child: Icon(Icons.error));
+                        return const Center(child: Icon(Icons.error));
                       },
                     ),
                   ),
@@ -72,14 +72,14 @@ class _ProductImagesState extends State<OrganizationImages> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ...List.generate(widget.organization.imageUrls!.length,
-                (index) => buildSmallProductPreview(index)),
+                (index) => buildSmallPostPreview(index)),
           ],
         )
       ],
     );
   }
 
-  GestureDetector buildSmallProductPreview(int index) {
+  GestureDetector buildSmallPostPreview(int index) {
     return GestureDetector(
       onTap: () {
         _pageController.animateToPage(
@@ -90,8 +90,8 @@ class _ProductImagesState extends State<OrganizationImages> {
       },
       child: AnimatedContainer(
         duration: defaultDuration,
-        margin: EdgeInsets.only(right: 15),
-        padding: EdgeInsets.all(8),
+        margin: const EdgeInsets.only(right: 15),
+        padding: const EdgeInsets.all(8),
         height: getProportionateScreenWidth(48),
         width: getProportionateScreenWidth(48),
         decoration: BoxDecoration(
@@ -100,12 +100,18 @@ class _ProductImagesState extends State<OrganizationImages> {
           border: Border.all(
               color: kPrimaryColor.withOpacity(selectedImage == index ? 1 : 0)),
         ),
-        child: Image.network(
-          widget.organization.imageUrls![index],
-          errorBuilder: (context, error, stackTrace) {
-            return Center(child: Icon(Icons.error));
-          },
-        ),
+        child: widget.organization.imageUrls != null &&
+                widget.organization.imageUrls!.isNotEmpty
+            ? Image.network(
+                widget.organization.imageUrls![index],
+                errorBuilder: (context, error, stackTrace) {
+                  return const Center(child: Icon(Icons.error));
+                },
+              )
+            : Image.asset(
+                'assets/images/org.jpg', // Use your default image asset path here
+                fit: BoxFit.cover,
+              ),
       ),
     );
   }
