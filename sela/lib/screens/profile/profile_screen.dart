@@ -6,14 +6,27 @@ import 'components/body.dart';
 
 class ProfileScreen extends StatelessWidget {
   static String routeName = "/profile";
+
+  const ProfileScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile"),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.black,
+        title: const Text("PROFILE"),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.settings_rounded),
+          )
+        ],
       ),
-      body: Body(),
-      bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.profile),
+      body: const Body(),
+      bottomNavigationBar:
+          const CustomBottomNavBar(selectedMenu: MenuState.profile),
     );
   }
 }

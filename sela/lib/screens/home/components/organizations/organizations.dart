@@ -61,10 +61,12 @@ class OrganizationsState extends State<Organizations> {
                   children: [
                     ...snapshot.data!.map((org) => OrganizationCard(
                           index: org.id,
-                          logo: org.imageUrls[0],
+                          logo: org.imageUrls!.isNotEmpty
+                              ? org.imageUrls![0]
+                              : null,
                           name: org.name,
                           title: org.title,
-                          tags: org.tags
+                          tags: org.tags!
                               .take(3) // Take only the first 3 tags
                               .toList(),
                           press: () => Navigator.pushNamed(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../components/coustom_bottom_nav_bar.dart';
 import '../../models/my_post_model.dart';
+import '../../utils/enums.dart';
 import 'components/post_card.dart';
 import 'components/user_info.dart';
 import 'my_posts_service.dart';
@@ -8,6 +10,8 @@ import 'my_posts_viewmodel.dart';
 
 class MyPostsPage extends StatefulWidget {
   static String routeName = '/my_posts';
+
+  const MyPostsPage({super.key});
   @override
   _MyPostsPageState createState() => _MyPostsPageState();
 }
@@ -20,6 +24,7 @@ class _MyPostsPageState extends State<MyPostsPage> {
   void initState() {
     super.initState();
     viewModel.fetchUserPosts();
+    viewModel.fetchPhoto(); // Fetch photo on init
   }
 
   @override
@@ -27,29 +32,66 @@ class _MyPostsPageState extends State<MyPostsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Services Posts'),
+        scrolledUnderElevation: 0,
       ),
-      body: Column(
-        children: [
-          UserInfo(), // Display user info
-          Expanded(
-            child: ValueListenableBuilder<List<MyPost>>(
-              valueListenable: viewModel.postsNotifier,
-              builder: (context, posts, _) {
-                if (posts.isEmpty) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
-                  return ListView.builder(
-                    itemCount: posts.length,
-                    itemBuilder: (context, index) {
-                      return PostCard(post: posts[index]);
-                    },
-                  );
-                }
-              },
-            ),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await viewModel.fetchUserPosts();
+          await viewModel.fetchPhoto(); // Fetch photo on refresh
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Column(
+            children: [
+              ValueListenableBuilder<MyPostsData>(
+                valueListenable: viewModel.postsNotifier,
+                builder: (context, data, _) {
+                  if (data.username.isEmpty) {
+                    return Center(child: CircularProgressIndicator());
+                  } else {
+                    return ValueListenableBuilder<String>(
+                      valueListenable: viewModel.photoNotifier,
+                      builder: (context, photoUrl, _) {
+                        return UserInfo(
+                          userName: data.username,
+                          userImage: photoUrl,
+                        );
+                      },
+                    );
+                  }
+                },
+              ), // Display user info
+              Expanded(
+                child: ValueListenableBuilder<MyPostsData>(
+                  valueListenable: viewModel.postsNotifier,
+                  builder: (context, data, _) {
+                    if (data.posts.isEmpty) {
+                      return Center(child: CircularProgressIndicator());
+                    } else {
+                      return ListView.builder(
+                        itemCount: data.posts.length,
+                        itemBuilder: (context, index) {
+                          return PostCard(
+                            post: data.posts[index],
+                            onDelete: () async {
+                              await viewModel.fetchUserPosts();
+                            },
+                            onEdit: () async {
+                              await viewModel.fetchUserPosts();
+                            },
+                          );
+                        },
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
+      bottomNavigationBar:
+          const CustomBottomNavBar(selectedMenu: MenuState.myPosts),
     );
   }
 }

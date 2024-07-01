@@ -3,12 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:sela/components/default_button.dart';
-import 'package:sela/screens/home/home_screen.dart';
 
 import '../../../components/custom_suffix_icon.dart';
 import '../../../components/form_error.dart';
+import '../../../components/loading_screen.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/env.dart';
+import '../../sign_in/sign_in_screen.dart';
 
 class CompleteProfileForm extends StatefulWidget {
   final String email;
@@ -50,14 +51,17 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
 
   Future<void> completeProfile(
       String username, String fullName, int phoneNumber) async {
+    String phoneNumberString = phoneNumber.toString();
     var url = Uri.parse('$DOTNET_URL_API_BACKEND/User/signup');
     var body = json.encode({
       'username': username,
       'name': fullName,
       'email': widget.email,
-      'phoneNumber': phoneNumber,
+      'phoneNumber': phoneNumberString,
       'password': widget.password,
     });
+
+    print(body);
 
     try {
       http.Response response = await http.post(
@@ -71,14 +75,46 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       if (response.statusCode == 200) {
         // Navigate to OTP screen on successful profile completion
         print(response.body);
-        Navigator.pushNamed(context, HomeScreen.routeName);
+        Navigator.pushNamed(context, SignInScreen.routeName);
+        // show a snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('SignUp Successful'),
+          ),
+        );
+        print(body);
+      } else if (response.statusCode == 400) {
+        // Show error dialog on failure
+        print(response.body);
+        Navigator.pop(context);
+        // show a snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('User username already exists, please try again.'),
+          ),
+        );
       } else {
         // Show error dialog on failure
         print(response.body);
-        _showErrorDialog('Failed to complete profile. Please try again.');
+        Navigator.pop(context);
+        _showErrorDialog('Profile Completion Failed');
+        // show a snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Profile Completion Failed'),
+          ),
+        );
       }
     } catch (e) {
-      _showErrorDialog(e.toString());
+      Navigator.pop(context);
+      _showErrorDialog('Profile Completion Failed');
+      // show a snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Profile Completion Failed'),
+        ),
+      );
+      print(e.toString());
     }
   }
 
@@ -154,12 +190,17 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             onChanged: (value) {
               if (value.isNotEmpty) {
                 removeError(error: kPhoneNumberNullError);
+              } else if (value.length >= 10) {
+                removeError(error: kShortPhoneNumberError);
               }
               return;
             },
             validator: (value) {
               if (value!.isEmpty) {
                 addError(error: kPhoneNumberNullError);
+                return "";
+              } else if (value.length < 10) {
+                addError(error: kShortPhoneNumberError);
                 return "";
               }
               return null;
@@ -180,6 +221,11 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             press: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const LoadingScreen()),
+                );
                 completeProfile(
                   usernameController.text,
                   fullNameController.text,
@@ -187,7 +233,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
                 );
               }
             },
-            text: "Continue",
+            text: "Sign Up",
           ),
         ],
       ),

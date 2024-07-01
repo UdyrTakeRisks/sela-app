@@ -64,6 +64,13 @@ class _PostImagesFormState extends State<PostImagesForm> {
       } catch (e) {
         // Handle error if needed
         print('Error uploading image: $e');
+
+        // snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error uploading image, try to upload smaller image'),
+          ),
+        );
       }
     }
     setState(() {

@@ -53,7 +53,6 @@ class _SignFormState extends State<SignForm> {
       'password': password,
     });
     print(body);
-    bool hasPopped = false;
     try {
       http.Response response = await http.post(
         url,
@@ -62,12 +61,8 @@ class _SignFormState extends State<SignForm> {
         },
         body: body,
       );
-      if (!hasPopped) {
-        Navigator.pop(context); // Dismiss the loading screen
-        hasPopped = true;
-      }
+
       if (response.statusCode != 200) {
-        _showErrorDialog();
         throw Exception('Failed to login');
       } else {
         print('Login successful');
@@ -89,13 +84,22 @@ class _SignFormState extends State<SignForm> {
         }
       }
       Navigator.pushReplacementNamed(context, '/login_success');
+      // show a snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Login Successful'),
+        ),
+      );
       print(response.body);
     } catch (e) {
-      if (!hasPopped) {
-        Navigator.pop(context); // Dismiss the loading screen
-        hasPopped = true;
-      }
+      Navigator.pop(context);
       _showErrorDialog();
+      // show a snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Login Failed'),
+        ),
+      );
       print(e.toString());
     }
   }
@@ -105,15 +109,16 @@ class _SignFormState extends State<SignForm> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Login Failed'),
-          content:
-              Text('Please check your username or password and try again.'),
+          icon: const Icon(Icons.sms_failed_outlined),
+          iconColor: Colors.red,
+          title: const Text('Login Failed'),
+          content: const Text(
+              'Please check your username or password and try again.'),
           actions: [
             TextButton(
               onPressed: () {
-                // Navigator.of(context).pop(); // Close the dialog
-                Navigator.pushReplacementNamed(context,
-                    '/sign_in'); // Replace with the route name of your signup screen
+                Navigator.pop(
+                    context); // Replace with the route name of your signup screen
               },
               child: Text('OK'),
             ),

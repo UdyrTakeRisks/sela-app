@@ -53,8 +53,8 @@ class CustomAppBar extends PreferredSize {
               ),
               child: Row(
                 children: [
-                  const Text(
-                    "4.5",
+                  Text(
+                    "$rating",
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,

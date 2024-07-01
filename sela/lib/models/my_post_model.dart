@@ -24,9 +24,9 @@ class MyPost {
   factory MyPost.fromJson(Map<String, dynamic> json) {
     return MyPost(
       postId: json['post_id'] ?? 0,
-      imageUrls: json['imageUrls'] != null
-          ? List<String>.from(json['imageUrls'])
-          : null,
+      imageUrls: json['imageUrLs'] != null
+          ? List<String>.from(json['imageUrLs'])
+          : [], // Initialize with an empty list if imageUrls is null
       name: json['name'],
       tags: json['tags'] != null ? List<String>.from(json['tags']) : null,
       title: json['title'],

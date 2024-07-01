@@ -1,43 +1,159 @@
 import 'package:flutter/material.dart';
+import 'package:sela/size_config.dart';
+import 'package:sela/utils/colors.dart';
 
+import '../../../models/user_model.dart';
+import 'help_center.dart';
+import 'my_account_page.dart';
 import 'profile_menu.dart';
-import 'profile_pic.dart';
+import 'profile_services.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  const Body({super.key});
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  late Future<String> futureUserPhoto;
+  late Future<Users> futureUserDetails;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> _handleRefresh() async {
+    setState(() {
+      futureUserDetails = ProfileServices.fetchUserDetails(context);
+      futureUserPhoto = ProfileServices.fetchProfilePhoto();
+    });
+    await Future.delayed(const Duration(seconds: 1));
+    // show snackbar
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Refreshed'),
+      ),
+    );
+  }
+
+  void fetchData() {
+    futureUserDetails = ProfileServices.fetchUserDetails(context);
+    futureUserPhoto = ProfileServices.fetchProfilePhoto();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(vertical: 20),
-      child: Column(
-        children: [
-          ProfilePic(),
-          SizedBox(height: 20),
-          ProfileMenu(
-            text: "My Account",
-            icon: "assets/icons/User Icon.svg",
-            press: () => {},
-          ),
-          ProfileMenu(
-            text: "Notifications",
-            icon: "assets/icons/Bell.svg",
-            press: () {},
-          ),
-          ProfileMenu(
-            text: "Settings",
-            icon: "assets/icons/Settings.svg",
-            press: () {},
-          ),
-          ProfileMenu(
-            text: "Help Center",
-            icon: "assets/icons/Question mark.svg",
-            press: () {},
-          ),
-          ProfileMenu(
-            text: "Log Out",
-            icon: "assets/icons/Log out.svg",
-            press: () {},
-          ),
-        ],
+    return RefreshIndicator(
+      onRefresh: _handleRefresh,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Column(
+          children: [
+            FutureBuilder<Users>(
+              future: futureUserDetails,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Failed to load user details'));
+                } else if (!snapshot.hasData) {
+                  return const Center(child: Text('No user details found'));
+                } else {
+                  Users user = snapshot.data!;
+                  return Column(
+                    children: [
+                      FutureBuilder<String>(
+                        future: futureUserPhoto,
+                        builder: (context, photoSnapshot) {
+                          if (photoSnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (photoSnapshot.hasError) {
+                            return Center(
+                                child: Text('Failed to load profile photo'));
+                          } else {
+                            String userPhoto = photoSnapshot.data ??
+                                "assets/images/profile.png";
+
+                            return Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: primaryColor,
+                                  ),
+                                ],
+                              ),
+                              child: CircleAvatar(
+                                radius: 50,
+                                backgroundImage: userPhoto.startsWith('http')
+                                    ? NetworkImage(userPhoto)
+                                    : AssetImage(userPhoto) as ImageProvider,
+                                onBackgroundImageError: (_, __) {
+                                  setState(() {
+                                    userPhoto = 'assets/images/profile.png';
+                                  });
+                                },
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      SizedBox(height: getProportionateScreenHeight(10)),
+                      Text(
+                        user.name,
+                        style: const TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        user.username
+                            .replaceAll(RegExp(r'\s+'), '')
+                            .toLowerCase()
+                            .trim(),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      SizedBox(height: getProportionateScreenHeight(20)),
+                      ProfileMenu(
+                        text: "My Account",
+                        icon: Icons.person,
+                        press: () => Navigator.pushNamed(
+                            context, MyAccountPage.routeName),
+                      ),
+                      ProfileMenu(
+                        text: "Notifications",
+                        icon: Icons.notifications,
+                        press: () {},
+                      ),
+                      ProfileMenu(
+                        text: "Help Center",
+                        icon: Icons.help,
+                        press: () => Navigator.pushNamed(
+                            context, HelpCenterPage.routeName),
+                      ),
+                      ProfileMenu(
+                        text: "Log Out",
+                        icon: Icons.logout,
+                        press: () {
+                          ProfileServices.logout(context);
+                        },
+                      ),
+                    ],
+                  );
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
