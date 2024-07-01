@@ -31,7 +31,7 @@ class _MyPostsPageState extends State<MyPostsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Services Posts'),
+        title: const Text('My Posts'),
         scrolledUnderElevation: 0,
       ),
       body: RefreshIndicator(

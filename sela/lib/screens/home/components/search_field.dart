@@ -121,7 +121,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   logo: organization.imageUrls != null &&
                                           organization.imageUrls!.isNotEmpty
                                       ? organization.imageUrls![0]
-                                      : 'https://via.placeholder.com/150',
+                                      : '',
                                   name: organization.name,
                                   title: organization.title,
                                   tags: organization.tags!.take(3).toList(),

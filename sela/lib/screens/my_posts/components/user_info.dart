@@ -43,7 +43,7 @@ class UserInfo extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         )
-                      : Icon(
+                      : const Icon(
                           Icons.person,
                           size: 50,
                           color: Colors.white,
@@ -84,12 +84,17 @@ class UserInfo extends StatelessWidget {
                   maxLines: 1,
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  "View Profile",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.blueAccent,
-                    decoration: TextDecoration.underline,
+                GestureDetector(
+                  onTap: () {
+                    // Navigate to user profile
+                    Navigator.pushNamed(context, '/profile');
+                  },
+                  child: Text(
+                    "View Profile",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: primaryColor,
+                    ),
                   ),
                 ),
               ],

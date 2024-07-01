@@ -64,7 +64,7 @@ class OrganizationCard extends StatelessWidget {
                     ),
                     padding: const EdgeInsets.all(5),
                     child: ClipOval(
-                      child: logo != null
+                      child: logo != null && logo!.isNotEmpty
                           ? Image.network(
                               logo!,
                               width: 40,

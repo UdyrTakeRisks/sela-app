@@ -16,7 +16,7 @@ class _ProfilePicState extends State<ProfilePic> {
   @override
   void initState() {
     super.initState();
-    futureProfilePhotoUrl = ProfileServices.fetchProfilePhoto();
+    futureProfilePhotoUrl = ProfileServices.fetchPhoto(context);
   }
 
   @override
@@ -34,9 +34,13 @@ class _ProfilePicState extends State<ProfilePic> {
             !snapshot.hasData ||
             snapshot.data!.isEmpty) {
           return CircleAvatar(
-            backgroundImage: const AssetImage("assets/images/profile.png"),
             backgroundColor: backgroundColor4,
             radius: 57.5,
+            child: const Icon(
+              Icons.person,
+              size: 57.5,
+              color: Colors.grey,
+            ),
           );
         } else {
           return CircleAvatar(

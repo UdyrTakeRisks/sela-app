@@ -9,7 +9,7 @@ import 'profile_menu.dart';
 import 'profile_services.dart';
 
 class Body extends StatefulWidget {
-  const Body({super.key});
+  const Body({Key? key}) : super(key: key);
 
   @override
   State<Body> createState() => _BodyState();
@@ -18,6 +18,7 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   late Future<String> futureUserPhoto;
   late Future<Users> futureUserDetails;
+  bool _isOnline = true; // Online state indicator
 
   @override
   void initState() {
@@ -28,20 +29,17 @@ class _BodyState extends State<Body> {
   Future<void> _handleRefresh() async {
     setState(() {
       futureUserDetails = ProfileServices.fetchUserDetails(context);
-      futureUserPhoto = ProfileServices.fetchProfilePhoto();
+      futureUserPhoto = ProfileServices.fetchPhoto(context);
     });
     await Future.delayed(const Duration(seconds: 1));
-    // show snackbar
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Refreshed'),
-      ),
+      const SnackBar(content: Text('Refreshed')),
     );
   }
 
   void fetchData() {
     futureUserDetails = ProfileServices.fetchUserDetails(context);
-    futureUserPhoto = ProfileServices.fetchProfilePhoto();
+    futureUserPhoto = ProfileServices.fetchPhoto(context);
   }
 
   @override
@@ -52,6 +50,87 @@ class _BodyState extends State<Body> {
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Column(
           children: [
+            FutureBuilder<String>(
+              future: futureUserPhoto,
+              builder: (context, photoSnapshot) {
+                if (photoSnapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (photoSnapshot.hasError) {
+                  return CircleAvatar(
+                    radius: 57.5,
+                    backgroundColor: backgroundColor4,
+                    child: Icon(
+                      Icons.person,
+                      size: 57.5,
+                      color: Colors.grey,
+                    ),
+                  );
+                } else {
+                  String userPhoto =
+                      photoSnapshot.data ?? "assets/images/profile.png";
+                  return Stack(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          boxShadow: [
+                            BoxShadow(
+                              color: primaryColor,
+                            ),
+                          ],
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: primaryColor,
+                              width: 2,
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(2),
+                          child: CircleAvatar(
+                            radius: 57.5,
+                            backgroundColor: primaryColor,
+                            child: ClipOval(
+                              child: userPhoto.startsWith('http')
+                                  ? Image.network(
+                                      userPhoto,
+                                      width: getProportionateScreenWidth(115),
+                                      height: getProportionateScreenHeight(115),
+                                      fit: BoxFit.cover,
+                                    )
+                                  : const Icon(
+                                      Icons.person,
+                                      size: 115,
+                                      color: Colors.white,
+                                    ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        right: 6,
+                        bottom: 6,
+                        child: Container(
+                          width: 26,
+                          height: 26,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _isOnline ? Colors.green : Colors.grey,
+                            border: Border.all(
+                              color: Colors.white,
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              },
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
             FutureBuilder<Users>(
               future: futureUserDetails,
               builder: (context, snapshot) {
@@ -65,45 +144,6 @@ class _BodyState extends State<Body> {
                   Users user = snapshot.data!;
                   return Column(
                     children: [
-                      FutureBuilder<String>(
-                        future: futureUserPhoto,
-                        builder: (context, photoSnapshot) {
-                          if (photoSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (photoSnapshot.hasError) {
-                            return Center(
-                                child: Text('Failed to load profile photo'));
-                          } else {
-                            String userPhoto = photoSnapshot.data ??
-                                "assets/images/profile.png";
-
-                            return Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: primaryColor,
-                                  ),
-                                ],
-                              ),
-                              child: CircleAvatar(
-                                radius: 50,
-                                backgroundImage: userPhoto.startsWith('http')
-                                    ? NetworkImage(userPhoto)
-                                    : AssetImage(userPhoto) as ImageProvider,
-                                onBackgroundImageError: (_, __) {
-                                  setState(() {
-                                    userPhoto = 'assets/images/profile.png';
-                                  });
-                                },
-                              ),
-                            );
-                          }
-                        },
-                      ),
                       SizedBox(height: getProportionateScreenHeight(10)),
                       Text(
                         user.name,
@@ -127,7 +167,9 @@ class _BodyState extends State<Body> {
                         text: "My Account",
                         icon: Icons.person,
                         press: () => Navigator.pushNamed(
-                            context, MyAccountPage.routeName),
+                          context,
+                          MyAccountPage.routeName,
+                        ),
                       ),
                       ProfileMenu(
                         text: "Notifications",
@@ -138,7 +180,9 @@ class _BodyState extends State<Body> {
                         text: "Help Center",
                         icon: Icons.help,
                         press: () => Navigator.pushNamed(
-                            context, HelpCenterPage.routeName),
+                          context,
+                          HelpCenterPage.routeName,
+                        ),
                       ),
                       ProfileMenu(
                         text: "Log Out",

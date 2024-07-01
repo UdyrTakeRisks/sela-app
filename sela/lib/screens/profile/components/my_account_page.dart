@@ -23,8 +23,7 @@ class MyAccountPage extends StatefulWidget {
 
 class _MyAccountPageState extends State<MyAccountPage> {
   late Future<String> futureProfilePhotoUrl;
-  late Future<Users> futureUserDetails =
-      ProfileServices.fetchUserDetails(context);
+  late Future<Users> futureUserDetails; // Declare without initialization
 
   final SupabaseClient _supabaseClient =
       SupabaseClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -33,7 +32,9 @@ class _MyAccountPageState extends State<MyAccountPage> {
   @override
   void initState() {
     super.initState();
-    futureProfilePhotoUrl = ProfileServices.fetchProfilePhoto();
+    // Initialize futureUserDetails here, after context is fully initialized
+    futureUserDetails = ProfileServices.fetchUserDetails(context);
+    futureProfilePhotoUrl = ProfileServices.fetchPhoto(context);
   }
 
   Future<void> _pickImage() async {
@@ -52,13 +53,13 @@ class _MyAccountPageState extends State<MyAccountPage> {
       final String imageName = _selectedImage!.path.split('/').last;
       final String fullPath = 'public/$imageName';
 
-      final String? oldUrl = await ProfileServices.fetchProfilePhoto();
+      final String? oldUrl = await ProfileServices.fetchPhoto(context);
       final String? oldImageName = oldUrl?.split('/').last;
       print(oldUrl);
       print('Old image name: $oldImageName');
 
       try {
-// remove the old image from the bucket
+        // remove the old image from the bucket
         final List<FileObject> objects = await _supabaseClient.storage
             .from('userimage')
             .remove([oldImageName!]);
@@ -154,16 +155,20 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 setState(() {
                   futureUserDetails = ProfileServices.fetchUserDetails(context);
                 });
-                SnackBar(
-                  content: Text('$fieldLabel updated successfully'),
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('$fieldLabel updated successfully'),
+                  ),
                 );
                 // Close the dialog
               } catch (e) {
                 // Handle error, e.g., show error message to the user
                 print('Error updating $fieldLabel: $e');
                 Navigator.of(context).pop();
-                SnackBar(
-                  content: Text('Failed to update $fieldLabel'),
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Failed to update $fieldLabel'),
+                  ),
                 );
               }
             },
@@ -227,9 +232,9 @@ class _MyAccountPageState extends State<MyAccountPage> {
                                     shape: BoxShape.circle,
                                   ),
                                   child: CircleAvatar(
-                                    backgroundImage: user.userPhoto != '' &&
-                                            user.userPhoto.isNotEmpty
-                                        ? NetworkImage(user.userPhoto)
+                                    backgroundImage: user.userPhoto != null &&
+                                            user.userPhoto!.isNotEmpty
+                                        ? NetworkImage(user.userPhoto!)
                                         : const AssetImage(
                                                 'assets/images/profile.png')
                                             as ImageProvider,
@@ -253,7 +258,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
                                     ),
                                     onPressed: () {
                                       // Implement the edit picture functionality
-                                      _editField('Images', user.userPhoto);
+                                      _editField(
+                                          'Images', user.userPhoto ?? '');
                                     },
                                   ),
                                 ),
