@@ -116,7 +116,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 logo: organization.imageUrls![0],
                                 name: organization.name,
                                 title: organization.title,
-                                tags: organization.tags,
+                                tags: organization.tags!,
                                 press: () {
                                   Navigator.pushNamed(
                                     context,

@@ -96,7 +96,7 @@ class _NewOrganizationCardState extends State<NewOrganizationCard> {
                   Wrap(
                     spacing: 6,
                     runSpacing: -6,
-                    children: widget.organization.tags.map((tag) {
+                    children: widget.organization.tags!.map((tag) {
                       return Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8,

@@ -3,20 +3,21 @@ import 'package:flutter/material.dart';
 import '../../../../size_config.dart';
 
 class OrganizationCard extends StatelessWidget {
+  final int index;
+  final String? logo; // Make logo nullable
+  final String name, title;
+  final List<String> tags;
+  final GestureTapCallback press;
+
   const OrganizationCard({
-    super.key,
-    required this.logo,
+    Key? key,
+    required this.index,
+    this.logo, // Make logo nullable
     required this.name,
     required this.title,
     required this.tags,
     required this.press,
-    required this.index,
-  });
-
-  final int index;
-  final String logo, name, title;
-  final List<String> tags;
-  final GestureTapCallback press;
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,9 @@ class OrganizationCard extends StatelessWidget {
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: const AssetImage("assets/images/Mask.png"),
+              image: const AssetImage(
+                "assets/images/Mask.png",
+              ),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
                 Colors.black.withOpacity(0.2),
@@ -54,12 +57,19 @@ class OrganizationCard extends StatelessWidget {
               Row(
                 children: [
                   ClipOval(
-                    child: Image.network(
-                      logo,
-                      width: 40,
-                      height: 40,
-                      fit: BoxFit.cover,
-                    ),
+                    child: logo != null
+                        ? Image.network(
+                            logo!,
+                            width: 40,
+                            height: 40,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            "assets/images/org.jpg",
+                            width: 40,
+                            height: 40,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                   const SizedBox(width: 10),
                   Column(
@@ -86,30 +96,31 @@ class OrganizationCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 10),
-              Wrap(
-                spacing: 6,
-                children: tags
-                    .map(
-                      (tag) => Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          tag,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontFamily: "poppins",
-                            fontWeight: FontWeight.w300,
+              if (tags.isNotEmpty)
+                Wrap(
+                  spacing: 6,
+                  children: tags
+                      .map(
+                        (tag) => Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            tag,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontFamily: "poppins",
+                              fontWeight: FontWeight.w300,
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                    .toList(),
-              ),
+                      )
+                      .toList(),
+                ),
             ],
           ),
         ),

@@ -3,10 +3,10 @@ class Organization {
   final List<String>? imageUrls;
   final int type;
   final String name;
-  final List<String> tags;
+  final List<String>? tags;
   final String title;
   final String description;
-  final List<String> providers;
+  final List<String>? providers;
   final String about;
   final String socialLinks;
 

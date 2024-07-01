@@ -72,7 +72,7 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    String providersList = widget.organization.providers.join('\n');
+    String providersList = widget.organization.providers!.join('\n');
 
     return SingleChildScrollView(
       child: Column(
