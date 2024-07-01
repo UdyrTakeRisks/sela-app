@@ -29,8 +29,27 @@ class PostDetailsFormState extends State<PostDetailsForm> {
   List<String> _selectedProviders = [];
 
   final List<String> _types = ["Organization", "Individual"];
-  final List<String> _tags = ["Learning", "Volunteering"];
-  final List<String> _providers = ["Fawry", "CIB"];
+  final List<String> _tags = [
+    "Learning",
+    "Volunteering",
+    "Health",
+    "Tech",
+    "Finance",
+    "Entertainment",
+    "Sports",
+    "Food",
+    "Fashion",
+    "Travel"
+  ];
+  final List<String> _providers = [
+    "Fawry",
+    "CIB",
+    "Vodafone",
+    "Orange",
+    "Etisalat",
+    "Aman",
+    "Masary"
+  ];
 
   final List<String> errors = [];
 

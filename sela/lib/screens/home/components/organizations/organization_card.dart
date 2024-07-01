@@ -72,25 +72,31 @@ class OrganizationCard extends StatelessWidget {
                           ),
                   ),
                   const SizedBox(width: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          maxLines: 1, // Ensure only one line is shown
                         ),
-                      ),
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.white70,
+                        Text(
+                          title,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.white70,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          maxLines: 1, // Ensure only one line is shown
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   const Spacer(),
                 ],
@@ -115,6 +121,7 @@ class OrganizationCard extends StatelessWidget {
                               fontSize: 12,
                               fontFamily: "poppins",
                               fontWeight: FontWeight.w300,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),

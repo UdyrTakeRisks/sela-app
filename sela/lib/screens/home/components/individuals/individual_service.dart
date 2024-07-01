@@ -17,6 +17,10 @@ class IndividualService {
       List<Individual> individuals =
           jsonData.map((item) => Individual.fromJson(item)).toList();
       return individuals;
+    } else if (response.statusCode == 204) {
+      return [];
+    } else if (response.statusCode == 404) {
+      return [];
     } else {
       throw Exception('Failed to load individuals');
     }

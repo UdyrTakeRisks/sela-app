@@ -2,7 +2,7 @@
 
 class Individual {
   final int postId;
-  final List<String> imageUrls;
+  final List<String>? imageUrls;
   final String name;
   final String type;
   final List<String> tags;
@@ -14,7 +14,7 @@ class Individual {
 
   Individual({
     required this.postId,
-    required this.imageUrls,
+    this.imageUrls,
     required this.name,
     required this.type,
     required this.tags,

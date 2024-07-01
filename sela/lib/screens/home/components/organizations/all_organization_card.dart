@@ -20,6 +20,7 @@ class NewOrganizationCard extends StatefulWidget {
 
 class _NewOrganizationCardState extends State<NewOrganizationCard> {
   bool isSaved = false;
+
   void _saved() {
     setState(() {
       isSaved = !isSaved;
@@ -63,12 +64,20 @@ class _NewOrganizationCardState extends State<NewOrganizationCard> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  widget.organization.imageUrls![0],
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                ),
+                child: widget.organization.imageUrls != null &&
+                        widget.organization.imageUrls!.isNotEmpty
+                    ? Image.network(
+                        widget.organization.imageUrls![0] ?? '',
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        "assets/images/org.jpg",
+                        width: 40,
+                        height: 40,
+                        fit: BoxFit.cover,
+                      ),
               ),
             ),
             const SizedBox(width: 16),
@@ -77,7 +86,9 @@ class _NewOrganizationCardState extends State<NewOrganizationCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.organization.name,
+                    widget.organization.name ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -86,37 +97,44 @@ class _NewOrganizationCardState extends State<NewOrganizationCard> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    widget.organization.title,
+                    widget.organization.title ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 14,
                       color: Colors.white60,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 6,
-                    runSpacing: -6,
-                    children: widget.organization.tags!.map((tag) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        margin: const EdgeInsets.only(top: 6),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          tag,
-                          style: const TextStyle(
-                            color: Colors.white60,
-                            fontSize: 12,
+                  if (widget.organization.tags != null &&
+                      widget.organization.tags!.isNotEmpty)
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: -6,
+                      children: widget.organization.tags!
+                          .take(3) // Take only the first 3 tags
+                          .toList()
+                          .map((tag) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
                           ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                          margin: const EdgeInsets.only(top: 6),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            tag,
+                            style: const TextStyle(
+                              color: Colors.white60,
+                              fontSize: 12,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
                 ],
               ),
             ),
