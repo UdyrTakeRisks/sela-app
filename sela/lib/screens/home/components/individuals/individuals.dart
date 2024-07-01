@@ -6,22 +6,30 @@ import '../../../../size_config.dart';
 import '../../../details/details_screen.dart'; // Import DetailsScreen if not already imported
 import '../section_title.dart';
 import 'IndividualCard.dart';
+import 'all_individuals.dart';
 import 'individual_service.dart';
 
 class Individuals extends StatefulWidget {
-  const Individuals({Key? key}) : super(key: key);
+  const Individuals({super.key});
 
   @override
-  _IndividualsState createState() => _IndividualsState();
+  IndividualsState createState() => IndividualsState();
 }
 
-class _IndividualsState extends State<Individuals> {
+class IndividualsState extends State<Individuals> {
   late Future<List<Individual>> futureIndividuals;
 
   @override
   void initState() {
     super.initState();
     futureIndividuals = IndividualService().fetchIndividuals();
+  }
+
+  Future<void> handleRefresh() async {
+    setState(() {
+      futureIndividuals =
+          IndividualService().fetchIndividuals(); // Refresh the list
+    });
   }
 
   @override
@@ -33,7 +41,8 @@ class _IndividualsState extends State<Individuals> {
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SectionTitle(
             title: 'Individuals',
-            press: () {},
+            press: () =>
+                Navigator.pushNamed(context, AllIndividualsScreen.routeName),
           ),
         ),
         const SizedBox(height: 20),

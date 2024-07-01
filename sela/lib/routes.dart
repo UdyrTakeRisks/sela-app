@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sela/screens/create_post/post_page.dart';
 import 'package:sela/screens/details/details_screen.dart';
 import 'package:sela/screens/forgot_password/forgot_password_screen.dart';
+import 'package:sela/screens/home/components/individuals/all_individuals.dart';
 import 'package:sela/screens/home/components/search_field.dart';
 import 'package:sela/screens/home/home_screen.dart';
 import 'package:sela/screens/login_success/login_success.dart';
@@ -43,4 +44,5 @@ final Map<String, WidgetBuilder> routes = {
       ),
   MyAccountPage.routeName: (context) => const MyAccountPage(),
   HelpCenterPage.routeName: (context) => const HelpCenterPage(),
+  AllIndividualsScreen.routeName: (context) => const AllIndividualsScreen(),
 };

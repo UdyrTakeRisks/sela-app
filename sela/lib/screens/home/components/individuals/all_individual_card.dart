@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:sela/models/Organizations.dart';
+import 'package:sela/models/individual.dart';
 import 'package:sela/size_config.dart';
 
 import '../../../../utils/colors.dart';
 
-class NewOrganizationCard extends StatefulWidget {
-  const NewOrganizationCard({
+class NewIndividualCard extends StatefulWidget {
+  const NewIndividualCard({
     super.key,
-    required this.organization,
+    required this.individual,
     required this.press,
   });
 
-  final Organization organization;
+  final Individual individual;
   final GestureTapCallback press;
 
   @override
-  State<NewOrganizationCard> createState() => _NewOrganizationCardState();
+  State<NewIndividualCard> createState() => _NewIndividualCardState();
 }
 
-class _NewOrganizationCardState extends State<NewOrganizationCard> {
+class _NewIndividualCardState extends State<NewIndividualCard> {
   bool isSaved = false;
 
   void _saved() {
@@ -64,16 +64,16 @@ class _NewOrganizationCardState extends State<NewOrganizationCard> {
               ),
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: widget.organization.imageUrls != null &&
-                          widget.organization.imageUrls!.isNotEmpty
+                  child: widget.individual.imageUrls != null &&
+                          widget.individual.imageUrls!.isNotEmpty
                       ? Image.network(
-                          widget.organization.imageUrls![0] ?? '',
+                          widget.individual.imageUrls![0] ?? '',
                           width: 50,
                           height: 50,
                           fit: BoxFit.cover,
                         )
                       : Icon(
-                          Icons.people_alt,
+                          Icons.person,
                           size: 50,
                           color: primaryColor,
                         )),
@@ -84,7 +84,7 @@ class _NewOrganizationCardState extends State<NewOrganizationCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.organization.name ?? '',
+                    widget.individual.name ?? '',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -95,7 +95,7 @@ class _NewOrganizationCardState extends State<NewOrganizationCard> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    widget.organization.title ?? '',
+                    widget.individual.title ?? '',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -104,12 +104,12 @@ class _NewOrganizationCardState extends State<NewOrganizationCard> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  if (widget.organization.tags != null &&
-                      widget.organization.tags!.isNotEmpty)
+                  if (widget.individual.tags != null &&
+                      widget.individual.tags!.isNotEmpty)
                     Wrap(
                       spacing: 6,
                       runSpacing: -6,
-                      children: widget.organization.tags!
+                      children: widget.individual.tags!
                           .take(3) // Take only the first 3 tags
                           .toList()
                           .map((tag) {

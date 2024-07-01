@@ -19,11 +19,14 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   final GlobalKey<OrganizationsState> _organizationsKey = GlobalKey();
   final GlobalKey<AppBarWelcomeState> _appBarWelcomeKey = GlobalKey();
+  final GlobalKey<IndividualsState> _individualsKey = GlobalKey();
 
   Future<void> _handleRefresh() async {
     await _organizationsKey.currentState?.fetchOrganizations();
     await _appBarWelcomeKey.currentState?.fetchData();
-    await Future.delayed(const Duration(seconds: 1));
+    await _individualsKey.currentState?.handleRefresh(); // Refresh Individuals
+
+    // await Future.delayed(const Duration(seconds: 1));
     // show snackbar
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
