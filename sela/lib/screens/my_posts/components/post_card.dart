@@ -13,11 +13,12 @@ class PostCard extends StatelessWidget {
   final Function onDelete;
   final Function onEdit;
 
-  const PostCard(
-      {super.key,
-      required this.post,
-      required this.onDelete,
-      required this.onEdit});
+  const PostCard({
+    super.key,
+    required this.post,
+    required this.onDelete,
+    required this.onEdit,
+  });
 
   Future<void> _deletePost(BuildContext context, int postId) async {
     final url = Uri.parse('$DOTNET_URL_API_BACKEND/Post/delete/$postId');
@@ -72,8 +73,19 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: backgroundColor4,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: primaryColor,
+        image: DecorationImage(
+          image: const AssetImage('assets/images/Mask.png'),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(
+            Colors.black.withOpacity(0.2),
+            BlendMode.screen,
+          ),
+        ),
+      ),
       margin: const EdgeInsets.all(8.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -92,76 +104,79 @@ class PostCard extends StatelessWidget {
                   )
                 : Container(
                     height: getProportionateScreenHeight(200),
-                    color: Colors.grey.withOpacity(0.2),
+                    color: backgroundColor4,
                     child: const Center(
-                      child: Text(
-                        'No image',
+                      child: Icon(
+                        Icons.image_rounded,
+                        size: 100,
+                        color: Colors.grey,
                       ),
                     ),
                   ),
             SizedBox(height: getProportionateScreenHeight(20)),
+            Text(
+              post.title ?? '', // Use default value if title is null
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(height: getProportionateScreenHeight(8)),
+            Text(
+              post.description ??
+                  '', // Use default value if description is null
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2, // Allow description to span up to 2 lines
+              style: const TextStyle(
+                color: Colors.white70,
+                fontSize: 16,
+              ),
+            ),
+            SizedBox(height: getProportionateScreenHeight(8)),
+            Wrap(
+              spacing: 8.0,
+              children: (post.tags?.take(5) ?? []).map((tag) {
+                return Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    tag,
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+            SizedBox(height: getProportionateScreenHeight(20)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      post.title ?? '', // Use default value if title is null
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                IconButton(
+                  onPressed: () async {
+                    final result = await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => EditPostPage(post: post),
                       ),
-                    ),
-                    SizedBox(height: getProportionateScreenHeight(8)),
-                    Text(
-                      post.description ??
-                          '', // Use default value if description is null
-                    ),
-                    SizedBox(height: getProportionateScreenHeight(8)),
-                    Wrap(
-                      spacing: 8.0,
-                      children: (post.tags ?? []).map((tag) {
-                        return Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            tag,
-                            style: const TextStyle(
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ],
+                    );
+                    if (result == true) {
+                      onEdit();
+                    }
+                  },
+                  icon: const Icon(Icons.edit, color: Colors.white70),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () async {
-                        final result = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => EditPostPage(post: post),
-                          ),
-                        );
-                        if (result == true) {
-                          onEdit();
-                        }
-                      },
-                      icon: const Icon(Icons.edit),
-                    ),
-                    IconButton(
-                      onPressed: () => _showDeleteConfirmationDialog(context),
-                      icon: const Icon(Icons.delete_forever, color: Colors.red),
-                    ),
-                  ],
+                IconButton(
+                  onPressed: () => _showDeleteConfirmationDialog(context),
+                  icon:
+                      const Icon(Icons.delete_forever, color: Colors.redAccent),
                 ),
               ],
             ),

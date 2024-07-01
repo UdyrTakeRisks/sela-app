@@ -12,6 +12,8 @@ import 'organizations/organization_card.dart'; // Adjust the import path as need
 class SearchScreen extends StatefulWidget {
   static const String routeName = '/search';
 
+  const SearchScreen({super.key});
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -77,6 +79,7 @@ class _SearchScreenState extends State<SearchScreen> {
         title: Text('Search'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
             padding: EdgeInsets.all(getProportionateScreenWidth(20)),
@@ -103,34 +106,40 @@ class _SearchScreenState extends State<SearchScreen> {
               : Expanded(
                   child: _searchResults.isEmpty
                       ? const Center(child: Text('No results found'))
-                      : ListView.builder(
-                          itemCount: _searchResults.length,
-                          itemBuilder: (context, index) {
-                            final organization = _searchResults[index];
-                            return Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: getProportionateScreenWidth(20),
-                                vertical: getProportionateScreenHeight(10),
-                              ),
-                              child: OrganizationCard(
-                                logo: organization.imageUrls![0],
-                                name: organization.name,
-                                title: organization.title,
-                                tags: organization.tags!,
-                                press: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    DetailsScreen.routeName,
-                                    arguments: DetailsArguments(
-                                      organization: organization,
-                                      index: index,
-                                    ),
-                                  );
-                                },
-                                index: index,
-                              ),
-                            );
-                          },
+                      : Flexible(
+                          child: ListView.builder(
+                            itemCount: _searchResults.length,
+                            itemBuilder: (context, index) {
+                              final organization = _searchResults[index];
+                              return Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: getProportionateScreenWidth(20),
+                                  vertical: getProportionateScreenHeight(10),
+                                ),
+                                child: OrganizationCard(
+                                  // Adjusted condition to check for null or empty list
+                                  logo: organization.imageUrls != null &&
+                                          organization.imageUrls!.isNotEmpty
+                                      ? organization.imageUrls![0]
+                                      : 'https://via.placeholder.com/150',
+                                  name: organization.name,
+                                  title: organization.title,
+                                  tags: organization.tags!.take(3).toList(),
+                                  press: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      DetailsScreen.routeName,
+                                      arguments: DetailsArguments(
+                                        organization: organization,
+                                        index: index,
+                                      ),
+                                    );
+                                  },
+                                  index: index,
+                                ),
+                              );
+                            },
+                          ),
                         ),
                 ),
         ],

@@ -80,7 +80,7 @@ class _BodyState extends State<Body> {
                 ),
               ),
               SizedBox(height: getProportionateScreenWidth(10)),
-              const DiscountBanner(),
+              DiscountBanner(),
               Organizations(key: _organizationsKey),
               SizedBox(height: getProportionateScreenWidth(10)),
               const Individuals(),

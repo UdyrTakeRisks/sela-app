@@ -10,90 +10,104 @@ import '../utils/enums.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   const CustomBottomNavBar({
-    Key? key,
+    super.key,
     required this.selectedMenu,
-  }) : super(key: key);
+  });
 
   final MenuState selectedMenu;
 
   @override
   Widget build(BuildContext context) {
-    final Color inActiveIconColor = Color(0xFFB6B6B6);
+    const Color inActiveIconColor = Color(0xFFB6B6B6);
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 14),
+      padding: const EdgeInsets.symmetric(vertical: 14),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, -15),
+            offset: const Offset(0, -15),
             blurRadius: 20,
-            color: Color(0xFFDADADA).withOpacity(0.15),
+            color: const Color(0xFFDADADA).withOpacity(0.6),
           ),
         ],
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(40),
           topRight: Radius.circular(40),
         ),
       ),
       child: SafeArea(
-          top: false,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                icon: Icon(
-                  Icons.home_rounded,
-                  color: MenuState.home == selectedMenu
-                      ? kPrimaryColor
-                      : inActiveIconColor,
-                ),
-                onPressed: () =>
-                    Navigator.pushNamed(context, HomeScreen.routeName),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.my_library_books_outlined,
-                  color: MenuState.myPosts == selectedMenu
-                      ? kPrimaryColor
-                      : inActiveIconColor,
-                ),
-                onPressed: () =>
-                    Navigator.pushNamed(context, MyPostsPage.routeName),
-              ),
-              IconButton(
-                icon: Icon(
-                  semanticLabel: 'Post',
-                  Icons.post_add,
-                  color: MenuState.add == selectedMenu
-                      ? kPrimaryColor
-                      : inActiveIconColor,
-                ),
-                onPressed: () =>
-                    Navigator.pushNamed(context, PostPage.routeName),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.bookmark_add_outlined,
-                  color: MenuState.bookmark == selectedMenu
-                      ? kPrimaryColor
-                      : inActiveIconColor,
-                ),
-                onPressed: () =>
-                    Navigator.pushNamed(context, SavedScreen.routeName),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.person_outline_rounded,
-                  size: 30,
-                  color: MenuState.profile == selectedMenu
-                      ? kPrimaryColor
-                      : inActiveIconColor,
-                ),
-                onPressed: () =>
-                    Navigator.pushNamed(context, ProfileScreen.routeName),
-              ),
-            ],
-          )),
+        top: false,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            buildIconColumn(
+              context,
+              icon: Icons.home_rounded,
+              label: 'Home',
+              selected: MenuState.home == selectedMenu,
+              routeName: HomeScreen.routeName,
+            ),
+            buildIconColumn(
+              context,
+              icon: Icons.my_library_books_outlined,
+              label: 'My Posts',
+              selected: MenuState.myPosts == selectedMenu,
+              routeName: MyPostsPage.routeName,
+            ),
+            buildIconColumn(
+              context,
+              icon: Icons.add_box,
+              label: 'Post',
+              selected: MenuState.add == selectedMenu,
+              routeName: PostPage.routeName,
+            ),
+            buildIconColumn(
+              context,
+              icon: Icons.bookmark_add_outlined,
+              label: 'Saved',
+              selected: MenuState.bookmark == selectedMenu,
+              routeName: SavedScreen.routeName,
+            ),
+            buildIconColumn(
+              context,
+              icon: Icons.person_outline_rounded,
+              label: 'Profile',
+              selected: MenuState.profile == selectedMenu,
+              routeName: ProfileScreen.routeName,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Column buildIconColumn(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required bool selected,
+    required String routeName,
+  }) {
+    const Color inActiveIconColor = Color(0xFFB6B6B6);
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: Icon(
+            icon,
+            color: selected ? kPrimaryColor : inActiveIconColor,
+          ),
+          onPressed: () => Navigator.pushNamed(context, routeName),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            color: selected ? kPrimaryColor : inActiveIconColor,
+            fontSize: 12,
+          ),
+        ),
+      ],
     );
   }
 }

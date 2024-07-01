@@ -51,6 +51,7 @@ dependencies:
   liquid_pull_to_refresh: ^3.0.1
   share_plus: ^9.0.0
   google_sign_in: ^6.2.1
+  flutter_swipe: ^1.0.1
 
 flutter_launcher_icons:
   android: "launcher_icon"

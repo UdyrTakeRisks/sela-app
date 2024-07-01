@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../utils/colors.dart';
 import '../../../utils/env.dart';
 import '../../profile/profile_screen.dart';
 
@@ -13,8 +14,9 @@ class AppBarWelcome extends StatefulWidget {
 }
 
 class AppBarWelcomeState extends State<AppBarWelcome> {
-  late String _userName = "SELA"; // Default value
-  late String _userPhotoUrl = "assets/images/profile.png"; // Default value
+  String _userName = "SELA"; // Default value
+  String _userPhotoUrl = ""; // Default value
+  bool _isOnline = true; // Online state indicator
 
   @override
   void initState() {
@@ -24,9 +26,9 @@ class AppBarWelcomeState extends State<AppBarWelcome> {
 
   Future<void> fetchData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     String userName = prefs.getString('userName') ?? "SELA";
-    String userPhotoUrl =
-        prefs.getString('userPhotoUrl') ?? "assets/images/profile.jpg";
+    String userPhotoUrl = prefs.getString('userPhotoUrl') ?? "";
 
     try {
       // Fetch name
@@ -51,7 +53,13 @@ class AppBarWelcomeState extends State<AppBarWelcome> {
       if (photoResponse.statusCode == 200 && photoResponse.body.isNotEmpty) {
         userPhotoUrl = photoResponse.body;
         await prefs.setString('userPhotoUrl', userPhotoUrl);
+      } else {
+        userPhotoUrl = ""; // Set to empty string if response is null or empty
+        await prefs.remove('userPhotoUrl'); // Remove invalid URL from prefs
       }
+
+      // Simulate online status (replace with actual logic if available)
+      _isOnline = true; // Set online status to true
     } catch (e) {
       print('Error fetching data: $e');
     }
@@ -109,16 +117,60 @@ class AppBarWelcomeState extends State<AppBarWelcome> {
             onTap: () {
               Navigator.pushNamed(context, ProfileScreen.routeName);
             },
-            child: CircleAvatar(
-              radius: 30,
-              backgroundImage: _userPhotoUrl.startsWith('http')
-                  ? NetworkImage(_userPhotoUrl) as ImageProvider<Object>?
-                  : AssetImage(_userPhotoUrl) as ImageProvider<Object>?,
-              onBackgroundImageError: (_, __) {
-                setState(() {
-                  _userPhotoUrl = "assets/images/profile.png";
-                });
-              },
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: primaryColor,
+                      width: 2,
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(2),
+                  child: CircleAvatar(
+                    radius: 30,
+                    backgroundColor: primaryColor,
+                    child: ClipOval(
+                      child: _userPhotoUrl.isNotEmpty
+                          ? Image.network(
+                              _userPhotoUrl,
+                              width: 60,
+                              height: 60,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Icon(
+                                  Icons.person,
+                                  size: 60,
+                                  color: primaryColor,
+                                );
+                              },
+                            )
+                          : const Icon(
+                              Icons.person,
+                              size: 60,
+                              color: Colors.white,
+                            ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  right: 4,
+                  bottom: 4,
+                  child: Container(
+                    width: 16,
+                    height: 16,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _isOnline ? Colors.green : Colors.grey,
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
