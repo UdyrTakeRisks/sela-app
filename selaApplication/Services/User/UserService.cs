@@ -388,23 +388,21 @@ namespace selaApplication.Services.User
                 command.Parameters.AddWithValue("user_id", userId);
 
                 await using var reader = command.ExecuteReader();
-                if (reader.Read())
+                if (await reader.ReadAsync())
                 {
                     var user_id = reader.GetInt32(reader.GetOrdinal("user_id"));
                     var userName = reader.GetString(reader.GetOrdinal("username"));
                     var name = reader.GetString(reader.GetOrdinal("name"));
                     var email = reader.GetString(reader.GetOrdinal("email"));
                     var phoneNumber = reader.GetString(reader.GetOrdinal("phone_number"));
-                    var userPhoto = reader.GetString(reader.GetOrdinal("user_photo"));
-
+                    
                     return new Models.User
                     {
                         user_id = user_id,
                         username = userName,
                         name = name,
                         email = email,
-                        phoneNumber = phoneNumber,
-                        userPhoto = userPhoto
+                        phoneNumber = phoneNumber
                     };
                 }
                 

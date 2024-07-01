@@ -16,9 +16,9 @@ public interface IPostService
     Task<string> SavePost(int userId, int postId, string username, string postName);
     Task<string> UnSavePost(int userId, int postId);
     Task<IEnumerable<Post>> GetSavedPostsById(int userId);
-    Task<string> CreateReview(ReviewPost reviewPost);
+    Task<string> CreateReview(Review review);
     Task<string> DeleteReview(int postId, int userId);
-    Task<IEnumerable<ReviewPost>> GetPostReviewsById(int postId);
+    Task<IEnumerable<Review>> GetPostReviewsById(int postId);
     Task<double> GetPostRatingById(int postId);
     Task<bool> isSavedPost(int userId, int postId);
 
