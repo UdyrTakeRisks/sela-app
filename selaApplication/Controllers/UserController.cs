@@ -26,7 +26,6 @@ namespace selaApplication.Controllers
         }
 
         [HttpPost("signup")]
-        // [Route("/signup/user")]
         public async Task<IActionResult> RegisterUserAsync(UserDto dto)
         {
             // validate credentials using regex before adding it to the database
@@ -68,7 +67,6 @@ namespace selaApplication.Controllers
         }
 
         [HttpPost("login")]
-        // [Route("/login/user")]
         public async Task<IActionResult> LoginUserAsync(UserLoginDto dto)
         {
             var user = new User

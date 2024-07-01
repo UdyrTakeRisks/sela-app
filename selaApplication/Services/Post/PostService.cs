@@ -498,7 +498,7 @@ public class PostService : IPostService
         }
     }
 
-    public async Task<string> CreateReview(ReviewPost reviewPost)
+    public async Task<string> CreateReview(Review review)
     {
         try
         {
@@ -511,12 +511,12 @@ public class PostService : IPostService
 
             await using var command = new NpgsqlCommand(sql, connector._connection);
 
-            command.Parameters.AddWithValue("postId", reviewPost.post_id);
-            command.Parameters.AddWithValue("userId", reviewPost.user_id);
-            command.Parameters.AddWithValue("username", reviewPost.username);
-            command.Parameters.AddWithValue("post_name", reviewPost.postName);
-            command.Parameters.AddWithValue("description", reviewPost.description);
-            command.Parameters.AddWithValue("rating", reviewPost.rating);
+            command.Parameters.AddWithValue("postId", review.post_id);
+            command.Parameters.AddWithValue("userId", review.user_id);
+            command.Parameters.AddWithValue("username", review.username);
+            command.Parameters.AddWithValue("post_name", review.postName);
+            command.Parameters.AddWithValue("description", review.description);
+            command.Parameters.AddWithValue("rating", review.rating);
             await command.ExecuteNonQueryAsync();
 
             return "Post has been Reviewed Successfully";
@@ -570,7 +570,7 @@ public class PostService : IPostService
         }
     }
 
-    public async Task<IEnumerable<ReviewPost>> GetPostReviewsById(int postId)
+    public async Task<IEnumerable<Review>> GetPostReviewsById(int postId)
     {
         try
         {
@@ -579,7 +579,7 @@ public class PostService : IPostService
 
             const string sql = "SELECT * FROM review_posts WHERE post_id = @post_id";
 
-            var postReviews = new List<ReviewPost>();
+            var postReviews = new List<Review>();
 
             await using var command = new NpgsqlCommand(sql, connector._connection);
             command.Parameters.AddWithValue("post_id", postId);
@@ -587,7 +587,7 @@ public class PostService : IPostService
             await using var reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                var fetchedPostReviews = new ReviewPost
+                var fetchedPostReviews = new Review
                 {
                     username = reader.GetString(reader.GetOrdinal("username")),
                     description = reader.GetString(reader.GetOrdinal("description")),
