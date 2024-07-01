@@ -59,10 +59,10 @@ class IndividualCard extends StatelessWidget {
                           height: 80,
                           fit: BoxFit.cover,
                         )
-                      : const Icon(
+                      : Icon(
                           Icons.person,
                           size: 80,
-                          color: Colors.grey,
+                          color: primaryColor,
                         )),
             ),
             const SizedBox(height: 10),

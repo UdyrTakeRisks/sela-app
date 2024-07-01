@@ -29,12 +29,6 @@ class _AllOrganizationsScreenState extends State<AllOrganizationsScreen>
     futureOrganizations = OrganizationService().fetchOrganizations();
   }
 
-  void toggleSortOrder() {
-    setState(() {
-      isMostRecent = !isMostRecent;
-    });
-  }
-
   void mySaved() {
     Navigator.pushNamed(context, '/saved');
   }
@@ -120,44 +114,60 @@ class _AllOrganizationsScreenState extends State<AllOrganizationsScreen>
                         height: getProportionateScreenHeight(20),
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        // make two buttons one routing to saved and the other to create post
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          ToggleButtons(
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            borderWidth: 1,
-                            borderRadius: BorderRadius.circular(10),
-                            selectedColor: Colors.white,
-                            fillColor: primaryColor,
-                            isSelected: [isMostRecent, !isMostRecent],
-                            onPressed: (index) {
-                              toggleSortOrder();
-                            },
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        getProportionateScreenWidth(15)),
-                                child: const Text("Most Recent"),
+                          GestureDetector(
+                            onTap: mySaved,
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: primaryColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        getProportionateScreenWidth(15)),
-                                child: const Text("Newest"),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.bookmark,
+                                    color: primaryColor,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    "My Saved",
+                                    style: TextStyle(
+                                      color: primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
-                          Row(
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit_note),
-                                onPressed: createPost,
+                          GestureDetector(
+                            onTap: createPost,
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: primaryColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              IconButton(
-                                icon: const Icon(Icons.bookmark),
-                                onPressed: mySaved,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    color: primaryColor,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    "Create Post",
+                                    style: TextStyle(
+                                      color: primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ],
                       ),

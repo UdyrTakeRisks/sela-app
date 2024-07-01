@@ -71,11 +71,10 @@ class OrganizationCard extends StatelessWidget {
                               height: 40,
                               fit: BoxFit.cover,
                             )
-                          : Image.asset(
-                              "assets/images/org.jpg",
-                              width: 40,
-                              height: 40,
-                              fit: BoxFit.cover,
+                          : Icon(
+                              Icons.people_alt,
+                              size: 40,
+                              color: primaryColor,
                             ),
                     ),
                   ),
