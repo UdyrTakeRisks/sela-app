@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace selaApplication.Models;
 
-public class ReviewPost
+public class Review
 {
     [JsonIgnore]
     public int post_id { get; set; }
