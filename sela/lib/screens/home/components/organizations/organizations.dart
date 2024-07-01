@@ -61,7 +61,7 @@ class OrganizationsState extends State<Organizations> {
                   children: [
                     ...snapshot.data!.map((org) => OrganizationCard(
                           index: org.id,
-                          logo: org.imageUrls[0],
+                          logo: org.imageUrls![0],
                           name: org.name,
                           title: org.title,
                           tags: org.tags

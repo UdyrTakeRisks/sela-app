@@ -113,7 +113,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 vertical: getProportionateScreenHeight(10),
                               ),
                               child: OrganizationCard(
-                                logo: organization.imageUrls[0],
+                                logo: organization.imageUrls![0],
                                 name: organization.name,
                                 title: organization.title,
                                 tags: organization.tags,

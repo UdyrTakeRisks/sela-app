@@ -1,5 +1,3 @@
-// lib/screens/home/components/individuals/individual_card.dart
-
 import 'package:flutter/material.dart';
 import 'package:sela/models/individual.dart';
 import 'package:sela/utils/colors.dart';
@@ -15,6 +13,10 @@ class IndividualCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String imageUrl = individual.imageUrls.isNotEmpty
+        ? individual.imageUrls[0]
+        : 'assets/images/org.jpg'; // Default placeholder URL
+
     return GestureDetector(
       onTap: press,
       child: Container(
@@ -36,12 +38,18 @@ class IndividualCard extends StatelessWidget {
           children: [
             ClipOval(
               child: Image.network(
-                individual.imageUrls.isNotEmpty
-                    ? individual.imageUrls[0]
-                    : AssetImage('assets/images/individual.png') as String,
+                imageUrl,
                 width: 80,
                 height: 80,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    'assets/images/org.jpg', // Placeholder image asset path
+                    width: 80,
+                    height: 80,
+                    fit: BoxFit.cover,
+                  );
+                },
               ),
             ),
             const SizedBox(height: 10),

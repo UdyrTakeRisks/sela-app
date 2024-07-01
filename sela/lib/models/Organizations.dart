@@ -1,6 +1,6 @@
 class Organization {
   final int id;
-  final List<String> imageUrls;
+  final List<String>? imageUrls;
   final int type;
   final String name;
   final List<String> tags;

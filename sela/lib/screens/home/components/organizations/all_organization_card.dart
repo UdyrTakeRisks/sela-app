@@ -64,7 +64,7 @@ class _NewOrganizationCardState extends State<NewOrganizationCard> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
-                  widget.organization.imageUrls[0],
+                  widget.organization.imageUrls![0],
                   width: 50,
                   height: 50,
                   fit: BoxFit.cover,
