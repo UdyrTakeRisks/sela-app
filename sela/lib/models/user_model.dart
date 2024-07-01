@@ -1,7 +1,7 @@
 // user_model.dart
 class Users {
   final int userId;
-  final String userPhoto;
+  late final String userPhoto;
   final String username;
   final String name;
   final String email;

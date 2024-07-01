@@ -76,6 +76,8 @@ class ProfileServices {
   }
 
   static Future<Users> fetchUserDetails(BuildContext context) async {
+    Users user;
+
     final url = Uri.parse('$DOTNET_URL_API_BACKEND/User/view/details');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? cookie = prefs.getString('cookie');

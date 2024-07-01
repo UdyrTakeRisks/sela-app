@@ -18,9 +18,11 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   final GlobalKey<OrganizationsState> _organizationsKey = GlobalKey();
+  final GlobalKey<AppBarWelcomeState> _appBarWelcomeKey = GlobalKey();
 
   Future<void> _handleRefresh() async {
     await _organizationsKey.currentState?.fetchOrganizations();
+    await _appBarWelcomeKey.currentState?.fetchData();
     await Future.delayed(const Duration(seconds: 1));
     // show snackbar
     ScaffoldMessenger.of(context).showSnackBar(
@@ -43,7 +45,7 @@ class _BodyState extends State<Body> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const AppBarWelcome(),
+              AppBarWelcome(key: _appBarWelcomeKey),
               SizedBox(height: getProportionateScreenHeight(30)),
               GestureDetector(
                 onTap: () =>
