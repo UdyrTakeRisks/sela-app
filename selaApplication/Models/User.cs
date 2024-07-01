@@ -6,6 +6,7 @@ namespace selaApplication.Models;
 public class User
 {
     public int user_id { get; set; }
+    
     public string? userPhoto { get; set; }
     [MaxLength(255)] public string username { get; set; }
     [MaxLength(255)] public string name { get; set; }

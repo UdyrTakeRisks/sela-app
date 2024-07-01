@@ -62,7 +62,7 @@ public class PostController : ControllerBase
 
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
         var res = await _postsService.AddUserPost(post, userId);
-        // return Ok(user);
+        
         return Ok(res);
     }
 
@@ -322,7 +322,7 @@ public class PostController : ControllerBase
         if (dto.rating is < 0 or > 5)
             return BadRequest("Please Rate Post from 1 to 5");
 
-        var review = new ReviewPost
+        var review = new Review
         {
             post_id = postId,
             user_id = userId,
