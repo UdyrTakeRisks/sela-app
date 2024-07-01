@@ -46,7 +46,8 @@ class HelpCenterPage extends StatelessWidget {
                   ),
                   SizedBox(height: getProportionateScreenHeight(20)),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenHeight(20)),
                     child: Column(
                       children: [
                         const Text(

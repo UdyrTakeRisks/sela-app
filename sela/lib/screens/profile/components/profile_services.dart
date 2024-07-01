@@ -2,13 +2,80 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:sela/screens/sign_in/sign_in_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../models/user_model.dart';
 import '../../../utils/env.dart';
 
 class ProfileServices {
-  static Future<User> fetchUserDetails() async {
+  static Future<void> updateProfileField(
+      String fieldLabel, String oldValue, String newValue) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? cookie = prefs.getString('cookie');
+    late Uri url;
+    late Map<String, dynamic> body;
+
+    switch (fieldLabel) {
+      case 'Name':
+        url = Uri.parse('$DOTNET_URL_API_BACKEND/User/update/name');
+        body = {'name': newValue};
+        break;
+      case 'Email':
+        url = Uri.parse('$DOTNET_URL_API_BACKEND/User/update/email');
+        body = {'email': newValue};
+        break;
+      case 'Phone Number':
+        if (newValue.length != 10) {
+          SnackBar(content: Text('Phone number must be 10 digits'));
+          throw Exception('Phone number must be 10 digits');
+        } else if (!RegExp(r'^[0-9]*$').hasMatch(newValue)) {
+          SnackBar(content: Text('Phone number must contain only digits'));
+          throw Exception('Phone number must contain only digits');
+        }
+        url = Uri.parse('$DOTNET_URL_API_BACKEND/User/update/phone');
+        body = {'phoneNumber': newValue};
+        break;
+      case 'Password':
+        url = Uri.parse('$DOTNET_URL_API_BACKEND/User/update/password');
+        body = {'oldPassword': oldValue, 'newPassword': newValue};
+        break;
+      // Add more cases for other fields as needed
+      default:
+        throw Exception('Unsupported field: $fieldLabel');
+    }
+
+    print(oldValue);
+
+    print('Updating $fieldLabel to $newValue');
+
+    print('URL: $url');
+
+    try {
+      final response = await http.put(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          if (cookie != null) 'Cookie': cookie,
+        },
+        body: jsonEncode(body),
+      );
+
+      print('Response: ${response.body}');
+      if (response.statusCode == 200) {
+        // Handle success, e.g., update local state or notify user
+        print('Successfully updated $fieldLabel');
+        // Show snackbar or dialog to notify user
+        SnackBar(content: Text('Successfully updated $fieldLabel'));
+      } else {
+        throw Exception('Failed to update $fieldLabel');
+      }
+    } catch (e) {
+      throw Exception('Failed to update $fieldLabel: $e');
+    }
+  }
+
+  static Future<Users> fetchUserDetails(BuildContext context) async {
     final url = Uri.parse('$DOTNET_URL_API_BACKEND/User/view/details');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? cookie = prefs.getString('cookie');
@@ -22,7 +89,16 @@ class ProfileServices {
     );
 
     if (response.statusCode == 200) {
-      return User.fromJson(jsonDecode(response.body));
+      return Users.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 401) {
+      // Unauthorized
+      await prefs.remove('cookie');
+      await prefs.remove('cookieExpirationTimestamp');
+      // show snackbar or dialog to notify user
+      const SnackBar(content: Text('Unauthorized'));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const SignInScreen()));
+      throw Exception('Unauthorized');
     } else {
       throw Exception('Failed to load user details');
     }

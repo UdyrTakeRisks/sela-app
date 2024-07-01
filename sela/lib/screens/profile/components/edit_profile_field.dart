@@ -49,10 +49,18 @@ class EditProfileField extends StatelessWidget {
                           color: Colors.grey[600],
                         ),
                       ),
-                      IconButton(
-                        icon: Icon(Icons.edit, color: primaryColor),
-                        onPressed: onPressed,
-                      ),
+                      label == 'Username'
+                          ? Container(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Icon(Icons.not_interested,
+                                  color: primaryColor))
+                          : IconButton(
+                              icon: Icon(
+                                Icons.edit,
+                                color: primaryColor,
+                              ),
+                              onPressed: onPressed,
+                            ),
                     ],
                   ),
                 ),

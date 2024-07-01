@@ -17,19 +17,19 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  late Future<User> futureUserDetails;
+  late Future<Users> futureUserDetails;
 
   @override
   void initState() {
     super.initState();
-    futureUserDetails = ProfileServices.fetchUserDetails();
+    futureUserDetails = ProfileServices.fetchUserDetails(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      child: FutureBuilder<User>(
+      child: FutureBuilder<Users>(
         future: futureUserDetails,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -39,7 +39,7 @@ class _BodyState extends State<Body> {
           } else if (!snapshot.hasData) {
             return const Center(child: Text('No user details found'));
           } else {
-            User user = snapshot.data!;
+            Users user = snapshot.data!;
             return Column(
               children: [
                 Container(
