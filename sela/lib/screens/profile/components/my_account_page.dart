@@ -235,11 +235,17 @@ class _MyAccountPageState extends State<MyAccountPage> {
                                     backgroundImage: user.userPhoto != null &&
                                             user.userPhoto!.isNotEmpty
                                         ? NetworkImage(user.userPhoto!)
-                                        : const AssetImage(
-                                                'assets/images/profile.png')
-                                            as ImageProvider,
-                                    backgroundColor: Colors.grey[200],
+                                        : null, // Null if no user photo
+                                    backgroundColor: primaryColor,
                                     radius: 50,
+                                    child: user.userPhoto != null &&
+                                            user.userPhoto!.isNotEmpty
+                                        ? null
+                                        : const Icon(
+                                            Icons.person,
+                                            size: 80,
+                                            color: Colors.white,
+                                          ),
                                   ),
                                 ),
                               ),

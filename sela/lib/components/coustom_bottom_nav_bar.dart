@@ -3,8 +3,8 @@ import 'package:sela/screens/my_posts/my_posts_page.dart';
 
 import '../screens/create_post/post_page.dart';
 import '../screens/home/home_screen.dart';
+import '../screens/notification/notification_page.dart';
 import '../screens/profile/profile_screen.dart';
-import '../screens/saved/saved_screen.dart';
 import '../utils/constants.dart';
 import '../utils/enums.dart';
 
@@ -63,10 +63,10 @@ class CustomBottomNavBar extends StatelessWidget {
             ),
             buildIconColumn(
               context,
-              icon: Icons.bookmark_add_outlined,
-              label: 'Saved',
-              selected: MenuState.bookmark == selectedMenu,
-              routeName: SavedScreen.routeName,
+              icon: Icons.notifications_active_outlined,
+              label: 'Notifications',
+              selected: MenuState.notification == selectedMenu,
+              routeName: NotificationPage.routeName,
             ),
             buildIconColumn(
               context,

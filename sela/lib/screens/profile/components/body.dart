@@ -3,6 +3,7 @@ import 'package:sela/size_config.dart';
 import 'package:sela/utils/colors.dart';
 
 import '../../../models/user_model.dart';
+import '../../saved/saved_screen.dart';
 import 'help_center.dart';
 import 'my_account_page.dart';
 import 'profile_menu.dart';
@@ -66,8 +67,7 @@ class _BodyState extends State<Body> {
                     ),
                   );
                 } else {
-                  String userPhoto =
-                      photoSnapshot.data ?? "assets/images/profile.png";
+                  String userPhoto = photoSnapshot.data ?? "";
                   return Stack(
                     children: [
                       Container(
@@ -172,9 +172,10 @@ class _BodyState extends State<Body> {
                         ),
                       ),
                       ProfileMenu(
-                        text: "Notifications",
-                        icon: Icons.notifications,
-                        press: () {},
+                        text: "Saved Posts",
+                        icon: Icons.bookmark,
+                        press: () =>
+                            Navigator.pushNamed(context, SavedScreen.routeName),
                       ),
                       ProfileMenu(
                         text: "Help Center",
