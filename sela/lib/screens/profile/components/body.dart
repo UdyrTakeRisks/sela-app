@@ -153,10 +153,7 @@ class _BodyState extends State<Body> {
                         ),
                       ),
                       Text(
-                        user.username
-                            .replaceAll(RegExp(r'\s+'), '')
-                            .toLowerCase()
-                            .trim(),
+                        "@${user.username.replaceAll(RegExp(r'\s+'), '').toLowerCase().trim()}",
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.grey,

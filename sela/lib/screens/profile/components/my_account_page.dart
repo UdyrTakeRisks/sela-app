@@ -22,7 +22,7 @@ class MyAccountPage extends StatefulWidget {
 }
 
 class _MyAccountPageState extends State<MyAccountPage> {
-  late Future<String> futureProfilePhotoUrl;
+  late Future<String?> futureProfilePhotoUrl;
   late Future<Users> futureUserDetails; // Declare without initialization
 
   final SupabaseClient _supabaseClient =
@@ -55,8 +55,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
       final String? oldUrl = await ProfileServices.fetchPhoto(context);
       final String? oldImageName = oldUrl?.split('/').last;
-      print(oldUrl);
-      print('Old image name: $oldImageName');
 
       try {
         // remove the old image from the bucket
@@ -80,6 +78,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
         setState(() {
           futureUserDetails = ProfileServices.fetchUserDetails(context);
+          futureProfilePhotoUrl = Future.value(publicUrl);
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -95,7 +94,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
   }
 
   void _editField(String fieldLabel, String currentValue) {
-    // Implement edit functionality here, e.g., show a popup or modal bottom sheet
     TextEditingController controller =
         TextEditingController(text: currentValue);
     TextEditingController oldPasswordController = TextEditingController();
@@ -150,21 +148,19 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 await ProfileServices.updateProfileField(
                     fieldLabel, oldPasswordController.text, controller.text);
 
-                // Handle success, e.g., update UI or show confirmation
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // Close the dialog
                 setState(() {
                   futureUserDetails = ProfileServices.fetchUserDetails(context);
                 });
+
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('$fieldLabel updated successfully'),
                   ),
                 );
-                // Close the dialog
               } catch (e) {
-                // Handle error, e.g., show error message to the user
                 print('Error updating $fieldLabel: $e');
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // Close the dialog
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Failed to update $fieldLabel'),
@@ -231,21 +227,30 @@ class _MyAccountPageState extends State<MyAccountPage> {
                                     color: Colors.white,
                                     shape: BoxShape.circle,
                                   ),
-                                  child: CircleAvatar(
-                                    backgroundImage: user.userPhoto != null &&
-                                            user.userPhoto!.isNotEmpty
-                                        ? NetworkImage(user.userPhoto!)
-                                        : null, // Null if no user photo
-                                    backgroundColor: primaryColor,
-                                    radius: 50,
-                                    child: user.userPhoto != null &&
-                                            user.userPhoto!.isNotEmpty
-                                        ? null
-                                        : const Icon(
+                                  child: ClipOval(
+                                    child: FutureBuilder<String?>(
+                                      future: futureProfilePhotoUrl,
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return const CircularProgressIndicator();
+                                        } else if (snapshot.hasError ||
+                                            snapshot.data == null) {
+                                          return const Icon(
                                             Icons.person,
-                                            size: 80,
+                                            size: 115,
                                             color: Colors.white,
-                                          ),
+                                          );
+                                        } else {
+                                          return Image.network(
+                                            snapshot.data!,
+                                            fit: BoxFit.cover,
+                                            width: 115,
+                                            height: 115,
+                                          );
+                                        }
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
@@ -263,7 +268,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
                                       color: Colors.white,
                                     ),
                                     onPressed: () {
-                                      // Implement the edit picture functionality
                                       _editField(
                                           'Images', user.userPhoto ?? '');
                                     },
@@ -304,7 +308,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
                           label: 'Username',
                           value: user.username,
                           onPressed: () {
-                            // Implement the edit functionality
                             _editField('Username', user.username);
                           },
                         ),
@@ -312,7 +315,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
                           label: 'Name',
                           value: user.name,
                           onPressed: () {
-                            // Implement the edit functionality
                             _editField('Name', user.name);
                           },
                         ),
@@ -320,25 +322,22 @@ class _MyAccountPageState extends State<MyAccountPage> {
                           label: 'Email',
                           value: user.email,
                           onPressed: () {
-                            // Implement the edit functionality
                             _editField('Email', user.email);
                           },
                         ),
                         EditProfileField(
                           label: 'Phone Number',
                           value:
-                              '+20 ${user.phone}', // Static value until the API is updated
+                              '${user.phone}', // Replace with actual phone number field
                           onPressed: () {
-                            // Implement the edit functionality
                             _editField('Phone Number', '${user.phone}');
                           },
                         ),
                         EditProfileField(
                           label: 'Password',
                           value:
-                              '************', // Static value until the API is updated
+                              '************', // Placeholder until implemented
                           onPressed: () {
-                            // Implement the edit functionality
                             _editField('Password', '');
                           },
                         ),
