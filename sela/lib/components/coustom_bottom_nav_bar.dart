@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sela/screens/create_post/post_page.dart';
+import 'package:sela/screens/home/home_screen.dart';
 import 'package:sela/screens/my_posts/my_posts_page.dart';
-
-import '../screens/create_post/post_page.dart';
-import '../screens/home/home_screen.dart';
-import '../screens/notification/notification_page.dart';
-import '../screens/profile/profile_screen.dart';
-import '../utils/constants.dart';
-import '../utils/enums.dart';
+import 'package:sela/screens/notification/notification_page.dart';
+import 'package:sela/screens/profile/profile_screen.dart';
+import 'package:sela/utils/constants.dart';
+import 'package:sela/utils/enums.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   const CustomBottomNavBar({
@@ -18,7 +17,6 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color inActiveIconColor = Color(0xFFB6B6B6);
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14),
       decoration: BoxDecoration(
@@ -45,6 +43,7 @@ class CustomBottomNavBar extends StatelessWidget {
               icon: Icons.home_rounded,
               label: 'Home',
               selected: MenuState.home == selectedMenu,
+              menuState: MenuState.home,
               routeName: HomeScreen.routeName,
             ),
             buildIconColumn(
@@ -52,6 +51,7 @@ class CustomBottomNavBar extends StatelessWidget {
               icon: Icons.my_library_books_outlined,
               label: 'My Posts',
               selected: MenuState.myPosts == selectedMenu,
+              menuState: MenuState.myPosts,
               routeName: MyPostsPage.routeName,
             ),
             buildIconColumn(
@@ -59,6 +59,7 @@ class CustomBottomNavBar extends StatelessWidget {
               icon: Icons.add_box,
               label: 'Post',
               selected: MenuState.add == selectedMenu,
+              menuState: MenuState.add,
               routeName: PostPage.routeName,
             ),
             buildIconColumn(
@@ -66,6 +67,7 @@ class CustomBottomNavBar extends StatelessWidget {
               icon: Icons.notifications_active_outlined,
               label: 'Notifications',
               selected: MenuState.notification == selectedMenu,
+              menuState: MenuState.notification,
               routeName: NotificationPage.routeName,
             ),
             buildIconColumn(
@@ -73,6 +75,7 @@ class CustomBottomNavBar extends StatelessWidget {
               icon: Icons.person_outline_rounded,
               label: 'Profile',
               selected: MenuState.profile == selectedMenu,
+              menuState: MenuState.profile,
               routeName: ProfileScreen.routeName,
             ),
           ],
@@ -86,6 +89,7 @@ class CustomBottomNavBar extends StatelessWidget {
     required IconData icon,
     required String label,
     required bool selected,
+    required MenuState menuState,
     required String routeName,
   }) {
     const Color inActiveIconColor = Color(0xFFB6B6B6);
@@ -98,7 +102,10 @@ class CustomBottomNavBar extends StatelessWidget {
             icon,
             color: selected ? kPrimaryColor : inActiveIconColor,
           ),
-          onPressed: () => Navigator.pushNamed(context, routeName),
+          onPressed: () {
+            if (selected) return; // Do nothing if the current page is selected
+            Navigator.pushReplacementNamed(context, routeName);
+          },
         ),
         Text(
           label,
