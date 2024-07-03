@@ -50,10 +50,10 @@ class IndividualsState extends State<Individuals> {
           future: futureIndividuals,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              print(snapshot.error);
-              return Text("ERROR: ${snapshot.error}");
+              return const Center(
+                  child: Text("ERROR: Check your connection and try again"));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return const Text("No Individuals Found");
             } else {

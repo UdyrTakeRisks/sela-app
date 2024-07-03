@@ -5,6 +5,8 @@ import 'post_stepper.dart';
 
 class PostPage extends StatelessWidget {
   static String routeName = '/create_post';
+
+  const PostPage({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

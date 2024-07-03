@@ -50,8 +50,9 @@ class OrganizationsState extends State<Organizations> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
-              print(snapshot.error);
-              return Text("ERROR: ${snapshot.error}");
+              return const Center(
+                child: Text("ERROR: Check your connection and try again"),
+              );
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return const Text("No Organizations Found");
             } else {
