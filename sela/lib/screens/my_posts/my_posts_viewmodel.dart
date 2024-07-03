@@ -7,6 +7,8 @@ class MyPostsViewModel {
   final ValueNotifier<MyPostsData> postsNotifier =
       ValueNotifier(MyPostsData(username: '', posts: []));
   final ValueNotifier<String> photoNotifier = ValueNotifier('');
+  final ValueNotifier<int> postCountNotifier =
+      ValueNotifier(0); // Add post count notifier
 
   MyPostsViewModel(this.service);
 
@@ -14,6 +16,8 @@ class MyPostsViewModel {
     try {
       MyPostsData data = await service.fetchUserPosts();
       postsNotifier.value = data;
+      updatePostCount(
+          data.posts.length); // Update post count after fetching posts
       print('Fetched user posts successfully');
     } catch (e) {
       print('Failed to fetch user posts: $e');
@@ -28,5 +32,20 @@ class MyPostsViewModel {
     } catch (e) {
       print('Failed to fetch photo: $e');
     }
+  }
+
+  Future<String> fetchUserName() async {
+    try {
+      String userName = await service.fetchUserName();
+      print('Fetched user name successfully: $userName');
+      return userName;
+    } catch (e) {
+      print('Failed to fetch user name: $e');
+      return '';
+    }
+  }
+
+  void updatePostCount(int count) {
+    postCountNotifier.value = count;
   }
 }

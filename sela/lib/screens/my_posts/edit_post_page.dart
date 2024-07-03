@@ -43,8 +43,27 @@ class _EditPostPageState extends State<EditPostPage> {
   List<String> _imageUrls = [];
 
   final List<String> _types = ["Organization", "Individual"];
-  final List<String> _tags = ["Learning", "Volunteering"];
-  final List<String> _providers = ["Fawry", "CIB"];
+  final List<String> _tags = [
+    "Learning",
+    "Volunteering",
+    "Health",
+    "Tech",
+    "Finance",
+    "Entertainment",
+    "Sports",
+    "Food",
+    "Fashion",
+    "Travel"
+  ];
+  final List<String> _providers = [
+    "Fawry",
+    "CIB",
+    "Vodafone",
+    "Orange",
+    "Etisalat",
+    "Aman",
+    "Masary"
+  ];
 
   final List<String> errors = [];
 
@@ -137,7 +156,7 @@ class _EditPostPageState extends State<EditPostPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Post'),
+        title: const Text('Edit Post'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

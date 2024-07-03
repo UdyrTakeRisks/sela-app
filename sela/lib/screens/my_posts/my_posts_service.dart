@@ -45,6 +45,9 @@ class MyPostsService {
         }
 
         return MyPostsData(username: username, posts: posts);
+      } else if (response.statusCode == 404) {
+        return MyPostsData(
+            username: '', posts: []); // Return empty data if no posts are found
       } else {
         return MyPostsData(
             username: '', posts: []); // Return empty data if no posts are found
@@ -70,6 +73,23 @@ class MyPostsService {
       return response.body;
     } else {
       throw Exception('Failed to load photo');
+    }
+  }
+
+  Future<String> fetchUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? cookie = prefs.getString('cookie');
+
+    final url = Uri.parse('$DOTNET_URL_API_BACKEND/User/view/name');
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      if (cookie != null) 'Cookie': cookie,
+    });
+
+    if (response.statusCode == 200 && response.body.isNotEmpty) {
+      return response.body;
+    } else {
+      throw Exception('Failed to load user name');
     }
   }
 }

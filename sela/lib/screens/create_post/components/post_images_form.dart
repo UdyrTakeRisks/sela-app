@@ -38,7 +38,7 @@ class _PostImagesFormState extends State<PostImagesForm> {
     final List<String> imageUrls = [];
     for (var image in _images) {
       final String imageName = image.path.split('/').last;
-      final String fullPath = 'public/$imageName';
+      final String fullPath = 'Posts/$imageName';
 
       try {
         final String uploadedPath = await _supabaseClient.storage
@@ -61,9 +61,35 @@ class _PostImagesFormState extends State<PostImagesForm> {
         print('Public URL: $publicUrl');
 
         imageUrls.add(publicUrl);
+        if (imageUrls.length == _images.length) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Images uploaded successfully'),
+            ),
+          );
+        }
+
+        // if the status code 409 the resource already exists error: Duplicate file
+        if (uploadedPath == '409') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Image already exists'),
+            ),
+          );
+        }
       } catch (e) {
         // Handle error if needed
         print('Error uploading image: $e');
+
+        if (e.toString().contains('409')) {
+          // snackbar
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content:
+                  Text('The image already exists, try to upload another image'),
+            ),
+          );
+        }
 
         // snackbar
         ScaffoldMessenger.of(context).showSnackBar(
