@@ -19,7 +19,7 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   late Future<String> futureUserPhoto;
   late Future<Users> futureUserDetails;
-  bool _isOnline = true; // Online state indicator
+  final bool _isOnline = true; // Online state indicator
 
   @override
   void initState() {

@@ -1,10 +1,15 @@
+import 'dart:async';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:sela/screens/profile/components/my_account_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../../utils/colors.dart';
 import '../../../utils/env.dart';
-import '../../profile/profile_screen.dart';
+import '../../sign_in/sign_in_screen.dart';
 
 class AppBarWelcome extends StatefulWidget {
   const AppBarWelcome({super.key});
@@ -72,6 +77,17 @@ class AppBarWelcomeState extends State<AppBarWelcome> {
 
   @override
   Widget build(BuildContext context) {
+    Future<bool> isCookie() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? expirationTimestamp =
+          prefs.getString('cookieExpirationTimestamp');
+      if (expirationTimestamp == null) {
+        return false; // No timestamp means the cookie is not valid
+      }
+      DateTime expirationDate = DateTime.parse(expirationTimestamp);
+      return DateTime.now().isBefore(expirationDate);
+    }
+
     return Container(
       padding: const EdgeInsets.only(left: 25, right: 25, top: 40),
       width: double.infinity,
@@ -114,8 +130,75 @@ class AppBarWelcomeState extends State<AppBarWelcome> {
             ],
           ),
           GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, ProfileScreen.routeName);
+            onTap: () async {
+              bool isHasCookie = await isCookie();
+              if (!isHasCookie) {
+                toastification.showCustom(
+                  context: context,
+                  autoCloseDuration: const Duration(seconds: 5),
+                  alignment: Alignment.topRight,
+                  builder: (BuildContext context, ToastificationItem holder) {
+                    return Container(
+                      margin: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: primaryColor.withOpacity(0.5),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            color: primaryColor.withOpacity(0.2),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Please Sign In',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const Text(
+                                  'Please create an account to access this feature.',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        // Navigate to sign-in screen
+                                        Navigator.pushNamed(
+                                            context, SignInScreen.routeName);
+                                      },
+                                      child: const Text('Sign In'),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+                return;
+              } else {
+                Navigator.pushNamed(context, MyAccountPage.routeName);
+              }
             },
             child: Stack(
               children: [

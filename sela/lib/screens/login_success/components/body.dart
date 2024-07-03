@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sela/components/default_button.dart';
-import 'package:sela/screens/home/home_screen.dart';
+import 'package:sela/components/new_custom_bottom_navbar.dart';
 import 'package:sela/size_config.dart';
 
 class Body extends StatefulWidget {
@@ -34,15 +34,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
         child: Column(
           children: [
             SizedBox(height: SizeConfig.screenHeight * 0.04),
-            // Image.asset(
-            //   "assets/images/success.png",
-            //   height: SizeConfig.screenHeight * 0.4,
-            // ),
-            // Image.asset(
-            //   "assets/images/check2.gif",
-            //   height: SizeConfig.screenHeight * 0.4,
-            //   scale: 0.2,
-            // ),
             Lottie.asset(
               'assets/images/check.json',
               height: SizeConfig.screenHeight * 0.4,
@@ -72,7 +63,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
               child: DefaultButton(
                 text: "Back To Home",
                 press: () {
-                  Navigator.pushNamed(context, HomeScreen.routeName);
+                  Navigator.pushNamed(context, MainScreen.routeName);
                 },
               ),
             ),
