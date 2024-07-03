@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../components/coustom_bottom_nav_bar.dart';
-import '../../utils/enums.dart';
 import 'components/body.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -25,8 +23,8 @@ class ProfileScreen extends StatelessWidget {
         ],
       ),
       body: const Body(),
-      bottomNavigationBar:
-          const CustomBottomNavBar(selectedMenu: MenuState.profile),
+      // bottomNavigationBar:
+      //     const CustomBottomNavBar(selectedMenu: MenuState.profile),
     );
   }
 }

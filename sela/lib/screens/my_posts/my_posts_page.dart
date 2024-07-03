@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../components/coustom_bottom_nav_bar.dart';
 import '../../models/my_post_model.dart';
-import '../../utils/enums.dart';
 import 'components/post_card.dart';
 import 'components/user_info.dart';
 import 'my_posts_service.dart';
@@ -90,8 +88,8 @@ class _MyPostsPageState extends State<MyPostsPage> {
           ),
         ),
       ),
-      bottomNavigationBar:
-          const CustomBottomNavBar(selectedMenu: MenuState.myPosts),
+      // bottomNavigationBar:
+      //     const CustomBottomNavBar(selectedMenu: MenuState.myPosts),
     );
   }
 }

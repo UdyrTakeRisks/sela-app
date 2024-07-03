@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sela/utils/colors.dart';
 
-import '../../components/coustom_bottom_nav_bar.dart';
-import '../../utils/enums.dart';
 import 'post_stepper.dart';
 
 class PostPage extends StatelessWidget {
@@ -22,8 +20,8 @@ class PostPage extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: PostStepper(),
-      bottomNavigationBar:
-          const CustomBottomNavBar(selectedMenu: MenuState.createPost),
+      // bottomNavigationBar:
+      //     const CustomBottomNavBar(selectedMenu: MenuState.createPost),
     );
   }
 }

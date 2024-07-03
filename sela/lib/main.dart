@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:sela/screens/home/home_screen.dart'; // Import your home screen
 import 'package:sela/screens/splash/splash_screen.dart';
 import 'package:sela/utils/env.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'components/new_custom_bottom_navbar.dart';
 import 'routes.dart';
 import 'theme.dart';
 
@@ -21,7 +21,7 @@ Future<void> main() async {
   bool isValid = await isCookieValid();
   FlutterNativeSplash.remove();
   runApp(MyApp(
-      initialRoute: isValid ? HomeScreen.routeName : SplashScreen.routeName));
+      initialRoute: isValid ? MainScreen.routeName : SplashScreen.routeName));
 }
 
 class MyApp extends StatelessWidget {

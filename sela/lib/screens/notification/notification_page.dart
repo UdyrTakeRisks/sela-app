@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sela/components/coustom_bottom_nav_bar.dart';
 
-import '../../utils/enums.dart';
 import 'components/NotificationList.dart';
 
 class NotificationPage extends StatelessWidget {
@@ -40,8 +38,8 @@ class NotificationPage extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar:
-            const CustomBottomNavBar(selectedMenu: MenuState.notification),
+        // bottomNavigationBar:
+        //     const CustomBottomNavBar(selectedMenu: MenuState.notification),
       ),
     );
   }

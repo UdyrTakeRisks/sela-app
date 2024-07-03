@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../components/coustom_bottom_nav_bar.dart';
 import '../../models/save_post.dart';
 import '../../utils/colors.dart';
-import '../../utils/enums.dart';
 import '../../utils/env.dart';
 import 'components/saved_service_list.dart';
 import 'saved_post_service.dart';
@@ -121,8 +119,8 @@ class _SavedScreenState extends State<SavedScreen>
           ),
         ],
       ),
-      bottomNavigationBar:
-          const CustomBottomNavBar(selectedMenu: MenuState.bookmark),
+      // bottomNavigationBar:
+      //     const CustomBottomNavBar(selectedMenu: MenuState.bookmark),
     );
   }
 }
