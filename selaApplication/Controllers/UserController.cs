@@ -14,8 +14,7 @@ namespace selaApplication.Controllers
     {
         private readonly IUserService _usersService;
         private readonly IMemoryCache _memoryCache;
-        private const string UserDetailsCacheKey = "UserDetails";
-
+        
         public UserController(IUserService usersService, IMemoryCache memoryCache)
         {
             _usersService = usersService;
@@ -365,11 +364,26 @@ namespace selaApplication.Controllers
             {
                 return Unauthorized("User Session is Expired. Please log in first.");
             }
+            
+            var userDetailsCacheKey = $"{sessionUser.username}_UserDetails";
+            
+            if (!_memoryCache.TryGetValue(userDetailsCacheKey, out User? cachedUserDetails))
+            {
+                var userId = await _usersService.GetIdByUsername(sessionUser.username);
 
-            var userId = await _usersService.GetIdByUsername(sessionUser.username);
-            var user = await _usersService.GetUserById(userId);
+                cachedUserDetails = await _usersService.GetUserById(userId);
+                if (cachedUserDetails == null)
+                {
+                    return NotFound("User not found.");
+                }
 
-            return Ok(user);
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromHours(3));
+
+                _memoryCache.Set(userDetailsCacheKey, cachedUserDetails, cacheEntryOptions);
+            }
+            
+            return Ok(cachedUserDetails);
         }
     }
 }
