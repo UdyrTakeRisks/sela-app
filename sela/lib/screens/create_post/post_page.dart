@@ -20,8 +20,6 @@ class PostPage extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: PostStepper(),
-      // bottomNavigationBar:
-      //     const CustomBottomNavBar(selectedMenu: MenuState.createPost),
     );
   }
 }

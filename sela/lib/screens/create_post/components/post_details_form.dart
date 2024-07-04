@@ -4,6 +4,7 @@ import 'package:sela/components/custom_suffix_icon.dart';
 import 'package:sela/components/form_error.dart';
 import 'package:sela/size_config.dart';
 import 'package:sela/utils/constants.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../../utils/colors.dart';
 
@@ -39,7 +40,29 @@ class PostDetailsFormState extends State<PostDetailsForm> {
     "Sports",
     "Food",
     "Fashion",
-    "Travel"
+    "Travel",
+    "Music",
+    "Community Support",
+    "Give Back",
+    "Non Profit",
+    "Help Others",
+    "Support",
+    "Fundraising",
+    "Humanitarian",
+    "Social Good",
+    "Act Of Kindness",
+    "Make A Difference",
+    "Volunteer Work",
+    "Philanthropy",
+    "Community Aid",
+    "Give Hope",
+    "Charitable Giving",
+    "Help The Needy",
+    "Together We Can",
+    "Zakat",
+    "Zakat Mal",
+    "Sadaqat",
+    "Tatawu",
   ];
   final List<String> _providers = [
     "Fawry",
@@ -90,6 +113,7 @@ class PostDetailsFormState extends State<PostDetailsForm> {
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
+                  toastError(context, 'Error', 'Please enter a name');
                   return 'Please enter a name';
                 }
                 return null;
@@ -254,6 +278,7 @@ class PostDetailsFormState extends State<PostDetailsForm> {
                 labelText: 'About',
                 border: OutlineInputBorder(),
               ),
+              maxLines: 4,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter about information';
@@ -279,6 +304,43 @@ class PostDetailsFormState extends State<PostDetailsForm> {
             FormError(errors: errors)
           ],
         ),
+      ),
+    );
+  }
+
+  void toastError(BuildContext context, String title, String description) {
+    toastification.show(
+      context: context,
+      title: Text(
+        title,
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      description: Text(
+        description,
+        style: TextStyle(color: Colors.white),
+      ),
+      primaryColor: Colors.redAccent,
+      backgroundColor: Colors.redAccent,
+      foregroundColor: Colors.white,
+      style: ToastificationStyle.flat,
+      showProgressBar: false,
+      autoCloseDuration: const Duration(seconds: 5),
+      type: ToastificationType.error,
+      closeButtonShowType: CloseButtonShowType.onHover,
+      closeOnClick: false,
+      pauseOnHover: true,
+      dragToClose: true,
+      applyBlurEffect: true,
+      callbacks: ToastificationCallbacks(
+        onTap: (toastItem) => print('Toast ${toastItem.id} tapped'),
+        onCloseButtonTap: (toastItem) =>
+            print('Toast ${toastItem.id} close button tapped'),
+        onAutoCompleteCompleted: (toastItem) =>
+            print('Toast ${toastItem.id} auto complete completed'),
+        onDismissed: (toastItem) => print('Toast ${toastItem.id} dismissed'),
       ),
     );
   }

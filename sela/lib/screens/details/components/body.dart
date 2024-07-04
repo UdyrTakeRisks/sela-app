@@ -108,7 +108,7 @@ class _BodyState extends State<Body> {
                             ],
                           ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.height - 580,
+                            height: MediaQuery.of(context).size.height - 500,
                             child: TabBarView(
                               children: [
                                 SingleChildScrollView(

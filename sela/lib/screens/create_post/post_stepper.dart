@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:sela/models/post_model.dart';
 import 'package:sela/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../utils/colors.dart';
 import '../../utils/env.dart';
@@ -79,21 +80,77 @@ class _PostStepperState extends State<PostStepper> {
       print('Post submitted successfully!');
       // Navigate to the home screen
       Navigator.pushNamed(context, '/home');
-      // Show a snackbar
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Post submitted successfully!'),
-          backgroundColor: kPrimaryColor,
+      // Show a toast for the success
+      toastification.show(
+        context: context,
+        title: const Text(
+          'Post submitted successfully',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        description: Text(
+          'Thank you for submitting your post!',
+          style: TextStyle(color: Colors.white),
+        ),
+        primaryColor: Colors.green,
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        style: ToastificationStyle.flat,
+        showProgressBar: true,
+        autoCloseDuration: const Duration(seconds: 5),
+        type: ToastificationType.success,
+        closeButtonShowType: CloseButtonShowType.onHover,
+        closeOnClick: false,
+        pauseOnHover: true,
+        dragToClose: true,
+        applyBlurEffect: true,
+        callbacks: ToastificationCallbacks(
+          onTap: (toastItem) => print('Toast ${toastItem.id} tapped'),
+          onCloseButtonTap: (toastItem) =>
+              print('Toast ${toastItem.id} close button tapped'),
+          onAutoCompleteCompleted: (toastItem) =>
+              print('Toast ${toastItem.id} auto complete completed'),
+          onDismissed: (toastItem) => print('Toast ${toastItem.id} dismissed'),
         ),
       );
     } else {
       // Handle error response
       print('Failed to submit create_post: ${response.body}');
-      // Show a snackbar
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to submit create post. Please try again.'),
-          backgroundColor: Colors.grey,
+      // Show a toast for the error
+      toastification.show(
+        context: context,
+        title: const Text(
+          'Error submitting create post',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        description: Text(
+          'Failed to submit create post',
+          style: TextStyle(color: Colors.white),
+        ),
+        primaryColor: Colors.redAccent,
+        backgroundColor: Colors.redAccent,
+        foregroundColor: Colors.white,
+        style: ToastificationStyle.flat,
+        showProgressBar: true,
+        autoCloseDuration: const Duration(seconds: 5),
+        type: ToastificationType.error,
+        closeButtonShowType: CloseButtonShowType.onHover,
+        closeOnClick: false,
+        pauseOnHover: true,
+        dragToClose: true,
+        applyBlurEffect: true,
+        callbacks: ToastificationCallbacks(
+          onTap: (toastItem) => print('Toast ${toastItem.id} tapped'),
+          onCloseButtonTap: (toastItem) =>
+              print('Toast ${toastItem.id} close button tapped'),
+          onAutoCompleteCompleted: (toastItem) =>
+              print('Toast ${toastItem.id} auto complete completed'),
+          onDismissed: (toastItem) => print('Toast ${toastItem.id} dismissed'),
         ),
       );
     }
@@ -105,8 +162,7 @@ class _PostStepperState extends State<PostStepper> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Stepper(
         connectorThickness: 2.0,
-        connectorColor:
-            MaterialStateColor.resolveWith((states) => kPrimaryColor),
+        connectorColor: WidgetStateColor.resolveWith((states) => kPrimaryColor),
         currentStep: _currentStep,
         onStepContinue: () {
           if (_currentStep == 0) {
