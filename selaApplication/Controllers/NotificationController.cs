@@ -186,7 +186,7 @@ public class NotificationController : ControllerBase
             return Ok(enumerableNotifications);
         }
 
-        var notifications = JsonSerializer.Deserialize<Notification>(cachedNotifications);
+        var notifications = JsonSerializer.Deserialize<IEnumerable<Notification>>(cachedNotifications);
         return Ok(notifications);
     }
 }
