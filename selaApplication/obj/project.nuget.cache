@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ecTIi9999fI3r4BVqqDOj1PJOyGy9HpCfHORRSG7hwlBVn2FuN0IahX60nfQdhwiuLHdvuRWiIDiA9amvJjppA==",
+  "dgSpecHash": "LN2020rfrGpkmRSNziCs+6GWiCrlcef+j6HR8o36p/pb6l1u+WZvjRJKFEZAzyaQoEzfUQNy2i5+HW+W0p6JrQ==",
   "success": true,
   "projectFilePath": "/run/media/ahmed/HIKVISION/Fourth Year/Second Term/Graduation Project 2/Projects to Study - GP Preparation/Backend C# dotnet/Web-Api/sela-app-github/sela-app/selaApplication/selaApplication.csproj",
   "expectedPackageFiles": [
@@ -35,7 +35,7 @@
     "/home/ahmed/.nuget/packages/runtime.win-arm64.runtime.native.system.data.sqlclient.sni/4.4.0/runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "/home/ahmed/.nuget/packages/runtime.win-x64.runtime.native.system.data.sqlclient.sni/4.4.0/runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "/home/ahmed/.nuget/packages/runtime.win-x86.runtime.native.system.data.sqlclient.sni/4.4.0/runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
-    "/home/ahmed/.nuget/packages/stackexchange.redis/2.7.33/stackexchange.redis.2.7.33.nupkg.sha512",
+    "/home/ahmed/.nuget/packages/stackexchange.redis/2.8.0/stackexchange.redis.2.8.0.nupkg.sha512",
     "/home/ahmed/.nuget/packages/supabase/1.0.4/supabase.1.0.4.nupkg.sha512",
     "/home/ahmed/.nuget/packages/supabase.core/1.0.0/supabase.core.1.0.0.nupkg.sha512",
     "/home/ahmed/.nuget/packages/supabase.functions/2.0.0/supabase.functions.2.0.0.nupkg.sha512",

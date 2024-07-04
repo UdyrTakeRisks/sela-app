@@ -71,6 +71,11 @@ public class PostController : ControllerBase
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
         var res = await _postsService.AddUserPost(post, userId);
 
+        
+        await _distributedCache.RemoveAsync(OrganizationCacheKey);
+        _memoryCache.Remove(IndividualsCacheKey);
+        _memoryCache.Remove($"{sessionUser.username}_Posts");
+        
         return Ok(res);
     }
 
@@ -105,6 +110,11 @@ public class PostController : ControllerBase
         };
 
         var response = await _postsService.AddAdminPost(post);
+        
+        await _distributedCache.RemoveAsync(OrganizationCacheKey);
+        _memoryCache.Remove(IndividualsCacheKey);
+        // _memoryCache.Remove($"{sessionAdmin.username}_Posts");
+        
         return Ok(response);
     }
 
@@ -192,6 +202,10 @@ public class PostController : ControllerBase
 
         var result = await _postsService.UpdatePost(post, id, userId);
 
+        await _distributedCache.RemoveAsync(OrganizationCacheKey);
+        _memoryCache.Remove(IndividualsCacheKey);
+        _memoryCache.Remove($"{sessionUser.username}_Posts");
+        
         return Ok(result);
     }
 
@@ -215,6 +229,10 @@ public class PostController : ControllerBase
 
         var res = await _postsService.DeletePost(id, userId);
 
+        await _distributedCache.RemoveAsync(OrganizationCacheKey);
+        _memoryCache.Remove(IndividualsCacheKey);
+        _memoryCache.Remove($"{sessionUser.username}_Posts");
+        
         return Ok(res);
     }
 
@@ -232,10 +250,20 @@ public class PostController : ControllerBase
 
         Console.WriteLine("User Username: " + sessionUser.username + " User Pass: " + sessionUser.password);
 
-        var userId = await _usersService.GetIdByUsername(sessionUser.username);
-        var posts = await _postsService.ShowPostsById(userId);
+        var userPostsCacheKey = $"{sessionUser.username}_Posts";
 
-        var enumerablePosts = posts.ToList();
+        if (!_memoryCache.TryGetValue(userPostsCacheKey, out IEnumerable<Post> cachedUserPosts))
+        {
+            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+            cachedUserPosts = await _postsService.ShowPostsById(userId);
+            
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromHours(1));
+
+            _memoryCache.Set(userPostsCacheKey, cachedUserPosts, cacheEntryOptions);
+        }
+
+        var enumerablePosts = cachedUserPosts.ToList();
         if (!enumerablePosts.Any())
             return NotFound("No posts found for this user.");
 
@@ -285,6 +313,7 @@ public class PostController : ControllerBase
 
         var response = await _postsService.SavePost(userId, postId, sessionUser.username, postName);
 
+        _memoryCache.Remove($"{sessionUser.username}_SavedPosts");
         return Ok(response);
     }
 
@@ -306,7 +335,8 @@ public class PostController : ControllerBase
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
 
         var response = await _postsService.UnSavePost(userId, postId);
-
+        
+        _memoryCache.Remove($"{sessionUser.username}_SavedPosts");
         return Ok(response);
     }
 
@@ -318,16 +348,27 @@ public class PostController : ControllerBase
         {
             return Unauthorized("You should login first to view saved posts");
         }
-
+        
         var sessionUser = JsonSerializer.Deserialize<User>(serializedUserObj);
         if (sessionUser == null)
         {
             return Unauthorized("User Session is Expired. Please log in first.");
         }
 
-        var userId = await _usersService.GetIdByUsername(sessionUser.username);
-        var savedPosts = await _postsService.GetSavedPostsById(userId);
-        var enumerablePosts = savedPosts.ToList();
+        var userSavedPostsCacheKey = $"{sessionUser.username}_SavedPosts";
+
+        if (!_memoryCache.TryGetValue(userSavedPostsCacheKey, out IEnumerable<Post> cachedUserSavedPosts))
+        {
+            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+            cachedUserSavedPosts = await _postsService.GetSavedPostsById(userId);
+            
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromHours(3));
+
+            _memoryCache.Set(userSavedPostsCacheKey, cachedUserSavedPosts, cacheEntryOptions);
+        }
+        
+        var enumerablePosts = cachedUserSavedPosts.ToList();
         if (!enumerablePosts.Any())
             return NotFound("No saved posts found for this user.");
 
@@ -367,6 +408,7 @@ public class PostController : ControllerBase
 
         var response = await _postsService.CreateReview(review);
 
+        _memoryCache.Remove($"{postId}_PostReviews");
         return Ok(response);
     }
 
@@ -389,15 +431,27 @@ public class PostController : ControllerBase
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
         var response = await _postsService.DeleteReview(postId, userId);
 
+        _memoryCache.Remove($"{postId}_PostReviews");
         return Ok(response);
     }
 
     [HttpGet("view/reviews/{postId:int}")]
     public async Task<IActionResult> ShowPostReviewsAsync(int postId)
     {
-        // get post reviews
-        var postReviews = await _postsService.GetPostReviewsById(postId);
-        var enumerablePosts = postReviews.ToList();
+        var postReviewsCacheKey = $"{postId}_PostReviews";
+
+        if (!_memoryCache.TryGetValue(postReviewsCacheKey, out IEnumerable<Review> cachedPostReviews))
+        {
+            // get post reviews
+            cachedPostReviews = await _postsService.GetPostReviewsById(postId);
+            
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromHours(3));
+
+            _memoryCache.Set(postReviewsCacheKey, cachedPostReviews, cacheEntryOptions);
+        }
+        
+        var enumerablePosts = cachedPostReviews.ToList();
         if (!enumerablePosts.Any())
             return NotFound("No post reviews found for this post.");
 

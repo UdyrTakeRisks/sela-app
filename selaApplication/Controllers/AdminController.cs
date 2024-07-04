@@ -1,12 +1,15 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 using selaApplication.Dtos;
 using selaApplication.Models;
 using selaApplication.Services;
 using selaApplication.Services.Admin;
 using selaApplication.Services.Post;
 using selaApplication.Services.User;
+using StackExchange.Redis;
 
 namespace selaApplication.Controllers;
 
@@ -21,10 +24,17 @@ public class AdminController : ControllerBase
     // that the admin is authorized to log in, or we can use JWTs
     
     private readonly IAdminService _adminService;
-
-    public AdminController(IAdminService adminService)
+    private readonly IConnectionMultiplexer _redis;
+    private readonly IDistributedCache _distributedCache;
+    private readonly IMemoryCache _memoryCache;
+    private const string AllUsersCacheKey = "allUsersList";
+    
+    public AdminController(IAdminService adminService, IConnectionMultiplexer redis, IDistributedCache distributedCache, IMemoryCache memoryCache)
     {
         _adminService = adminService;
+        _redis = redis;
+        _distributedCache = distributedCache;
+        _memoryCache = memoryCache;
     }
 
     [HttpGet("health")]
@@ -99,8 +109,14 @@ public class AdminController : ControllerBase
         
         var result = await _adminService.DeleteUser(userId);
         if (result)
+        {
+            // should delete caches
+            var redisCache = _redis.GetDatabase();
+            await redisCache.KeyDeleteAsync(AllUsersCacheKey);
+            
             return Ok("User deleted successfully");
-        
+        }
+
         return BadRequest("Failed to delete the user");
     }
 
@@ -122,12 +138,18 @@ public class AdminController : ControllerBase
         
         var result = await _adminService.DeletePost(postId);
         if (result)
+        {
+            // should delete caches
+            await _distributedCache.RemoveAsync("OrganizationPosts");
+            _memoryCache.Remove("IndividualPosts");
+            
             return Ok("Post deleted successfully");
-        
+        }
+
         return BadRequest("Failed to delete the post");
     }
 
-    // view users info - should log in first
+    // view users info - should log in first - cached
     [HttpGet("/view/users")]
     public async Task<IActionResult> DisplayUsersAsync()
     {
@@ -143,12 +165,24 @@ public class AdminController : ControllerBase
             return Unauthorized("Admin Session is expired. Please log in first.");
         }
 
-        var users = await _adminService.GetAllUsers();
-        var enumerable = users.ToList();
-        if (!enumerable.Any())
-            return NotFound("No users found.");
-        
-        return Ok(enumerable);
+        var redisCache = _redis.GetDatabase();
+        var cachedUsers = await redisCache.StringGetAsync(AllUsersCacheKey);
+        if (cachedUsers.IsNullOrEmpty)
+        {
+            var usersInDb = await _adminService.GetAllUsers();
+            var enumerableUsers = usersInDb.ToList();
+            if (!enumerableUsers.Any())
+                return NotFound("No users found.");
+
+            var serializedUsers = JsonSerializer.Serialize(enumerableUsers);
+            await redisCache.StringSetAsync(AllUsersCacheKey, serializedUsers, TimeSpan.FromHours(1));
+            
+            return Ok(enumerableUsers);
+        }
+
+        var users = JsonSerializer.Deserialize<IEnumerable<User>>(cachedUsers);
+
+        return Ok(users);
     }
     
     
