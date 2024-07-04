@@ -10,7 +10,7 @@ public interface IPostService
     Task<IEnumerable<Post>> ShowPostsById(int userId);
     Task<Post> GetPostById(int id);
     Task<string> DeletePost(int postId, int userId);
-    Task<IEnumerable<Post>> SearchPosts(string searchQuery);
+    Task<IEnumerable<Post>> SearchPosts(string query, string filterBy);
     Task<string> UpdatePost(Models.Post post, int postId, int userId);
     Task<string> GetPostNameById(int postId);
     Task<string> SavePost(int userId, int postId, string username, string postName);
