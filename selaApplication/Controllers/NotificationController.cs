@@ -7,6 +7,7 @@ using selaApplication.Models;
 using System.Text.Json;
 using selaApplication.Services.Notification;
 using selaApplication.Services.User;
+using StackExchange.Redis;
 
 namespace selaApplication.Controllers;
 
@@ -16,11 +17,13 @@ public class NotificationController : ControllerBase
 {
     private readonly INotificationService _notificationService;
     private readonly IUserService _userService;
-
-    public NotificationController(INotificationService notificationService, IUserService userService)
+    private readonly IConnectionMultiplexer _redis;
+    
+    public NotificationController(INotificationService notificationService, IUserService userService, IConnectionMultiplexer redis)
     {
         _notificationService = notificationService;
         _userService = userService;
+        _redis = redis;
     }
 
     [HttpGet("health")]
@@ -136,6 +139,10 @@ public class NotificationController : ControllerBase
 
         var resultFromDb = await _notificationService.AddNotification(notification);
 
+        // remove cache
+        var redisCache = _redis.GetDatabase();
+        await redisCache.KeyDeleteAsync($"{sessionUser.username}_Notifications");
+        
         var response = new
         {
             response = resultFromDb
@@ -160,15 +167,26 @@ public class NotificationController : ControllerBase
             return Unauthorized("User Session is Expired. Please log in first.");
         }
 
-        var userId = await _userService.GetIdByUsername(sessionUser.username);
-
-        var notifications = await _notificationService.GetAllNotifications(userId);
-        var enumerable = notifications.ToList();
-        if (!enumerable.Any())
-        {
-            return BadRequest("No Notifications Found");
-        }
+        var allNotificationsCacheKey = $"{sessionUser.username}_Notifications";
         
-        return Ok(enumerable);
+        var redisCache = _redis.GetDatabase();
+        var cachedNotifications = await redisCache.StringGetAsync(allNotificationsCacheKey);
+        if (cachedNotifications.IsNullOrEmpty)
+        {
+            var userId = await _userService.GetIdByUsername(sessionUser.username);
+
+            var notificationsInDb = await _notificationService.GetAllNotifications(userId);
+            var enumerableNotifications = notificationsInDb.ToList();
+            if (!enumerableNotifications.Any())
+                return BadRequest("No Notifications Found");
+            
+            var serializedNotifications = JsonSerializer.Serialize(enumerableNotifications);
+            await redisCache.StringSetAsync(allNotificationsCacheKey, serializedNotifications, TimeSpan.FromHours(1));
+
+            return Ok(enumerableNotifications);
+        }
+
+        var notifications = JsonSerializer.Deserialize<Notification>(cachedNotifications);
+        return Ok(notifications);
     }
 }

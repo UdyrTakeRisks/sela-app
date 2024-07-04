@@ -5,6 +5,7 @@ using selaApplication.Models;
 using selaApplication.Services.User;
 using System.Text.Json;
 using Microsoft.Extensions.Caching.Memory;
+using StackExchange.Redis;
 
 namespace selaApplication.Controllers
 {
@@ -14,12 +15,13 @@ namespace selaApplication.Controllers
     {
         private readonly IUserService _usersService;
         private readonly IMemoryCache _memoryCache;
-        private const string UserDetailsCacheKey = "UserDetails";
-
-        public UserController(IUserService usersService, IMemoryCache memoryCache)
+        private readonly IConnectionMultiplexer _redis;
+        
+        public UserController(IUserService usersService, IMemoryCache memoryCache, IConnectionMultiplexer redis)
         {
             _usersService = usersService;
             _memoryCache = memoryCache;
+            _redis = redis;
         }
 
         [HttpGet("health")]
@@ -92,11 +94,6 @@ namespace selaApplication.Controllers
             var hashedInputPassword = UserHelper.HashPassword(user.password);
             if (hashedInputPassword.Equals(userInDb.password))
             {
-                // session to store user obj state
-                // HANDLE CASE: IF USER TRIES TO LOGIN FROM DIFFERENT DEVICES, DON'T TRY TO CREATE A NEW SESSION AS THERE WILL BE EXISTING ONE IF LOGGED BEFORE
-                // var serializedObj = HttpContext.Session.GetString("UserSession");
-                // var sessionUser = JsonSerializer.Deserialize<User>(serializedObj);
-                // if(sessionUser == null) // test condition
                 HttpContext.Session.SetString("UserSession", JsonSerializer.Serialize(user));
 
                 var cookieExpirationTimestamp = DateTime.UtcNow.AddDays(1);
@@ -151,6 +148,8 @@ namespace selaApplication.Controllers
 
             //update user photo in database
             var response = await _usersService.UpdateUserPhoto(userId, userPhoto);
+            
+            _memoryCache.Remove($"{sessionUser.username}_Photo");
             return Ok(response);
         }
 
@@ -176,6 +175,9 @@ namespace selaApplication.Controllers
 
             //update user name in database
             var response = await _usersService.UpdateNameById(userId, newName);
+            
+            _memoryCache.Remove($"{sessionUser.username}_Name");
+            _memoryCache.Remove($"{sessionUser.username}_UserDetails");
             return Ok(response);
         }
 
@@ -206,7 +208,8 @@ namespace selaApplication.Controllers
 
             //update user email in database
             var response = await _usersService.UpdateEmailById(userId, newEmail);
-
+            
+            _memoryCache.Remove($"{sessionUser.username}_UserDetails");
             return Ok(response);
         }
 
@@ -237,7 +240,8 @@ namespace selaApplication.Controllers
 
             //update user phone number in database
             var response = await _usersService.UpdatePhoneNumberById(userId, newPhoneNumber);
-
+            
+            _memoryCache.Remove($"{sessionUser.username}_UserDetails");
             return Ok(response);
         }
 
@@ -303,6 +307,10 @@ namespace selaApplication.Controllers
 
             var result = await _usersService.DeleteUser(userId);
 
+            // delete cache key of the admin
+            var redisCache = _redis.GetDatabase();
+            await redisCache.KeyDeleteAsync("allUsersList");
+            
             return Ok(result);
         }
 
@@ -321,12 +329,22 @@ namespace selaApplication.Controllers
             {
                 return Unauthorized("User Session is Expired. Please log in first.");
             }
+            
+            var userPhotoCacheKey = $"{sessionUser.username}_Photo";
 
-            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+            if (!_memoryCache.TryGetValue(userPhotoCacheKey, out string cachedUserPhoto))
+            {
+                var userId = await _usersService.GetIdByUsername(sessionUser.username);
 
-            var userPhoto = await _usersService.GetUserPhoto(userId);
+                cachedUserPhoto = await _usersService.GetUserPhoto(userId);
+                
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromHours(3));
 
-            return Ok(userPhoto);
+                _memoryCache.Set(userPhotoCacheKey, cachedUserPhoto, cacheEntryOptions);
+            }
+
+            return Ok(cachedUserPhoto);
         }
 
         [HttpGet("view/name")]
@@ -343,12 +361,22 @@ namespace selaApplication.Controllers
             {
                 return Unauthorized("User Session is Expired. Please log in first.");
             }
+            
+            var userNameCacheKey = $"{sessionUser.username}_Name";
 
-            var userId = await _usersService.GetIdByUsername(sessionUser.username);
+            if (!_memoryCache.TryGetValue(userNameCacheKey, out string cachedUserName))
+            {
+                var userId = await _usersService.GetIdByUsername(sessionUser.username);
 
-            var userName = await _usersService.GetNameUser(userId);
+                cachedUserName = await _usersService.GetNameUser(userId);
+                
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromHours(3));
 
-            return Ok(userName);
+                _memoryCache.Set(userNameCacheKey, cachedUserName, cacheEntryOptions);
+            }
+
+            return Ok(cachedUserName);
         }
 
         [HttpGet("view/details")]
@@ -365,11 +393,26 @@ namespace selaApplication.Controllers
             {
                 return Unauthorized("User Session is Expired. Please log in first.");
             }
+            
+            var userDetailsCacheKey = $"{sessionUser.username}_UserDetails";
+            
+            if (!_memoryCache.TryGetValue(userDetailsCacheKey, out User? cachedUserDetails))
+            {
+                var userId = await _usersService.GetIdByUsername(sessionUser.username);
 
-            var userId = await _usersService.GetIdByUsername(sessionUser.username);
-            var user = await _usersService.GetUserById(userId);
+                cachedUserDetails = await _usersService.GetUserById(userId);
+                if (cachedUserDetails == null)
+                {
+                    return NotFound("User not found.");
+                }
 
-            return Ok(user);
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromHours(3));
+
+                _memoryCache.Set(userDetailsCacheKey, cachedUserDetails, cacheEntryOptions);
+            }
+            
+            return Ok(cachedUserDetails);
         }
     }
 }

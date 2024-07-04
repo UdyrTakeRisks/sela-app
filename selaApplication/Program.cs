@@ -4,7 +4,8 @@ using selaApplication.Services.Admin;
 using selaApplication.Services.Notification;
 using selaApplication.Services.Post;
 using selaApplication.Services.User;
-
+using StackExchange.Redis;
+    
 namespace selaApplication
 {
     public class Program
@@ -30,9 +31,7 @@ namespace selaApplication
             builder.Services.AddCors();
 
             builder.Services.AddSwaggerGen();
-
-            builder.Services.AddDistributedMemoryCache();
-
+            
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromDays(1); // ?
@@ -51,6 +50,9 @@ namespace selaApplication
             builder.Services.AddMemoryCache();
 
             builder.Services.AddDistributedMemoryCache();
+
+            const string redisConnectionString = "redis-13244.c302.asia-northeast1-1.gce.redns.redis-cloud.com:13244,password=2wWuipPfjnm1QCrBHCWXsHjFREq3iUMm";
+            builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString));
             
             var app = builder.Build();
 
