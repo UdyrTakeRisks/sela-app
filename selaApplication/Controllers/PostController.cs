@@ -20,8 +20,8 @@ public class PostController : ControllerBase
     private readonly IUserService _usersService;
     private readonly IDistributedCache _distributedCache;
     private readonly IMemoryCache _memoryCache;
-    private const string organizationCacheKey = "OrganizationPosts";
-    private const string individualsCacheKey = "IndividualPosts";
+    private const string OrganizationCacheKey = "OrganizationPosts";
+    private const string IndividualsCacheKey = "IndividualPosts";
 
     public PostController(IPostService postsService, IUserService usersService, IDistributedCache distributedCache, IMemoryCache memoryCache)
     {
@@ -112,7 +112,7 @@ public class PostController : ControllerBase
     public async Task<IActionResult> ViewOrganizationPostsAsync()
     {
         // handle caching results with timeouts to enhance the performance
-        var cachedPosts = await _distributedCache.GetStringAsync(organizationCacheKey);
+        var cachedPosts = await _distributedCache.GetStringAsync(OrganizationCacheKey);
         if (cachedPosts == null)
         {
             var post = new Post { Type = PostType.Organization };
@@ -123,7 +123,7 @@ public class PostController : ControllerBase
             var cacheEntryOptions = new DistributedCacheEntryOptions()
                 .SetSlidingExpiration(TimeSpan.FromHours(6));
 
-            await _distributedCache.SetStringAsync(organizationCacheKey, cachedPosts, cacheEntryOptions);
+            await _distributedCache.SetStringAsync(OrganizationCacheKey, cachedPosts, cacheEntryOptions);
         }
 
         var posts = JsonSerializer.Deserialize<IEnumerable<Post>>(cachedPosts);
@@ -135,7 +135,7 @@ public class PostController : ControllerBase
     public async Task<IActionResult> ViewIndividualPostsAsync()
     {
         // handle caching results with timeouts to enhance the performance
-        if (!_memoryCache.TryGetValue(individualsCacheKey, out IEnumerable<Post> cachedPosts))
+        if (!_memoryCache.TryGetValue(IndividualsCacheKey, out IEnumerable<Post> cachedPosts))
         {
             var post = new Post { Type = PostType.Individual };
             cachedPosts = await _postsService.GetPosts(post);
@@ -143,7 +143,7 @@ public class PostController : ControllerBase
             var cacheEntryOptions = new MemoryCacheEntryOptions()
                 .SetSlidingExpiration(TimeSpan.FromHours(6));
 
-            _memoryCache.Set(individualsCacheKey, cachedPosts, cacheEntryOptions);
+            _memoryCache.Set(IndividualsCacheKey, cachedPosts, cacheEntryOptions);
         }
         
         return Ok(cachedPosts);
