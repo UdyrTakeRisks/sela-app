@@ -277,20 +277,22 @@ public class PostController : ControllerBase
     }
 
     [HttpGet("search")]
-    public async Task<IActionResult> SearchPostsAsync([FromQuery] string query)
+    public async Task<IActionResult> SearchPosts([FromQuery] string query, [FromQuery] string filterBy)
     {
-        if (string.IsNullOrWhiteSpace(query))
+        try
         {
-            return BadRequest("Search query cannot be empty");
+            Console.WriteLine("query value: " + query + " filterby value: " + filterBy);
+            var posts = await _postsService.SearchPosts(query, filterBy);
+            if (posts == null || !posts.Any())
+            {
+                return NotFound("No posts found.");
+            }
+            return Ok(posts);
         }
-
-        var posts = await _postsService.SearchPosts(query);
-        if (posts == null || !posts.Any())
+        catch (Exception ex)
         {
-            return NotFound("No posts found matching the search query");
+            return StatusCode(500, $"Internal server error: {ex.Message}");
         }
-
-        return Ok(posts);
     }
 
     [HttpPost("save/{postId:int}")]
