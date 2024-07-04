@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:sela/screens/details/components/details_description.dart';
@@ -19,7 +20,7 @@ class Body extends StatefulWidget {
   final Organization organization;
   final int index;
 
-  const Body({super.key, required this.organization, required this.index});
+  const Body({Key? key, required this.organization, required this.index});
 
   @override
   State<Body> createState() => _BodyState();
@@ -70,6 +71,81 @@ class _BodyState extends State<Body> {
     });
   }
 
+  // Function to detect links in text and make them clickable
+  Widget _buildTextWithLinks(String text) {
+    final pattern = RegExp(
+        r'http(s)?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+');
+    final matches = pattern.allMatches(text);
+
+    if (matches.isEmpty) {
+      return SelectableText(
+        text,
+        textAlign: TextAlign.justify,
+        style: const TextStyle(
+          fontSize: 16,
+          fontFamily: 'Poppins',
+          fontStyle: FontStyle.normal,
+          fontWeight: FontWeight.normal,
+        ),
+      );
+    }
+
+    List<TextSpan> children = [];
+
+    int start = 0;
+    for (final match in matches) {
+      if (match.start > start) {
+        children.add(TextSpan(
+          text: text.substring(start, match.start),
+          style: const TextStyle(
+            fontSize: 16,
+            fontFamily: 'Poppins',
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.normal,
+          ),
+        ));
+      }
+      children.add(TextSpan(
+        text: match.group(0),
+        style: const TextStyle(
+          fontSize: 16,
+          fontFamily: 'Poppins',
+          fontStyle: FontStyle.normal,
+          fontWeight: FontWeight.normal,
+          decoration: TextDecoration.underline,
+          color: Colors.blue,
+        ),
+        recognizer: TapGestureRecognizer()
+          ..onTap = () {
+            launch(match.group(0)!);
+          },
+      ));
+      start = match.end;
+    }
+
+    if (start < text.length) {
+      children.add(TextSpan(
+        text: text.substring(start),
+        style: const TextStyle(
+          fontSize: 16,
+          fontFamily: 'Poppins',
+          fontStyle: FontStyle.normal,
+          fontWeight: FontWeight.normal,
+        ),
+      ));
+    }
+
+    return GestureDetector(
+      onTap: () {
+        // Implement any necessary handling on tap
+      },
+      child: SelectableText.rich(
+        TextSpan(children: children),
+        textAlign: TextAlign.justify,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     String providersList = widget.organization.providers!.join('\n');
@@ -114,20 +190,32 @@ class _BodyState extends State<Body> {
                                 SingleChildScrollView(
                                   child: Padding(
                                     padding: const EdgeInsets.all(18.0),
-                                    child:
-                                        Text(widget.organization.description),
+                                    child: _buildTextWithLinks(
+                                      widget.organization.description,
+                                    ),
                                   ),
                                 ),
                                 SingleChildScrollView(
                                   child: Padding(
                                     padding: const EdgeInsets.all(18.0),
-                                    child: Text(providersList),
+                                    child: Text(
+                                      providersList,
+                                      textDirection: TextDirection.ltr,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: 'Poppins',
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 SingleChildScrollView(
                                   child: Padding(
                                     padding: const EdgeInsets.all(18.0),
-                                    child: Text(widget.organization.about),
+                                    child: _buildTextWithLinks(
+                                      widget.organization.about,
+                                    ),
                                   ),
                                 ),
                                 RefreshIndicator(

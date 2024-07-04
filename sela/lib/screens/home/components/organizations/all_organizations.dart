@@ -48,6 +48,7 @@ class _AllOrganizationsScreenState extends State<AllOrganizationsScreen>
         ),
         body: RefreshIndicator(
           color: primaryColor,
+          backgroundColor: backgroundColor4,
           semanticsLabel: "Refresh Organizations",
           semanticsValue: "Refresh Organizations",
           onRefresh: () async {
