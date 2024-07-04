@@ -5,8 +5,10 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../models/review.dart';
+import '../../../models/user_model.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/env.dart';
+import '../../sign_in/sign_in_screen.dart';
 import 'review_input.dart';
 
 class Reviews extends StatefulWidget {
@@ -26,11 +28,24 @@ class Reviews extends StatefulWidget {
 
 class _ReviewsState extends State<Reviews> {
   final List<Review> _reviews = [];
+  Users? _loggedInUser;
 
   @override
   void initState() {
     super.initState();
     _reviews.addAll(widget.reviews);
+    _fetchUserDetails();
+  }
+
+  Future<void> _fetchUserDetails() async {
+    try {
+      final user = await fetchUserDetails(context);
+      setState(() {
+        _loggedInUser = user;
+      });
+    } catch (e) {
+      print('Error fetching user details: $e');
+    }
   }
 
   Future<void> _addReview(String reviewText, double rating) async {
@@ -138,6 +153,48 @@ class _ReviewsState extends State<Reviews> {
     }
   }
 
+  static Future<Users> fetchUserDetails(BuildContext context) async {
+    print('Fetching user details...');
+    final url = Uri.parse('$DOTNET_URL_API_BACKEND/User/view/details');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? cookie = prefs.getString('cookie');
+
+    print('Cookie: $cookie');
+    print('URL: $url');
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        if (cookie != null) 'Cookie': cookie,
+      },
+    );
+
+    print('Response status code: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      print('User details fetched successfully.');
+      return Users.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 401) {
+      print('Unauthorized. Redirecting to sign-in screen.');
+      await prefs.remove('cookie');
+      await prefs.remove('cookieExpirationTimestamp');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Unauthorized')),
+      );
+      Navigator.pushReplacementNamed(context, SignInScreen.routeName);
+      throw Exception('Unauthorized');
+    } else {
+      print('Failed to load user details.');
+      throw Exception('Failed to load user details');
+    }
+  }
+
+  bool isSameUser(String reviewUsername) {
+    return _loggedInUser != null && _loggedInUser!.username == reviewUsername;
+  }
+
   Widget _buildStarRating(double rating) {
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -201,15 +258,16 @@ class _ReviewsState extends State<Reviews> {
                                     ),
                                   ],
                                 ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
+                                if (isSameUser(review.username))
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () {
+                                      _deleteReview(); // Pass the review id
+                                    },
                                   ),
-                                  onPressed: () {
-                                    _deleteReview();
-                                  },
-                                ),
                               ],
                             ),
                             const SizedBox(height: 8),
