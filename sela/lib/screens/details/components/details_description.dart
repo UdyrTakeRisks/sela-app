@@ -84,7 +84,7 @@ class _OrganizationDescriptionState extends State<OrganizationDescription> {
       };
 
       var url = Uri.parse(endpoint);
-      var response;
+      http.Response response;
 
       if (method == 'POST') {
         response = await http.post(url, headers: headers);
@@ -104,7 +104,7 @@ class _OrganizationDescriptionState extends State<OrganizationDescription> {
         isSaved = !isSaved; // Revert the save status on error
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
             content: Text('Failed to update save status. Please try again.')),
       );
     }

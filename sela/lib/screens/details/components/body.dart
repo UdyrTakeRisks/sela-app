@@ -108,20 +108,27 @@ class _BodyState extends State<Body> {
                             ],
                           ),
                           SizedBox(
-                            height: getProportionateScreenWidth(310),
+                            height: MediaQuery.of(context).size.height - 580,
                             child: TabBarView(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(18.0),
-                                  child: Text(widget.organization.description),
+                                SingleChildScrollView(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(18.0),
+                                    child:
+                                        Text(widget.organization.description),
+                                  ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(18.0),
-                                  child: Text(providersList),
+                                SingleChildScrollView(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(18.0),
+                                    child: Text(providersList),
+                                  ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(18.0),
-                                  child: Text(widget.organization.about),
+                                SingleChildScrollView(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(18.0),
+                                    child: Text(widget.organization.about),
+                                  ),
                                 ),
                                 RefreshIndicator(
                                   color: primaryColor,

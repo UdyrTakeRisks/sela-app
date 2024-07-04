@@ -31,12 +31,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
       future: ratingFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
+          return const Scaffold(
             backgroundColor: Color(0xFFF5F6F9),
             body: Center(child: CircularProgressIndicator()),
           );
         } else if (snapshot.hasError) {
-          return Scaffold(
+          return const Scaffold(
             backgroundColor: Color(0xFFF5F6F9),
             body: Center(child: Text('Failed to load rating')),
           );
