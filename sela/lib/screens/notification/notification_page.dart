@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sela/screens/notification/services/notification_service.dart';
+import 'package:sela/utils/colors.dart';
 
 import 'components/NotificationList.dart';
 
@@ -9,8 +11,14 @@ class NotificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
+    return RefreshIndicator(
+      onRefresh: () async {
+        // Implement refresh logic
+        NotificationService.fetchOldNotifications();
+        NotificationService.fetchNewNotifications();
+      },
+      color: primaryColor,
+      backgroundColor: backgroundColor4,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -26,20 +34,16 @@ class NotificationPage extends StatelessWidget {
             children: [
               _buildNotificationCategory(context, 'New'),
               const SizedBox(height: 10),
-              NotificationList(notificationType: NotificationType.newItem),
-              const SizedBox(height: 20),
-              _buildNotificationCategory(context, 'Today'),
-              const SizedBox(height: 10),
-              NotificationList(notificationType: NotificationType.todayItem),
+              const NotificationList(
+                  notificationType: NotificationType.newItem),
               const SizedBox(height: 20),
               _buildNotificationCategory(context, 'Oldest'),
               const SizedBox(height: 10),
-              NotificationList(notificationType: NotificationType.oldestItem),
+              const NotificationList(
+                  notificationType: NotificationType.oldestItem),
             ],
           ),
         ),
-        // bottomNavigationBar:
-        //     const CustomBottomNavBar(selectedMenu: MenuState.notification),
       ),
     );
   }

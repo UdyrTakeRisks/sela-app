@@ -22,14 +22,18 @@ class NotificationItem extends StatelessWidget {
           ),
         ],
       ),
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: primaryColor, // Customize as needed
           child:
-              _getNotificationIcon(), // Method to determine icon based on notification type
+              _getNotificationIcon(), // Determine icon based on notification content
         ),
-        title: Text(notification),
+        title: Text(
+          notification,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         onTap: () {
           // Implement action when notification is tapped
         },
@@ -39,7 +43,6 @@ class NotificationItem extends StatelessWidget {
 
   Icon _getNotificationIcon() {
     // Logic to determine which icon to display based on notification content
-    // Example logic, customize as per your actual notification types
     if (notification.contains('new')) {
       return const Icon(Icons.add, color: Colors.white);
     } else if (notification.contains('message')) {

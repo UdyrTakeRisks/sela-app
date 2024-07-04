@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sela/utils/colors.dart';
 
+import '../services/notification_service.dart';
 import 'NotificationItem.dart';
 
 enum NotificationType {
   newItem,
-  todayItem,
   oldestItem,
 }
 
@@ -13,44 +14,53 @@ class NotificationList extends StatelessWidget {
 
   const NotificationList({super.key, required this.notificationType});
 
-  @override
-  Widget build(BuildContext context) {
-    List<String> notifications = _getNotifications(notificationType);
-
-    return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: notifications.length,
-      itemBuilder: (context, index) {
-        String notification = notifications[index];
-        return NotificationItem(notification: notification);
-      },
-    );
-  }
-
-  List<String> _getNotifications(NotificationType type) {
+  Future<List<String>> _getNotifications(NotificationType type) async {
     switch (type) {
       case NotificationType.newItem:
-        return [
-          "A new Organization has been added",
-          "You have a message",
-          "A new Organization has been added"
-        ];
-      case NotificationType.todayItem:
-        return [
-          "You have a message",
-          "You Saved a Organization",
-          "A new Organization has been added",
-        ];
+        return await NotificationService.fetchNewNotifications();
       case NotificationType.oldestItem:
-        return [
-          "You Saved a Organization",
-          "You Saved a Organization",
-          "You have a message",
-          "You have a message"
-        ];
+        return await NotificationService.fetchOldNotifications();
       default:
         return [];
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<String>>(
+      future: _getNotifications(notificationType),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+              child: CircularProgressIndicator(
+            color: primaryColor,
+            backgroundColor: backgroundColor4,
+          ));
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text('No notifications available'));
+        } else if (snapshot.data!.contains("No messages in the queue.") ||
+            snapshot.data!.contains("No Notifications Found")) {
+          return const SizedBox(
+              height: 50,
+              child: Center(child: Text('No New Notifications Available')));
+        } else {
+          List<String> notifications = snapshot.data!;
+          return ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: notifications.length,
+            itemBuilder: (context, index) {
+              String notification = notifications[index];
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: NotificationItem(notification: notification),
+              );
+            },
+          );
+        }
+      },
+    );
   }
 }

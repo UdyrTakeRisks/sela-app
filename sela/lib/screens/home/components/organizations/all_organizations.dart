@@ -101,8 +101,8 @@ class _AllOrganizationsScreenState extends State<AllOrganizationsScreen>
                               ),
                             ],
                           ),
-                          child: Row(
-                            children: const [
+                          child: const Row(
+                            children: [
                               Icon(Icons.search),
                               SizedBox(width: 10),
                               Text('Search'),
