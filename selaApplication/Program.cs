@@ -45,6 +45,12 @@ namespace selaApplication
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer();
+
+            // builder.Services.AddResponseCaching();
+
+            builder.Services.AddMemoryCache();
+
+            builder.Services.AddDistributedMemoryCache();
             
             var app = builder.Build();
 
@@ -67,7 +73,9 @@ namespace selaApplication
             app.UseAuthorization();
             
             app.MapControllers();
-
+            
+            // app.UseResponseCaching();
+            
             app.Run();
         }
     }

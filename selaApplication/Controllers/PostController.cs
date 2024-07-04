@@ -4,6 +4,8 @@ using selaApplication.Models;
 using selaApplication.Services.Post;
 using selaApplication.Services.User;
 using System.Text.Json;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace selaApplication.Controllers;
 
@@ -16,11 +18,17 @@ public class PostController : ControllerBase
 
     private readonly IPostService _postsService;
     private readonly IUserService _usersService;
+    private readonly IDistributedCache _distributedCache;
+    private readonly IMemoryCache _memoryCache;
+    private const string organizationCacheKey = "OrganizationPosts";
+    private const string individualsCacheKey = "IndividualPosts";
 
-    public PostController(IPostService postsService, IUserService usersService)
+    public PostController(IPostService postsService, IUserService usersService, IDistributedCache distributedCache, IMemoryCache memoryCache)
     {
         _postsService = postsService;
         _usersService = usersService;
+        _distributedCache = distributedCache;
+        _memoryCache = memoryCache;
     }
 
     [HttpGet("health")]
@@ -62,7 +70,7 @@ public class PostController : ControllerBase
 
         var userId = await _usersService.GetIdByUsername(sessionUser.username);
         var res = await _postsService.AddUserPost(post, userId);
-        
+
         return Ok(res);
     }
 
@@ -101,19 +109,44 @@ public class PostController : ControllerBase
     }
 
     [HttpGet("view/all/orgs")]
-    public async Task<IEnumerable<Post>> ViewOrganizationPostsAsync()
+    public async Task<IActionResult> ViewOrganizationPostsAsync()
     {
-        var post = new Post { Type = PostType.Organization };
         // handle caching results with timeouts to enhance the performance
-        return await _postsService.GetPosts(post);
+        var cachedPosts = await _distributedCache.GetStringAsync(organizationCacheKey);
+        if (cachedPosts == null)
+        {
+            var post = new Post { Type = PostType.Organization };
+            var retrievedPosts = await _postsService.GetPosts(post);
+
+            cachedPosts = JsonSerializer.Serialize(retrievedPosts);
+
+            var cacheEntryOptions = new DistributedCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromHours(6));
+
+            await _distributedCache.SetStringAsync(organizationCacheKey, cachedPosts, cacheEntryOptions);
+        }
+
+        var posts = JsonSerializer.Deserialize<IEnumerable<Post>>(cachedPosts);
+        
+        return Ok(posts);
     }
 
     [HttpGet("view/all/individuals")]
-    public async Task<IEnumerable<Post>> ViewIndividualPostsAsync()
+    public async Task<IActionResult> ViewIndividualPostsAsync()
     {
-        var post = new Post { Type = PostType.Individual };
         // handle caching results with timeouts to enhance the performance
-        return await _postsService.GetPosts(post);
+        if (!_memoryCache.TryGetValue(individualsCacheKey, out IEnumerable<Post> cachedPosts))
+        {
+            var post = new Post { Type = PostType.Individual };
+            cachedPosts = await _postsService.GetPosts(post);
+
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromHours(6));
+
+            _memoryCache.Set(individualsCacheKey, cachedPosts, cacheEntryOptions);
+        }
+        
+        return Ok(cachedPosts);
     }
 
     [HttpPut("update/{id}")]
@@ -404,7 +437,4 @@ public class PostController : ControllerBase
 
         return Ok(response);
     }
-
-
-
 }
