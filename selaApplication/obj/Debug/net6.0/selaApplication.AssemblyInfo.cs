@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("selaApplication")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5c85b8547a43bdb16102eb1c5bf1f632fa4aa51c")]
 [assembly: System.Reflection.AssemblyProductAttribute("selaApplication")]
 [assembly: System.Reflection.AssemblyTitleAttribute("selaApplication")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

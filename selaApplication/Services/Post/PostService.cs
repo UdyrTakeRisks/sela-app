@@ -325,37 +325,44 @@ public class PostService : IPostService
         }
     }
 
-    public async Task<IEnumerable<Models.Post>> SearchPosts(string searchQuery)
+    public async Task<IEnumerable<Models.Post>> SearchPosts(string query, string filterBy)
     {
         try
         {
             using var connector = new PostgresConnection();
             connector.Connect();
 
-
-            // un nesting used with arrays 
-            // SELECT * FROM Users WHERE UserId = 105 OR 1=1;
-            const string sql = @"
+            string sql;
+            if (filterBy == "name")
+            {
+                sql = @"
                 SELECT * FROM posts 
-                WHERE LOWER(name) LIKE LOWER(@searchQuery) 
-                OR EXISTS (
-                    SELECT 1 FROM unnest(tags) AS tag WHERE LOWER(tag) LIKE LOWER(@searchQuery)
+                WHERE LOWER(name) LIKE LOWER(@query)";
+            }
+            else if (filterBy == "tag")
+            {
+                sql = @"
+                SELECT * FROM posts 
+                WHERE EXISTS (
+                    SELECT 1 FROM unnest(tags) AS tag WHERE LOWER(tag) LIKE LOWER(@query)
                 )";
+            }
+            else
+            {
+                throw new ArgumentException("Invalid filterBy value.");
+            }
 
             var posts = new List<Models.Post>();
 
             await using var command = new NpgsqlCommand(sql, connector._connection);
-            //'%' for partial match  VI
-            command.Parameters.AddWithValue("searchQuery", "%" + searchQuery + "%");
+            command.Parameters.AddWithValue("query", "%" + query + "%");
 
-            await using var reader = await command.ExecuteReaderAsync(); // results are read asyncronously 
+            await using var reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
                 var fetchedPost = new Models.Post
                 {
                     post_id = reader.GetInt32(reader.GetOrdinal("post_id")),
-                    // Assuming the Type is a string in your database, if it's an enum, handle accordingly
-                    // Type = (Models.Post.PostType)Enum.Parse(typeof(Models.Post.PostType), reader.GetString(reader.GetOrdinal("post_type"))),
                     ImageUrLs = reader.GetFieldValue<string[]>(reader.GetOrdinal("imageurls")),
                     name = reader.GetString(reader.GetOrdinal("name")),
                     tags = reader.GetFieldValue<string[]>(reader.GetOrdinal("tags")),
@@ -365,7 +372,11 @@ public class PostService : IPostService
                     about = reader.GetString(reader.GetOrdinal("about")),
                     socialLinks = reader.GetString(reader.GetOrdinal("social_links"))
                 };
-                posts.Add(fetchedPost); // adding each fetched post to the list of matched posts 
+                posts.Add(fetchedPost);
+            }
+            if (posts == null)
+            {
+                Console.WriteLine($"inside search posts there are no posts");
             }
 
             return posts;
@@ -376,6 +387,8 @@ public class PostService : IPostService
             return null;
         }
     }
+
+
 
     public async Task<string> SavePost(int userId, int postId, string username, string postName)
     {
