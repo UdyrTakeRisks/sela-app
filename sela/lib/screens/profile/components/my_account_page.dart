@@ -53,14 +53,14 @@ class _MyAccountPageState extends State<MyAccountPage> {
       final String imageName = _selectedImage!.path.split('/').last;
       final String fullPath = 'public/$imageName';
 
-      final String? oldUrl = await ProfileServices.fetchPhoto(context);
-      final String? oldImageName = oldUrl?.split('/').last;
+      // final String? oldUrl = await ProfileServices.fetchPhoto(context);
+      // final String? oldImageName = oldUrl?.split('/').last;
 
       try {
-        // remove the old image from the bucket
-        final List<FileObject> objects = await _supabaseClient.storage
-            .from('userimage')
-            .remove([oldImageName!]);
+        // // remove the old image from the bucket
+        // final List<FileObject> objects = await _supabaseClient.storage
+        //     .from('userimage')
+        //     .remove([oldImageName!]);
 
         final String uploadedPath = await _supabaseClient.storage
             .from('userimage')
@@ -233,13 +233,16 @@ class _MyAccountPageState extends State<MyAccountPage> {
                                       builder: (context, snapshot) {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
-                                          return const CircularProgressIndicator();
+                                          return CircularProgressIndicator(
+                                            color: primaryColor,
+                                          );
                                         } else if (snapshot.hasError ||
-                                            snapshot.data == null) {
-                                          return const Icon(
+                                            snapshot.data == null ||
+                                            snapshot.data!.isEmpty) {
+                                          return Icon(
                                             Icons.person,
                                             size: 115,
-                                            color: Colors.white,
+                                            color: primaryColor,
                                           );
                                         } else {
                                           return Image.network(
@@ -247,6 +250,14 @@ class _MyAccountPageState extends State<MyAccountPage> {
                                             fit: BoxFit.cover,
                                             width: 115,
                                             height: 115,
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                              return const Icon(
+                                                Icons.person,
+                                                size: 115,
+                                                color: Colors.grey,
+                                              );
+                                            },
                                           );
                                         }
                                       },

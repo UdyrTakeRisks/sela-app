@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sela/utils/colors.dart';
 
 import 'components/body.dart';
 
@@ -11,20 +12,19 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.transparent,
-        foregroundColor: Colors.black,
+        foregroundColor: primaryColor,
         title: const Text("PROFILE"),
         centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.settings_rounded),
+            icon: Icon(Icons.account_box_outlined, color: primaryColor),
           )
         ],
       ),
       body: const Body(),
-      // bottomNavigationBar:
-      //     const CustomBottomNavBar(selectedMenu: MenuState.profile),
     );
   }
 }

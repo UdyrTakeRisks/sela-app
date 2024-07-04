@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-import '../../../utils/constants.dart';
-
 class ProfileMenu extends StatelessWidget {
   const ProfileMenu({
-    Key? key,
+    super.key,
     required this.text,
     required this.icon,
     required this.press,
-  }) : super(key: key);
+    required this.color,
+  });
 
   final String text;
   final IconData icon;
   final VoidCallback press;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +28,15 @@ class ProfileMenu extends StatelessWidget {
         onPressed: press,
         child: Row(
           children: [
-            Icon(icon, color: kPrimaryColor, size: 22),
+            Icon(icon, color: color, size: 22),
             const SizedBox(width: 20),
-            Expanded(child: Text(text)),
-            const Icon(Icons.arrow_forward_ios),
+            Expanded(
+              child: Text(
+                text,
+                style: const TextStyle(color: Colors.black),
+              ),
+            ),
+            Icon(Icons.arrow_forward_ios, color: color),
           ],
         ),
       ),

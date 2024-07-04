@@ -209,4 +209,62 @@ class ProfileServices {
       ),
     );
   }
+
+  static Future<void> deleteAccount(BuildContext context) async {
+    print('Deleting account...');
+    var url = Uri.parse('$DOTNET_URL_API_BACKEND/User/delete');
+
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? cookie = prefs.getString('cookie');
+
+      if (cookie != null) {
+        print('Sending delete account request...');
+        http.Response response = await http.delete(
+          url,
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Cookie': cookie,
+          },
+        );
+
+        print('Response status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+
+        if (response.statusCode == 200) {
+          await prefs.clear(); // Clear all stored preferences
+          Navigator.pushReplacementNamed(context, SignInScreen.routeName);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Account deleted successfully')),
+          );
+          print('Account deleted successfully.');
+        } else if (response.statusCode == 401) {
+          await prefs.remove('cookie');
+          await prefs.remove('cookieExpirationTimestamp');
+          Navigator.pushReplacementNamed(context, SignInScreen.routeName);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Session expired. Please sign in again')),
+          );
+          print('Unauthorized during account deletion.');
+        } else {
+          _showErrorDialog(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Failed to delete account')),
+          );
+          print('Account deletion failed.');
+          throw Exception('Failed to delete account');
+        }
+      } else {
+        Navigator.pushReplacementNamed(context, SignInScreen.routeName);
+        print('No cookie found. Redirecting to sign-in screen.');
+      }
+    } catch (e) {
+      _showErrorDialog(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to delete account')),
+      );
+      print('Exception during account deletion: $e');
+    }
+  }
 }

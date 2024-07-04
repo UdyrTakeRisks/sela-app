@@ -10,7 +10,7 @@ import 'profile_menu.dart';
 import 'profile_services.dart';
 
 class Body extends StatefulWidget {
-  const Body({Key? key}) : super(key: key);
+  const Body({super.key});
 
   @override
   State<Body> createState() => _BodyState();
@@ -47,6 +47,8 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: _handleRefresh,
+      color: primaryColor,
+      backgroundColor: backgroundColor4,
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Column(
@@ -55,12 +57,17 @@ class _BodyState extends State<Body> {
               future: futureUserPhoto,
               builder: (context, photoSnapshot) {
                 if (photoSnapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Center(
+                      child: CircularProgressIndicator(
+                    color: primaryColor,
+                    semanticsLabel: 'Loading user photo',
+                    semanticsValue: 'Loading user photo',
+                  ));
                 } else if (photoSnapshot.hasError) {
                   return CircleAvatar(
                     radius: 57.5,
                     backgroundColor: backgroundColor4,
-                    child: Icon(
+                    child: const Icon(
                       Icons.person,
                       size: 57.5,
                       color: Colors.grey,
@@ -71,47 +78,41 @@ class _BodyState extends State<Body> {
                   return Stack(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          boxShadow: [
-                            BoxShadow(
-                              color: primaryColor,
-                            ),
-                          ],
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: primaryColor,
+                            width: 6,
+                          ),
                         ),
                         child: Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: primaryColor,
-                              width: 2,
+                              color: Colors.white,
+                              width: 4,
                             ),
                           ),
-                          padding: const EdgeInsets.all(2),
-                          child: CircleAvatar(
-                            radius: 57.5,
-                            backgroundColor: primaryColor,
-                            child: ClipOval(
-                              child: userPhoto.startsWith('http')
-                                  ? Image.network(
-                                      userPhoto,
-                                      width: getProportionateScreenWidth(115),
-                                      height: getProportionateScreenHeight(115),
-                                      fit: BoxFit.cover,
-                                    )
-                                  : const Icon(
-                                      Icons.person,
-                                      size: 115,
-                                      color: Colors.white,
-                                    ),
-                            ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: userPhoto.startsWith('http')
+                                ? Image.network(
+                                    userPhoto,
+                                    width: getProportionateScreenWidth(115),
+                                    height: getProportionateScreenHeight(115),
+                                    fit: BoxFit.cover,
+                                  )
+                                : const Icon(
+                                    Icons.person,
+                                    size: 115,
+                                    color: Colors.white,
+                                  ),
                           ),
                         ),
                       ),
                       Positioned(
-                        right: 6,
-                        bottom: 6,
+                        right: 10,
+                        bottom: 10,
                         child: Container(
                           width: 26,
                           height: 26,
@@ -135,7 +136,12 @@ class _BodyState extends State<Body> {
               future: futureUserDetails,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Center(
+                      child: CircularProgressIndicator(
+                    color: primaryColor,
+                    semanticsLabel: 'Loading user details',
+                    semanticsValue: 'Loading user details',
+                  ));
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Failed to load user details'));
                 } else if (!snapshot.hasData) {
@@ -153,7 +159,7 @@ class _BodyState extends State<Body> {
                         ),
                       ),
                       Text(
-                        "@${user.username.replaceAll(RegExp(r'\s+'), '').toLowerCase().trim()}",
+                        "@${user.username}",
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.grey,
@@ -167,12 +173,16 @@ class _BodyState extends State<Body> {
                           context,
                           MyAccountPage.routeName,
                         ),
+                        color: primaryColor,
                       ),
                       ProfileMenu(
                         text: "Saved Posts",
                         icon: Icons.bookmark,
-                        press: () =>
-                            Navigator.pushNamed(context, SavedScreen.routeName),
+                        press: () => Navigator.pushNamed(
+                          context,
+                          SavedScreen.routeName,
+                        ),
+                        color: primaryColor,
                       ),
                       ProfileMenu(
                         text: "Help Center",
@@ -181,6 +191,7 @@ class _BodyState extends State<Body> {
                           context,
                           HelpCenterPage.routeName,
                         ),
+                        color: primaryColor,
                       ),
                       ProfileMenu(
                         text: "Log Out",
@@ -188,6 +199,40 @@ class _BodyState extends State<Body> {
                         press: () {
                           ProfileServices.logout(context);
                         },
+                        color: primaryColor,
+                      ),
+                      ProfileMenu(
+                        text: "Delete Account",
+                        icon: Icons.delete_rounded,
+                        press: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text("Delete Account"),
+                                content: const Text(
+                                    "Are you sure you want to delete your account?"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Cancel"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      Navigator.pop(context);
+                                      await ProfileServices.deleteAccount(
+                                          context);
+                                    },
+                                    child: const Text("Delete"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        color: Colors.redAccent,
                       ),
                     ],
                   );

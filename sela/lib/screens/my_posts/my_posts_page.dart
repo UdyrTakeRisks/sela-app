@@ -89,6 +89,8 @@ class _MyPostsPageState extends State<MyPostsPage> {
         onRefresh: () async {
           await fetchData();
         },
+        color: primaryColor,
+        backgroundColor: backgroundColor4,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Column(
