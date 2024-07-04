@@ -4,6 +4,7 @@ using selaApplication.Helpers;
 using selaApplication.Models;
 using selaApplication.Services.User;
 using System.Text.Json;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace selaApplication.Controllers
 {
@@ -12,10 +13,12 @@ namespace selaApplication.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _usersService;
-
-        public UserController(IUserService usersService)
+        private readonly IMemoryCache _memoryCache;
+        private const string UserDetailsCacheKey = "UserDetails";
+        public UserController(IUserService usersService, IMemoryCache memoryCache)
         {
             _usersService = usersService;
+            _memoryCache = memoryCache;
         }
 
         [HttpGet("health")]
@@ -40,6 +43,7 @@ namespace selaApplication.Controllers
             {
                 return BadRequest("Invalid phone number format.");
             }
+
             var user = new User
             {
                 username = dto.username,
@@ -62,7 +66,7 @@ namespace selaApplication.Controllers
 
             var response = await _usersService.AddUser(user);
             // return Ok(user);
-            
+
             return Ok(response);
         }
 
@@ -143,12 +147,12 @@ namespace selaApplication.Controllers
             var userId = await _usersService.GetIdByUsername(sessionUser.username);
 
             var userPhoto = dto.userPhoto;
-            
+
             //update user photo in database
             var response = await _usersService.UpdateUserPhoto(userId, userPhoto);
             return Ok(response);
         }
-        
+
 
         [HttpPut("update/name")]
         public async Task<IActionResult> UpdateNameAsync(UserNameDto dto)
@@ -203,7 +207,6 @@ namespace selaApplication.Controllers
             var response = await _usersService.UpdateEmailById(userId, newEmail);
 
             return Ok(response);
-
         }
 
         [HttpPut("update/phone")]
@@ -362,16 +365,23 @@ namespace selaApplication.Controllers
                 return Unauthorized("User Session is Expired. Please log in first.");
             }
 
-            var userId = await _usersService.GetIdByUsername(sessionUser.username);
-            
-            var user = await _usersService.GetUserById(userId);
-            if (user == null)
+            if (!_memoryCache.TryGetValue(UserDetailsCacheKey, out User? cachedUserDetails))
             {
-                return NotFound("User not found.");
+                var userId = await _usersService.GetIdByUsername(sessionUser.username);
+
+                cachedUserDetails = await _usersService.GetUserById(userId);
+                if (cachedUserDetails == null)
+                {
+                    return NotFound("User not found.");
+                }
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromHours(12));
+
+                _memoryCache.Set(UserDetailsCacheKey, cachedUserDetails, cacheEntryOptions);
             }
-
-            return Ok(user);
+            
+            return Ok(cachedUserDetails);
         }
-
     }
 }
