@@ -5,5 +5,6 @@ enum MenuState {
   add,
   notification,
   myPosts,
-  createPost
+  createPost,
+  adminHome
 }

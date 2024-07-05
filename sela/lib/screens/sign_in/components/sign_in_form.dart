@@ -12,7 +12,7 @@ import '../../../components/default_button.dart';
 import '../../../components/form_error.dart';
 import '../../../size_config.dart';
 import '../../../utils/constants.dart';
-import '../../admin/admin_page.dart';
+import '../../admin/nav_bar_admin.dart';
 import '../../forgot_password/forgot_password_screen.dart';
 
 class SignForm extends StatefulWidget {
@@ -89,18 +89,19 @@ class _SignFormState extends State<SignForm> {
           print('Cookie Admin saved: $cookieAdmin');
           print(
               'Cookie expiration timestamp saved for admin: $cookieExpirationTimestamp');
-        } else {
-          // Save the cookie and expiration timestamp using shared_preferences
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setString('cookie', cookieAdmin!);
-          await prefs.setString(
-              'cookieExpirationTimestamp', cookieExpirationTimestamp!);
-          print('Cookie Admin saved: $cookieAdmin');
-          print(
-              'Cookie expiration timestamp saved for admin: $cookieExpirationTimestamp');
         }
+        // else {
+        //   // Save the cookie and expiration timestamp using shared_preferences
+        //   SharedPreferences prefs = await SharedPreferences.getInstance();
+        //   await prefs.setString('cookie', cookieAdmin!);
+        //   await prefs.setString(
+        //       'cookieExpirationTimestamp', cookieExpirationTimestamp!);
+        //   print('Cookie Admin saved: $cookieAdmin');
+        //   print(
+        //       'Cookie expiration timestamp saved for admin: $cookieExpirationTimestamp');
+        // }
 
-        Navigator.pushReplacementNamed(context, AdminPage.routeName);
+        Navigator.pushReplacementNamed(context, MainScreenAdmin.routeName);
         print(response.body);
       } catch (e) {
         Navigator.pop(context);
@@ -113,7 +114,8 @@ class _SignFormState extends State<SignForm> {
         );
         print(e.toString());
       }
-    } else {
+    } else if (username.isNotEmpty != "admin" &&
+        password.isNotEmpty != "admin") {
       var url = Uri.parse('$DOTNET_URL_API_BACKEND/User/login');
       var body = json.encode({
         'username': username,

@@ -1,6 +1,9 @@
 const String DOTNET_URL_API_BACKEND =
     "https://selawebapp.azurewebsites.net/api";
 
+const String DOTNET_URL_API_BACKEND_ADMIN =
+    "https://selawebapp.azurewebsites.net";
+
 // Supabase url and anon key
 const String SUPABASE_URL = "https://ihaofykdrzgouxpitrvi.supabase.co";
 const String SUPABASE_ANON_KEY =

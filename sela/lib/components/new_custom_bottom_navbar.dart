@@ -188,8 +188,8 @@ class _MainScreenState extends State<MainScreen> {
             index: 3,
           ),
           _buildIconColumn(
-            icon: Icons.person_outline_rounded,
-            label: 'Profile',
+            icon: Icons.settings_rounded,
+            label: 'Settings',
             selected: _selectedIndex == 4,
             index: 4,
           ),
