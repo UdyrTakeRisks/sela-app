@@ -43,8 +43,10 @@ class NotificationItem extends StatelessWidget {
 
   Icon _getNotificationIcon() {
     // Logic to determine which icon to display based on notification content
-    if (notification.contains('new')) {
-      return const Icon(Icons.add, color: Colors.white);
+    if (notification.contains('Date') &&
+        notification.contains('Time') &&
+        notification.contains('You have successfully logged in.')) {
+      return const Icon(Icons.check_circle_rounded, color: Colors.white);
     } else if (notification.contains('message')) {
       return const Icon(Icons.message, color: Colors.white);
     } else {

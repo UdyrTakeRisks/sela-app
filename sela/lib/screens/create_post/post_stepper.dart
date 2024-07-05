@@ -76,6 +76,29 @@ class _PostStepperState extends State<PostStepper> {
       body: jsonPost,
     );
 
+    var urlNotification =
+        Uri.parse('$DOTNET_URL_API_BACKEND/Notification/send/welcome-msg');
+
+    var bodyNotification = json.encode({
+      'message':
+          "The Post Created Successfully\nDate: ${DateTime.now()}\nTime: ${TimeOfDay.now()}",
+    });
+    print("Notification Body" + bodyNotification);
+
+    http.Response responseNotification = await http.post(
+      urlNotification,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: bodyNotification,
+    );
+
+    if (responseNotification.statusCode != 200) {
+      print('Failed to send notification');
+    } else {
+      print('Notification sent successfully');
+    }
+
     if (response.statusCode == 200) {
       // Handle successful response
       print('Post submitted successfully!');

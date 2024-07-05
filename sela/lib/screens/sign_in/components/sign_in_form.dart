@@ -126,8 +126,10 @@ class _SignFormState extends State<SignForm> {
         'password': password,
       });
 
+      // I want to add Date and time to the notification
       var bodyNotification = json.encode({
-        'message': "Welcome to Sela\nYou have successfully logged in.",
+        'message':
+            "Welcome to Sela\nYou have successfully logged in.\nDate: ${DateTime.now()}\nTime: ${TimeOfDay.now()}",
       });
 
       print("SignIn Body" + body);
