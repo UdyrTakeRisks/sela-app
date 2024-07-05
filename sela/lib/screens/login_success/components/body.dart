@@ -63,7 +63,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
               child: DefaultButton(
                 text: "Back To Home",
                 press: () {
-                  Navigator.pushNamed(context, MainScreen.routeName);
+                  Navigator.pushReplacementNamed(context, MainScreen.routeName);
                 },
               ),
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sela/components/loading_screen.dart';
 import 'package:sela/components/new_custom_bottom_navbar.dart';
 import 'package:sela/screens/admin/nav_bar_admin.dart';
 import 'package:sela/screens/create_post/post_page.dart';
@@ -51,4 +52,5 @@ final Map<String, WidgetBuilder> routes = {
   NotificationPage.routeName: (context) => const NotificationPage(),
   MainScreen.routeName: (context) => const MainScreen(),
   MainScreenAdmin.routeName: (context) => const MainScreenAdmin(),
+  LoadingScreen.routeName: (context) => const LoadingScreen(),
 };

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:sela/components/loading_screen.dart';
 import 'package:sela/utils/colors.dart';
 import 'package:sela/utils/env.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,10 +9,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../components/custom_suffix_icon.dart';
 import '../../../components/default_button.dart';
 import '../../../components/form_error.dart';
+import '../../../components/loading_screen.dart';
 import '../../../size_config.dart';
 import '../../../utils/constants.dart';
 import '../../admin/nav_bar_admin.dart';
 import '../../forgot_password/forgot_password_screen.dart';
+import '../../login_success/login_success.dart';
 
 class SignForm extends StatefulWidget {
   const SignForm({super.key});
@@ -26,7 +27,7 @@ class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
   late String username;
   late String password;
-  bool remember = false;
+  bool remember = true;
   final List<String> errors = [];
 
   final TextEditingController usernameController = TextEditingController();
@@ -117,11 +118,20 @@ class _SignFormState extends State<SignForm> {
     } else if (username.isNotEmpty != "admin" &&
         password.isNotEmpty != "admin") {
       var url = Uri.parse('$DOTNET_URL_API_BACKEND/User/login');
+      var urlNotification =
+          Uri.parse('$DOTNET_URL_API_BACKEND/Notification/send/welcome-msg');
+
       var body = json.encode({
         'username': username,
         'password': password,
       });
-      print(body);
+
+      var bodyNotification = json.encode({
+        'message': "Welcome to Sela\nYou have successfully logged in.",
+      });
+
+      print("SignIn Body" + body);
+      print("Notification Body" + bodyNotification);
       try {
         http.Response response = await http.post(
           url,
@@ -129,6 +139,14 @@ class _SignFormState extends State<SignForm> {
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: body,
+        );
+
+        http.Response responseNotification = await http.post(
+          urlNotification,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: bodyNotification,
         );
 
         if (response.statusCode != 200) {
@@ -152,13 +170,19 @@ class _SignFormState extends State<SignForm> {
                 'Cookie expiration timestamp saved: $cookieExpirationTimestamp');
           }
         }
-        Navigator.pushReplacementNamed(context, '/login_success');
+        Navigator.pushReplacementNamed(context, LoginSuccessScreen.routeName);
         // show a snackbar
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Login Successful'),
           ),
         );
+        if (responseNotification.statusCode != 200) {
+          throw Exception('Failed to send notification');
+        } else {
+          print('Notification sent successfully');
+        }
+
         print(response.body);
       } catch (e) {
         Navigator.pop(context);

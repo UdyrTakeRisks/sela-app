@@ -3,6 +3,7 @@ import 'package:lottie/lottie.dart';
 import 'package:sela/size_config.dart';
 
 class LoadingScreen extends StatelessWidget {
+  static String routeName = "/loading";
   const LoadingScreen({super.key});
 
   @override

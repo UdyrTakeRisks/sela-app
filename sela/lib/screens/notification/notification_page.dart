@@ -51,6 +51,7 @@ class _NotificationPageState extends State<NotificationPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Notifications'),
         backgroundColor: Colors.transparent, // Customize as needed
         elevation: 0, // Customize as needed
