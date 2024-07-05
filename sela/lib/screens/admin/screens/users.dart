@@ -104,7 +104,7 @@ class _UsersAdminState extends State<UsersAdmin> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('${user.username} deleted successfully'),
-          duration: Duration(seconds: 2),
+          duration: const Duration(seconds: 2),
         ),
       );
     }).catchError((error) {

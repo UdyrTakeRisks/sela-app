@@ -75,11 +75,13 @@ class _AdminPageState extends State<AdminPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                            onPressed: () {}, icon: const Icon(Icons.edit)),
+                          onPressed: () {},
+                          icon: const Icon(Icons.edit),
+                        ),
                         IconButton(
                           icon: const Icon(Icons.delete),
                           onPressed: () {
-                            _showDeleteConfirmationDialog(org.name);
+                            _showDeleteConfirmationDialog(org.name, org.id);
                           },
                         ),
                       ],
@@ -123,11 +125,14 @@ class _AdminPageState extends State<AdminPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                            onPressed: () {}, icon: const Icon(Icons.edit)),
+                          onPressed: () {},
+                          icon: const Icon(Icons.edit),
+                        ),
                         IconButton(
                           icon: const Icon(Icons.delete),
                           onPressed: () {
-                            _showDeleteConfirmationDialog(individual.name);
+                            _showDeleteConfirmationDialog(
+                                individual.name, individual.postId);
                           },
                         ),
                       ],
@@ -142,7 +147,8 @@ class _AdminPageState extends State<AdminPage> {
     );
   }
 
-  Future<void> _showDeleteConfirmationDialog(String itemName) async {
+  Future<void> _showDeleteConfirmationDialog(
+      String itemName, int postId) async {
     return showDialog(
       context: context,
       builder: (context) {
@@ -159,8 +165,8 @@ class _AdminPageState extends State<AdminPage> {
             TextButton(
               child: const Text('Delete'),
               onPressed: () {
-                // Implement delete operation here
-                _deleteItem(itemName);
+                // Call the delete function
+                _deleteItem(postId);
                 Navigator.of(context).pop();
               },
             ),
@@ -170,9 +176,17 @@ class _AdminPageState extends State<AdminPage> {
     );
   }
 
-  void _deleteItem(String itemName) {
-    // Mock implementation for demonstration
-    print('Deleting item: $itemName');
-    // Implement your delete logic here (e.g., call API)
+  void _deleteItem(int postId) async {
+    try {
+      await AdminServices.deletePost(postId);
+      // Refresh the list after deletion
+      setState(() {
+        _organizationsFuture = AdminServices.fetchOrganizations();
+        _individualsFuture = AdminServices.fetchIndividuals();
+      });
+    } catch (e) {
+      // Handle deletion error
+      print('Error deleting item: $e');
+    }
   }
 }

@@ -87,4 +87,30 @@ class AdminServices {
       throw Exception('Failed to load individuals');
     }
   }
+
+  static Future<void> deletePost(int postId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? cookie = prefs
+        .getString('cookie'); // Retrieve the cookie from shared preferences
+
+    if (cookie == null) {
+      throw Exception('No cookie found');
+    }
+
+    final response = await http.delete(
+      Uri.parse('$DOTNET_URL_API_BACKEND/Admin/delete/post/$postId'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Cookie': cookie, // Include the cookie in the headers
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Successfully deleted
+      print('Post deleted successfully');
+    } else {
+      // Failed to delete
+      throw Exception('Failed to delete post');
+    }
+  }
 }
