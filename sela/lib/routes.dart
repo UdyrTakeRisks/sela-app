@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sela/components/new_custom_bottom_navbar.dart';
+import 'package:sela/screens/admin/admin_page.dart';
 import 'package:sela/screens/create_post/post_page.dart';
 import 'package:sela/screens/details/details_screen.dart';
 import 'package:sela/screens/forgot_password/forgot_password_screen.dart';
@@ -49,4 +50,5 @@ final Map<String, WidgetBuilder> routes = {
   AllIndividualsScreen.routeName: (context) => const AllIndividualsScreen(),
   NotificationPage.routeName: (context) => const NotificationPage(),
   MainScreen.routeName: (context) => const MainScreen(),
+  AdminPage.routeName: (context) => const AdminPage(),
 };

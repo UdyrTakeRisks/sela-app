@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:sela/components/loading_screen.dart';
+import 'package:sela/utils/colors.dart';
 import 'package:sela/utils/env.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,6 +12,7 @@ import '../../../components/default_button.dart';
 import '../../../components/form_error.dart';
 import '../../../size_config.dart';
 import '../../../utils/constants.dart';
+import '../../admin/admin_page.dart';
 import '../../forgot_password/forgot_password_screen.dart';
 
 class SignForm extends StatefulWidget {
@@ -47,60 +49,126 @@ class _SignFormState extends State<SignForm> {
   }
 
   Future<void> login(String username, String password) async {
-    var url = Uri.parse('$DOTNET_URL_API_BACKEND/User/login');
-    var body = json.encode({
-      'username': username,
-      'password': password,
-    });
-    print(body);
-    try {
-      http.Response response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: body,
-      );
+    if (username.isEmpty || password.isEmpty) {
+      _showErrorDialog();
+      return;
+    }
 
-      if (response.statusCode != 200) {
-        throw Exception('Failed to login');
-      } else {
-        print('Login successful');
-        // Extract the cookie from the response headers
-        String? cookie = response.headers['set-cookie'];
+    if (username == 'admin' && password == 'admin') {
+      var urlAdmin = Uri.parse('$DOTNET_URL_API_BACKEND/Admin/login');
+      var bodyAdmin = json.encode({
+        'username': username,
+        'password': password,
+      });
+      print(bodyAdmin);
+      try {
+        http.Response response = await http.post(
+          urlAdmin,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: bodyAdmin,
+        );
+
+        String? cookieAdmin = response.headers['set-cookie'];
         // Extract the cookie expiration timestamp from the response body
         var responseBody = json.decode(response.body);
         String? cookieExpirationTimestamp =
             responseBody['cookieExpirationTimestamp'];
-        if (cookie != null && cookieExpirationTimestamp != null) {
+        if (response.statusCode != 200) {
+          throw Exception('Failed to login');
+        } else {
+          print('Login successful');
+        }
+        if (cookieAdmin != null && cookieExpirationTimestamp != null) {
           // Save the cookie and expiration timestamp using shared_preferences
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setString('cookie', cookie);
+          await prefs.setString('cookie', cookieAdmin);
           await prefs.setString(
               'cookieExpirationTimestamp', cookieExpirationTimestamp);
-          print('Cookie saved: $cookie');
+          print('Cookie Admin saved: $cookieAdmin');
           print(
-              'Cookie expiration timestamp saved: $cookieExpirationTimestamp');
+              'Cookie expiration timestamp saved for admin: $cookieExpirationTimestamp');
+        } else {
+          // Save the cookie and expiration timestamp using shared_preferences
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('cookie', cookieAdmin!);
+          await prefs.setString(
+              'cookieExpirationTimestamp', cookieExpirationTimestamp!);
+          print('Cookie Admin saved: $cookieAdmin');
+          print(
+              'Cookie expiration timestamp saved for admin: $cookieExpirationTimestamp');
         }
+
+        Navigator.pushReplacementNamed(context, AdminPage.routeName);
+        print(response.body);
+      } catch (e) {
+        Navigator.pop(context);
+        _showErrorDialog();
+        // show a snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Login Failed'),
+          ),
+        );
+        print(e.toString());
       }
-      Navigator.pushReplacementNamed(context, '/login_success');
-      // show a snackbar
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Login Successful'),
-        ),
-      );
-      print(response.body);
-    } catch (e) {
-      Navigator.pop(context);
-      _showErrorDialog();
-      // show a snackbar
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Login Failed'),
-        ),
-      );
-      print(e.toString());
+    } else {
+      var url = Uri.parse('$DOTNET_URL_API_BACKEND/User/login');
+      var body = json.encode({
+        'username': username,
+        'password': password,
+      });
+      print(body);
+      try {
+        http.Response response = await http.post(
+          url,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: body,
+        );
+
+        if (response.statusCode != 200) {
+          throw Exception('Failed to login');
+        } else {
+          print('Login successful');
+          // Extract the cookie from the response headers
+          String? cookie = response.headers['set-cookie'];
+          // Extract the cookie expiration timestamp from the response body
+          var responseBody = json.decode(response.body);
+          String? cookieExpirationTimestamp =
+              responseBody['cookieExpirationTimestamp'];
+          if (cookie != null && cookieExpirationTimestamp != null) {
+            // Save the cookie and expiration timestamp using shared_preferences
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            await prefs.setString('cookie', cookie);
+            await prefs.setString(
+                'cookieExpirationTimestamp', cookieExpirationTimestamp);
+            print('Cookie saved: $cookie');
+            print(
+                'Cookie expiration timestamp saved: $cookieExpirationTimestamp');
+          }
+        }
+        Navigator.pushReplacementNamed(context, '/login_success');
+        // show a snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Login Successful'),
+          ),
+        );
+        print(response.body);
+      } catch (e) {
+        Navigator.pop(context);
+        _showErrorDialog();
+        // show a snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Login Failed'),
+          ),
+        );
+        print(e.toString());
+      }
     }
   }
 
@@ -109,8 +177,9 @@ class _SignFormState extends State<SignForm> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: backgroundColor4,
           icon: const Icon(Icons.sms_failed_outlined),
-          iconColor: Colors.red,
+          iconColor: primaryColor,
           title: const Text('Login Failed'),
           content: const Text(
               'Please check your username or password and try again.'),
@@ -120,7 +189,7 @@ class _SignFormState extends State<SignForm> {
                 Navigator.pop(
                     context); // Replace with the route name of your signup screen
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -217,7 +286,6 @@ class _SignFormState extends State<SignForm> {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
         }
-        // TODO: Uncomment this code to enable password length validation
         // if (value.length >= 8) {
         //   removeError(error: kShortPassError);
         // }
@@ -228,7 +296,6 @@ class _SignFormState extends State<SignForm> {
           addError(error: kPassNullError);
           return "";
         }
-        // TODO: Uncomment this code to enable password length validation
         // else if (value.length < 8) {
         //   addError(error: kShortPassError);
         //   return "";
@@ -243,39 +310,4 @@ class _SignFormState extends State<SignForm> {
       ),
     );
   }
-
-  // NOTE: This code is not used in the current implementation
-
-  // TextFormField buildEmailFormField() {
-  //   return TextFormField(
-  //     keyboardType: TextInputType.emailAddress,
-  //     onSaved: (newValue) => email = newValue!,
-  //     onChanged: (value) {
-  //       if (value.isNotEmpty) {
-  //         removeError(error: kEmailNullError);
-  //       } else if (emailValidatorRegExp.hasMatch(value)) {
-  //         removeError(error: kInvalidEmailError);
-  //       }
-  //       return null;
-  //     },
-  //     validator: (value) {
-  //       if (value!.isEmpty) {
-  //         addError(error: kEmailNullError);
-  //         return "";
-  //       } else if (!emailValidatorRegExp.hasMatch(value)) {
-  //         addError(error: kInvalidEmailError);
-  //         return "";
-  //       }
-  //       return null;
-  //     },
-  //     decoration: const InputDecoration(
-  //       labelText: "Email",
-  //       hintText: "Enter your email",
-  //       // If  you are using latest version of flutter then lable text and hint text shown like this
-  //       // if you r using flutter less then 1.20.* then maybe this is not working properly
-  //       floatingLabelBehavior: FloatingLabelBehavior.always,
-  //       suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Mail.svg"),
-  //     ),
-  //   );
-  // }
 }
