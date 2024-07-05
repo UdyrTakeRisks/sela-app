@@ -28,7 +28,17 @@ class _AdminPageState extends State<AdminPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false, // Remove the back button
           title: const Text('Admin Page'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.exit_to_app),
+              onPressed: () {
+                // Handle exit action here
+                AdminServices.logout(context);
+              },
+            ),
+          ],
           bottom: const TabBar(
             tabs: [
               Tab(text: 'Organizations'),
