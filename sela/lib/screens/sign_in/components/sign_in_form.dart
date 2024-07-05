@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:sela/utils/colors.dart';
 import 'package:sela/utils/env.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -126,10 +127,13 @@ class _SignFormState extends State<SignForm> {
         'password': password,
       });
 
+      DateTime now = DateTime.now();
+      String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
+      String formattedTime = DateFormat('kk:mm').format(now);
       // I want to add Date and time to the notification
       var bodyNotification = json.encode({
         'message':
-            "Welcome to Sela\nYou have successfully logged in.\nDate: ${DateTime.now()}\nTime: ${TimeOfDay.now()}",
+            "Welcome to Sela\nYou have successfully logged in.\nDate: $formattedDate\nTime: $formattedTime",
       });
 
       print("SignIn Body" + body);

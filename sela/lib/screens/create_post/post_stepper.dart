@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:sela/components/new_custom_bottom_navbar.dart';
 import 'package:sela/models/post_model.dart';
 import 'package:sela/utils/constants.dart';
@@ -79,9 +80,12 @@ class _PostStepperState extends State<PostStepper> {
     var urlNotification =
         Uri.parse('$DOTNET_URL_API_BACKEND/Notification/send/welcome-msg');
 
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
+    String formattedTime = DateFormat('kk:mm').format(now);
     var bodyNotification = json.encode({
       'message':
-          "The Post Created Successfully\nDate: ${DateTime.now()}\nTime: ${TimeOfDay.now()}",
+          "The Post Created Successfully\nDate: $formattedDate\nTime: $formattedTime",
     });
     print("Notification Body" + bodyNotification);
 

@@ -31,7 +31,9 @@ class NotificationItem extends StatelessWidget {
         title: Text(
           notification,
           style: const TextStyle(
-            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+            fontFamily: 'Poppins',
+            fontSize: 14,
           ),
         ),
         onTap: () {
@@ -47,10 +49,10 @@ class NotificationItem extends StatelessWidget {
         notification.contains('Time') &&
         notification.contains('You have successfully logged in.')) {
       return const Icon(Icons.check_circle_rounded, color: Colors.white);
-    } else if (notification.contains('message')) {
-      return const Icon(Icons.message, color: Colors.white);
+    } else if (notification.contains('The Post Created Successfully')) {
+      return const Icon(Icons.add_box, color: Colors.white);
     } else {
-      return const Icon(Icons.bookmark, color: Colors.white);
+      return const Icon(Icons.notifications_active, color: Colors.white);
     }
   }
 }
