@@ -28,7 +28,6 @@ class OrganizationCard extends StatelessWidget {
         onTap: press,
         child: Container(
           width: getProportionateScreenWidth(300),
-          height: getProportionateScreenHeight(120),
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -120,18 +119,18 @@ class OrganizationCard extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 6),
                             decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.1),
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
                               tag,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color: primaryColor,
                                 fontSize: 12,
                                 fontFamily: "poppins",
-                                fontWeight: FontWeight.w300,
+                                fontWeight: FontWeight.w800,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),

@@ -60,12 +60,13 @@ class _BodyState extends State<Body> {
                   return Center(
                       child: CircularProgressIndicator(
                     color: primaryColor,
+                    backgroundColor: backgroundColor4,
                     semanticsLabel: 'Loading user photo',
                     semanticsValue: 'Loading user photo',
                   ));
                 } else if (photoSnapshot.hasError) {
                   return CircleAvatar(
-                    radius: 57.5,
+                    radius: 100,
                     backgroundColor: backgroundColor4,
                     child: const Icon(
                       Icons.person,
@@ -131,7 +132,6 @@ class _BodyState extends State<Body> {
                 }
               },
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
             FutureBuilder<Users>(
               future: futureUserDetails,
               builder: (context, snapshot) {

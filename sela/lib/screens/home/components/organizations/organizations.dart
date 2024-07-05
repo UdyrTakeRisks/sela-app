@@ -58,7 +58,7 @@ class OrganizationsState extends State<Organizations> {
             } else {
               return SizedBox(
                 height: getProportionateScreenWidth(
-                    130), // Adjust the height as needed
+                    145), // Adjust the height as needed
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: snapshot.data!.length,

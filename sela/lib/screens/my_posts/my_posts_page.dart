@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sela/utils/colors.dart';
 
+import '../../models/Organizations.dart';
+import '../../models/my_post_model.dart';
+import '../details/details_screen.dart';
 import 'components/post_card.dart';
 import 'components/user_info.dart';
 import 'my_posts_service.dart';
@@ -117,14 +120,29 @@ class _MyPostsPageState extends State<MyPostsPage> {
                       return ListView.builder(
                         itemCount: data.posts.length,
                         itemBuilder: (context, index) {
-                          return PostCard(
-                            post: data.posts[index],
-                            onDelete: () async {
-                              await viewModel.fetchUserPosts();
+                          Organization organization =
+                              mapMyPostToOrganization(data.posts[index]);
+                          return GestureDetector(
+                            onTap: () {
+                              // Navigate to post details page
+                              Navigator.pushNamed(
+                                context,
+                                DetailsScreen.routeName,
+                                arguments: DetailsArguments(
+                                  organization: organization,
+                                  index: index,
+                                ),
+                              );
                             },
-                            onEdit: () async {
-                              await viewModel.fetchUserPosts();
-                            },
+                            child: PostCard(
+                              post: data.posts[index],
+                              onDelete: () async {
+                                await viewModel.fetchUserPosts();
+                              },
+                              onEdit: () async {
+                                await viewModel.fetchUserPosts();
+                              },
+                            ),
                           );
                         },
                       );
@@ -140,4 +158,18 @@ class _MyPostsPageState extends State<MyPostsPage> {
       //     const CustomBottomNavBar(selectedMenu: MenuState.myPosts),
     );
   }
+}
+
+Organization mapMyPostToOrganization(MyPost myPost) {
+  return Organization(
+    id: myPost.postId,
+    imageUrls: myPost.imageUrls ?? [],
+    name: myPost.name ?? '',
+    tags: myPost.tags ?? [],
+    title: myPost.title ?? '',
+    description: myPost.description ?? '',
+    providers: myPost.providers ?? [],
+    about: myPost.about ?? '',
+    socialLinks: myPost.socialLinks ?? '',
+  );
 }

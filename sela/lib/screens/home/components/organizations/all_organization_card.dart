@@ -96,35 +96,33 @@ class _NewOrganizationCardState extends State<NewOrganizationCard> {
                       color: Colors.white60,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 15),
                   if (widget.organization.tags != null &&
                       widget.organization.tags!.isNotEmpty)
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: widget.organization.tags!
-                            .map((tag) {
-                              return Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                margin: const EdgeInsets.only(right: 6),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  tag,
-                                  style: const TextStyle(
-                                    color: Colors.white60,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              );
-                            })
-                            .take(3) // Take only the first 3 tags
-                            .toList(),
+                        children: widget.organization.tags!.map((tag) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            margin: const EdgeInsets.only(right: 6),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              tag,
+                              style: TextStyle(
+                                color: primaryColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          );
+                        }).toList(),
                       ),
                     ),
                 ],

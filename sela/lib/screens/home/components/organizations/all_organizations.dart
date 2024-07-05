@@ -44,7 +44,15 @@ class _AllOrganizationsScreenState extends State<AllOrganizationsScreen>
       top: false,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("All Organizations"),
+          title: const Text(
+            "All Organizations",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          scrolledUnderElevation: 0,
         ),
         body: RefreshIndicator(
           color: primaryColor,
