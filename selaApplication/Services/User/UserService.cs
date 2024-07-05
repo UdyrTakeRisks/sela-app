@@ -109,6 +109,11 @@ namespace selaApplication.Services.User
                 using var connector = new PostgresConnection();
                 connector.Connect();
 
+                const string updatePostsSql = "UPDATE posts SET user_id = NULL WHERE user_id = @user_id";
+                await using var deletePostsCommand = new NpgsqlCommand(updatePostsSql, connector._connection);
+                deletePostsCommand.Parameters.AddWithValue("user_id", userId);
+                await deletePostsCommand.ExecuteNonQueryAsync();
+                
                 const string sql = "DELETE FROM users WHERE user_id = @user_id";
 
                 await using var command = new NpgsqlCommand(sql, connector._connection);
