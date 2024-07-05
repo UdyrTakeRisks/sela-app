@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sela/models/Organizations.dart';
 import 'package:sela/size_config.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../../utils/colors.dart';
 
@@ -19,14 +20,6 @@ class NewOrganizationCard extends StatefulWidget {
 }
 
 class _NewOrganizationCardState extends State<NewOrganizationCard> {
-  bool isSaved = false;
-
-  void _saved() {
-    setState(() {
-      isSaved = !isSaved;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -106,51 +99,65 @@ class _NewOrganizationCardState extends State<NewOrganizationCard> {
                   const SizedBox(height: 8),
                   if (widget.organization.tags != null &&
                       widget.organization.tags!.isNotEmpty)
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: -6,
-                      children: widget.organization.tags!
-                          .take(3) // Take only the first 3 tags
-                          .toList()
-                          .map((tag) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          margin: const EdgeInsets.only(top: 6),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            tag,
-                            style: const TextStyle(
-                              color: Colors.white60,
-                              fontSize: 12,
-                            ),
-                          ),
-                        );
-                      }).toList(),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: widget.organization.tags!
+                            .map((tag) {
+                              return Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                margin: const EdgeInsets.only(right: 6),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  tag,
+                                  style: const TextStyle(
+                                    color: Colors.white60,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              );
+                            })
+                            .take(3) // Take only the first 3 tags
+                            .toList(),
+                      ),
                     ),
                 ],
               ),
             ),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 IconButton(
+                  icon: const Icon(Icons.ios_share_rounded),
                   color: Colors.white,
-                  onPressed: _saved,
-                  icon: Icon(
-                    isSaved ? Icons.bookmark : Icons.bookmark_border,
-                  ),
+                  onPressed: () async {
+                    await Share.share(
+                      'Check out this organization: ${widget.organization.name}\nTitle: ${widget.organization.title}\nDescription: ${widget.organization.description}\nLink: ${widget.organization.socialLinks}',
+                    );
+                  },
                 ),
-                const SizedBox(height: 16),
-                const Text(
-                  "6d",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.white,
+                const SizedBox(height: 8),
+                Card(
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Know more',
+                      style: TextStyle(
+                        color: primaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
                 ),
               ],
