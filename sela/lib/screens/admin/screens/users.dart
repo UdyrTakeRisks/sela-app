@@ -58,10 +58,7 @@ class _UsersAdminState extends State<UsersAdmin> {
                 _showDeleteConfirmationDialog(context, users[index]);
               },
             ),
-            onTap: () {
-              // Implement navigation to user details screen
-              _navigateToUserDetails(context, users[index]);
-            },
+            onTap: () {},
           );
         },
       ),
@@ -98,17 +95,27 @@ class _UsersAdminState extends State<UsersAdmin> {
   }
 
   void _deleteUser(User user) {
-    // Implement delete logic here (call API, update state, etc.)
-    // Example: AdminServices.deleteUser(user.userId);
-    print('Deleting user: ${user.username}');
-    setState(() {
-      users.remove(user);
+    // Call AdminServices.deleteUser with user.userId
+    AdminServices.deleteUser(user.userId).then((_) {
+      // If successful, remove user from UI
+      setState(() {
+        users.remove(user);
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${user.username} deleted successfully'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }).catchError((error) {
+      // Handle error deleting user
+      print('Error deleting user: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to delete ${user.username}'),
+          duration: Duration(seconds: 2),
+        ),
+      );
     });
-  }
-
-  void _navigateToUserDetails(BuildContext context, User user) {
-    // Implement navigation logic to user details screen
-    // Example: Navigator.pushNamed(context, UserDetailsScreen.routeName, arguments: user);
-    // Replace with your actual navigation logic
   }
 }

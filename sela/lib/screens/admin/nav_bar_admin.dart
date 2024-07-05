@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sela/screens/admin/admin_page.dart';
+import 'package:sela/screens/admin/screens/admin_page.dart';
 import 'package:sela/screens/admin/screens/users.dart';
 import 'package:sela/utils/constants.dart';
 
