@@ -150,7 +150,7 @@ public class AdminController : ControllerBase
     }
 
     // view users info - should log in first - cached
-    [HttpGet("/view/users")]
+    [HttpGet("view/users")]
     public async Task<IActionResult> DisplayUsersAsync()
     {
         var serializedAdminObj = HttpContext.Session.GetString("AdminSession");
@@ -184,8 +184,47 @@ public class AdminController : ControllerBase
 
         return Ok(users);
     }
-    
-    
-    // view post reports - should log in first
+
+    [HttpGet("edit/post/{postId:int}")]
+    public async Task<IActionResult> EditPostsAsync(int postId, PostDto dto)
+    {
+        
+        var serializedAdminObj = HttpContext.Session.GetString("AdminSession");
+        if (serializedAdminObj == null)
+        {
+            return Unauthorized("You should log in first to view users.");
+        }
+
+        var sessionAdmin = JsonSerializer.Deserialize<Admin>(serializedAdminObj);
+        if (sessionAdmin == null)
+        {
+            return Unauthorized("Admin Session is expired. Please log in first.");
+        }
+        
+        var post = new Post
+        {
+            // Update the post with the new data from dto
+            Type = dto.Type,
+            title = dto.title,
+            description = dto.description,
+            about = dto.about,
+            socialLinks = dto.socialLinks,
+
+            ImageUrLs = dto.ImageUrLs,
+            name = dto.name,
+            tags = dto.tags,
+            providers = dto.providers
+        };
+        // Log the post data for debugging
+        Console.WriteLine($"Updating Post: {JsonSerializer.Serialize(post)}");
+
+        var result = await _adminService.UpdatePosts(postId, post);
+
+        await _distributedCache.RemoveAsync("OrganizationPosts");
+        _memoryCache.Remove("IndividualPosts");
+        // _memoryCache.Remove($"{sessionAdmin.username}_Posts");
+        
+        return Ok(result);
+    }
     
 }

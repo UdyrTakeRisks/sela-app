@@ -69,7 +69,11 @@ namespace selaApplication.Controllers
 
             var response = await _usersService.AddUser(user);
             // return Ok(user);
-
+            
+            // delete cache key of the admin
+            var redisCache = _redis.GetDatabase();
+            await redisCache.KeyDeleteAsync("allUsersList");
+            
             return Ok(response);
         }
 
