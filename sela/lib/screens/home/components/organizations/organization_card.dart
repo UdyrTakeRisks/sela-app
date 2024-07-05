@@ -11,14 +11,14 @@ class OrganizationCard extends StatelessWidget {
   final GestureTapCallback press;
 
   const OrganizationCard({
-    Key? key,
+    super.key,
     required this.index,
     this.logo, // Make logo nullable
     required this.name,
     required this.title,
     required this.tags,
     required this.press,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +27,8 @@ class OrganizationCard extends StatelessWidget {
       child: GestureDetector(
         onTap: press,
         child: Container(
-          width: getProportionateScreenWidth(242),
-          height: getProportionateScreenWidth(120),
+          width: getProportionateScreenWidth(300),
+          height: getProportionateScreenHeight(120),
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -110,30 +110,35 @@ class OrganizationCard extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               if (tags.isNotEmpty)
-                Wrap(
-                  spacing: 6,
-                  children: tags
-                      .map(
-                        (tag) => Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            tag,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontFamily: "poppins",
-                              fontWeight: FontWeight.w300,
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Wrap(
+                    spacing: 6,
+                    children: tags
+                        .map(
+                          (tag) => Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              tag,
                               overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontFamily: "poppins",
+                                fontWeight: FontWeight.w300,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                      .toList(),
+                        )
+                        .toList(),
+                  ),
                 ),
             ],
           ),

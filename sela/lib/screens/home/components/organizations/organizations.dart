@@ -56,31 +56,31 @@ class OrganizationsState extends State<Organizations> {
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return const Text("No Organizations Found");
             } else {
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    ...snapshot.data!.map((org) => OrganizationCard(
-                          index: org.id,
-                          logo: org.imageUrls!.isNotEmpty
-                              ? org.imageUrls![0]
-                              : null,
-                          name: org.name,
-                          title: org.title,
-                          tags: org.tags!
-                              .take(3) // Take only the first 3 tags
-                              .toList(),
-                          press: () => Navigator.pushNamed(
-                            context,
-                            DetailsScreen.routeName,
-                            arguments: DetailsArguments(
-                              organization: org,
-                              index: snapshot.data!.indexOf(org),
-                            ),
-                          ),
-                        )),
-                    SizedBox(width: getProportionateScreenWidth(20)),
-                  ],
+              return SizedBox(
+                height: getProportionateScreenWidth(
+                    130), // Adjust the height as needed
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    final org = snapshot.data![index];
+                    return OrganizationCard(
+                      index: org.id,
+                      logo:
+                          org.imageUrls!.isNotEmpty ? org.imageUrls![0] : null,
+                      name: org.name,
+                      title: org.title,
+                      tags: org.tags!.toList(),
+                      press: () => Navigator.pushNamed(
+                        context,
+                        DetailsScreen.routeName,
+                        arguments: DetailsArguments(
+                          organization: org,
+                          index: snapshot.data!.indexOf(org),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               );
             }

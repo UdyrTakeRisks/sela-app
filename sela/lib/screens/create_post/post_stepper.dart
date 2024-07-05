@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:sela/components/new_custom_bottom_navbar.dart';
 import 'package:sela/models/post_model.dart';
 import 'package:sela/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -79,7 +80,8 @@ class _PostStepperState extends State<PostStepper> {
       // Handle successful response
       print('Post submitted successfully!');
       // Navigate to the home screen
-      Navigator.pushNamed(context, '/home');
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const MainScreen()));
       // Show a toast for the success
       toastification.show(
         context: context,

@@ -313,14 +313,14 @@ class PostDetailsFormState extends State<PostDetailsForm> {
       context: context,
       title: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
       ),
       description: Text(
         description,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
       ),
       primaryColor: Colors.redAccent,
       backgroundColor: Colors.redAccent,

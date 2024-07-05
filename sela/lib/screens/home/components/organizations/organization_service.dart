@@ -12,10 +12,7 @@ class OrganizationService {
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
-      return jsonResponse
-          .map((org) => Organization.fromJson(org))
-          .take(5) // Take only the first 5 organizations
-          .toList();
+      return jsonResponse.map((org) => Organization.fromJson(org)).toList();
     } else {
       throw Exception('Failed to load organizations');
     }
