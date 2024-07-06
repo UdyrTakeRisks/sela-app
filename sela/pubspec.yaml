@@ -51,12 +51,18 @@ dependencies:
   liquid_pull_to_refresh: ^3.0.1
   share_plus: ^9.0.0
   google_sign_in: ^6.2.1
+  firebase_core: ^3.1.1
+  firebase_auth: ^5.1.1
   flutter_swipe: ^1.0.1
   flutter_native_splash: ^2.4.0
   fluttertoast: ^8.2.6
   toastification: ^2.0.0
   photo_view: ^0.15.0
   intl: ^0.19.0
+  googleapis:
+  googleapis_auth:
+  firebase_messaging: ^15.0.2
+
 
 flutter_launcher_icons:
   android: "launcher_icon"

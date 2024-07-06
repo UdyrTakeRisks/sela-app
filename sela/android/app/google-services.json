@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "987815053403",
+    "project_id": "sela-app-ce1dc",
+    "storage_bucket": "sela-app-ce1dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:987815053403:android:18702246cdc25c1028177e",
+        "android_client_info": {
+          "package_name": "com.example.sela"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "987815053403-nhvr69k0lvk9lgloukqj7s74te256msr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sela",
+            "certificate_hash": "464718f80fec4a3910a8597f588bc224a37bed39"
+          }
+        },
+        {
+          "client_id": "987815053403-ls8bl6fdvfocshvm4l9nn3sd1djmok9t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-4m5CAlylA9TBnmOC_gD0t3_AL59svbQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "987815053403-ls8bl6fdvfocshvm4l9nn3sd1djmok9t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
