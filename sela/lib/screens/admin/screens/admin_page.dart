@@ -77,9 +77,8 @@ class _AdminPageState extends State<AdminPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
                     title: Text(org.name),
-                    subtitle: Text(org.description.isNotEmpty
-                        ? org.description
-                        : 'No description'),
+                    subtitle: Text(
+                        org.title.isNotEmpty ? org.title : 'No description'),
                     leading: const Icon(Icons.business),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,

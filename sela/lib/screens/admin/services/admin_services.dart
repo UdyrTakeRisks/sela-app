@@ -12,7 +12,7 @@ import '../models/User.dart';
 
 class AdminServices {
   static Future<List<User>> fetchUsersFromApi() async {
-    final url = Uri.parse('$DOTNET_URL_API_BACKEND_ADMIN/view/users');
+    final url = Uri.parse('$DOTNET_URL_API_BACKEND/Admin/view/users');
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? cookie = prefs.getString('cookie');
