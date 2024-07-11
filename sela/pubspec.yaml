@@ -62,7 +62,7 @@ dependencies:
   googleapis:
   googleapis_auth:
   firebase_messaging: ^15.0.2
-
+  kommunicate_flutter: ^1.9.1
 
 flutter_launcher_icons:
   android: "launcher_icon"
