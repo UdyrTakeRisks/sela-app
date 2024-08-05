@@ -131,7 +131,7 @@ public class PostController : ControllerBase
             cachedPosts = JsonSerializer.Serialize(retrievedPosts);
 
             var cacheEntryOptions = new DistributedCacheEntryOptions()
-                .SetSlidingExpiration(TimeSpan.FromHours(6));
+                .SetSlidingExpiration(TimeSpan.FromHours(3));
 
             await _distributedCache.SetStringAsync(OrganizationCacheKey, cachedPosts, cacheEntryOptions);
         }
@@ -151,7 +151,7 @@ public class PostController : ControllerBase
             cachedPosts = await _postsService.GetPosts(post);
 
             var cacheEntryOptions = new MemoryCacheEntryOptions()
-                .SetSlidingExpiration(TimeSpan.FromHours(6));
+                .SetSlidingExpiration(TimeSpan.FromHours(3));
 
             _memoryCache.Set(IndividualsCacheKey, cachedPosts, cacheEntryOptions);
         }
