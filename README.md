@@ -1,7 +1,7 @@
 # sela-app
 SELA APP, A Graduation Project
 
-A mobile application that connects volunteers/donators to volunteering/charity organizations by providing their details and providers, and connects individuals that needs help or that provides an online service.
+A mobile application that connects volunteers/donators to volunteering/charity organizations by providing their details and providers, and connects individuals that needs help or that provides an online helpful services.
 
 Application apk:
 
